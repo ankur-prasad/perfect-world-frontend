@@ -15,6 +15,7 @@ interface SceneProps {
   enableControls?: boolean
   scrollProgress?: number
   collectionsScrollProgress?: number
+  onGlobeHoverChange?: (hover: boolean) => void
 }
 
 // Camera controller that tilts down based on scroll
@@ -39,11 +40,12 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
 }
 
 // Globe and satellites group that rotates together
-function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectionsScrollProgress }: {
+function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectionsScrollProgress, onGlobeHoverChange }: {
   mousePosition: { x: number; y: number }
   onSatelliteClick: (slug: string) => void
   scrollProgress: number
   collectionsScrollProgress: number
+  onGlobeHoverChange?: (hover: boolean) => void
 }) {
   const groupRef = useRef<Group>(null)
 
@@ -71,7 +73,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
         scrollProgress={scrollProgress}
       />
 
-      <Globe />
+      <Globe onHoverChange={(v: boolean) => onGlobeHoverChange && onGlobeHoverChange(v)} />
 
       {/* Satellites rotate with the globe */}
       {projects.map((project) => (
@@ -87,7 +89,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
   )
 }
 
-export default function Scene({ onSatelliteClick, enableControls = false, scrollProgress = 0, collectionsScrollProgress = 0 }: SceneProps) {
+export default function Scene({ onSatelliteClick, enableControls = false, scrollProgress = 0, collectionsScrollProgress = 0, onGlobeHoverChange }: SceneProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const throttledUpdateRef = useRef<((event: MouseEvent) => void) | null>(null)
 
@@ -158,6 +160,7 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
             onSatelliteClick={onSatelliteClick}
             scrollProgress={scrollProgress}
             collectionsScrollProgress={collectionsScrollProgress}
+            onGlobeHoverChange={onGlobeHoverChange}
           />
         </Suspense>
 

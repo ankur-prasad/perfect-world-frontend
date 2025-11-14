@@ -48,6 +48,58 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Monochrome overlay for film-like hero (vignette + grain + desaturate) */
+.monochrome-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5; /* sits above the 3D scene (z-0) but below interactive UI (z-10+) so colored glows remain visible */
+  background: rgba(0, 0, 0, 0.08);
+  /* Use backdrop-filter so the overlay affects the rendered 3D canvas behind it */
+  -webkit-backdrop-filter: grayscale(100%) contrast(1.15) brightness(0.92);
+  backdrop-filter: grayscale(100%) contrast(1.15) brightness(0.92);
+  transition: backdrop-filter 200ms ease, -webkit-backdrop-filter 200ms ease, background-color 200ms ease;
+}
+
+.monochrome-overlay::before {
+  /* subtle vignette to darken edges */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 62%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.monochrome-overlay::after {
+  /* lightweight SVG noise as data URI for film grain */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.12' fill='%23000'/></svg>");
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  image-rendering: pixelated;
+  transform: scale(1.4);
+}
+
+.monochrome-overlay.reduced {
+  /* soften or disable the desaturation so original colors (and glows) show through */
+  background: rgba(0,0,0,0.02);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.monochrome-overlay.reduced::before {
+  opacity: 0.15;
+}
+
+.monochrome-overlay.reduced::after {
+  opacity: 0.05;
+}
+
+
 * {
   margin: 0;
   padding: 0;

@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
 import Scene from '../components/3D/Scene'
+import MonochromeOverlay from '../components/ui/MonochromeOverlay'
 import { useNavigation } from '../contexts/NavigationContext'
 import { GlowingEffect } from '../components/ui/glowing-effect'
 
@@ -19,6 +20,7 @@ export default function Home() {
   const [showHeroText, setShowHeroText] = useState(true)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [collectionsScrollProgress, setCollectionsScrollProgress] = useState(0)
+  const [globeHover, setGlobeHover] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,11 +73,15 @@ export default function Home() {
         >
           <Scene
             onSatelliteClick={handleSatelliteClick}
+            onGlobeHoverChange={(v: boolean) => setGlobeHover(v)}
             scrollProgress={scrollProgress}
             collectionsScrollProgress={collectionsScrollProgress}
           />
         </Suspense>
       </div>
+
+  {/* Monochrome overlay to apply film-like desaturate / grain / vignette */}
+      <MonochromeOverlay reduced={globeHover} />
 
       {/* Extended Hero Section with 3D Globe and Stars - 5 screens tall */}
       <section ref={heroRef} className="relative -z-10" style={{ height: '500vh' }}>
