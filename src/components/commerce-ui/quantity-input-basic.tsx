@@ -1,7 +1,8 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
-import { ChangeEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import type { ChangeEvent } from "react";
 
 interface QuantityInputBasicProps {
   quantity: number;

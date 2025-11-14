@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import NumberFlow, { NumberFlowGroup } from "@number-flow/react";
 
 function Banner_07() {

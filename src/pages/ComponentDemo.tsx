@@ -39,10 +39,10 @@ export default function ComponentDemo() {
           <h2 className="text-3xl font-bold mb-8">Review Component</h2>
           <div className="bg-white/5 p-8 rounded-lg">
             <Review01
-              name="Sarah Johnson"
+              reviewerName="Sarah Johnson"
               rating={5}
-              text="This is the best sustainable clothing I've ever purchased. The quality is outstanding and I love supporting such an ethical company!"
-              date="2 weeks ago"
+              reviewText="This is the best sustainable clothing I've ever purchased. The quality is outstanding and I love supporting such an ethical company!"
+              reviewDate="2 weeks ago"
             />
           </div>
         </section>
@@ -51,7 +51,7 @@ export default function ComponentDemo() {
         <section>
           <h2 className="text-3xl font-bold mb-8">Cart Component</h2>
           <Cart01
-            items={[
+            products={[
               {
                 id: '1',
                 name: 'Perfect World T-Shirt',

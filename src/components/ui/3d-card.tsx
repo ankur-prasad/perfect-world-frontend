@@ -96,6 +96,19 @@ export const CardBody = ({
   );
 };
 
+interface CardItemProps {
+  as?: React.ElementType;
+  children?: React.ReactNode;
+  className?: string;
+  translateX?: number | string;
+  translateY?: number | string;
+  translateZ?: number | string;
+  rotateX?: number | string;
+  rotateY?: number | string;
+  rotateZ?: number | string;
+  [key: string]: any;
+}
+
 export const CardItem = ({
   as: Tag = "div",
   children,
@@ -107,19 +120,8 @@ export const CardItem = ({
   rotateY = 0,
   rotateZ = 0,
   ...rest
-}: {
-  as?: React.ElementType;
-  children: React.ReactNode;
-  className?: string;
-  translateX?: number | string;
-  translateY?: number | string;
-  translateZ?: number | string;
-  rotateX?: number | string;
-  rotateY?: number | string;
-  rotateZ?: number | string;
-  [key: string]: unknown;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
+}: CardItemProps) => {
+  const ref = useRef<any>(null);
   const [isMouseEntered] = useMouseEnter();
 
   const handleAnimations = useCallback(() => {
@@ -135,14 +137,14 @@ export const CardItem = ({
     handleAnimations();
   }, [handleAnimations]);
 
-  return (
-    <Tag
-      ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
-      {...rest}
-    >
-      {children}
-    </Tag>
+  return React.createElement(
+    Tag,
+    {
+      ref,
+      className: cn("w-fit transition duration-200 ease-linear", className),
+      ...rest,
+    },
+    children
   );
 };
 
