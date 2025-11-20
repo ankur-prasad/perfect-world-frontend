@@ -8,7 +8,8 @@ import Footer from '../components/Layout/Footer'
 import Scene from '../components/3D/Scene'
 import MonochromeOverlay from '../components/ui/MonochromeOverlay'
 import { useNavigation } from '../contexts/NavigationContext'
-import { GlowingEffect } from '../components/ui/glowing-effect'
+import ImpactSlides from '../components/Home/ImpactSlides'
+import FAQ from '../components/Home/FAQ'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -25,8 +26,8 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100)
-      const heroHeight = window.innerHeight * 5 // Hero section is 500vh
-      const transitionHeight = window.innerHeight * 3 // Transition section is 300vh
+      const heroHeight = window.innerHeight * 1.5 // Reduced from 300vh to 150vh
+      const transitionHeight = window.innerHeight * 0.75 // Reduced from 150vh to 75vh
 
       // Calculate scroll progress through the hero section (0 to 1)
       const progress = Math.min(window.scrollY / heroHeight, 1)
@@ -36,11 +37,13 @@ export default function Home() {
       setShowHeroText(progress < 0.15)
 
       // Calculate star trail progress during transition section
-      const transitionStart = heroHeight
-      const transitionEnd = heroHeight + transitionHeight
+      // Start trails earlier (at 80% of hero height) to overlap with globe movement
+      const transitionStart = heroHeight * 0.8
+      // End transition slightly before the physical section ends to ensure full white background
+      const transitionEnd = (heroHeight + transitionHeight) - 100
 
       if (window.scrollY >= transitionStart && window.scrollY <= transitionEnd) {
-        const transitionProgress = (window.scrollY - transitionStart) / transitionHeight
+        const transitionProgress = (window.scrollY - transitionStart) / (transitionEnd - transitionStart)
         setCollectionsScrollProgress(transitionProgress)
       } else if (window.scrollY > transitionEnd) {
         setCollectionsScrollProgress(1)
@@ -58,8 +61,16 @@ export default function Home() {
     navigate(`/project/${projectSlug}`)
   }
 
+  // Calculate background color based on transition progress
+  // Interpolate from Black (#000000) to White (#FFFFFF)
+  // Start transition later (0.4) to let star trails build up and "create" the white
+  const bgLightness = Math.max(0, Math.min(100, (collectionsScrollProgress - 0.4) * 2 * 100))
+  const backgroundColor = `hsl(0, 0%, ${bgLightness}%)`
+  // When background becomes white (lightness > 50), text should be black
+  const textColor = bgLightness > 50 ? 'text-black' : 'text-white'
+
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen transition-colors duration-100 ease-out" style={{ backgroundColor }}>
       <Navigation />
 
       {/* Fixed 3D Scene - spans both hero and collections */}
@@ -80,11 +91,11 @@ export default function Home() {
         </Suspense>
       </div>
 
-  {/* Monochrome overlay to apply film-like desaturate / grain / vignette */}
+      {/* Monochrome overlay to apply film-like desaturate / grain / vignette */}
       <MonochromeOverlay reduced={globeHover} />
 
-      {/* Extended Hero Section with 3D Globe and Stars - 5 screens tall */}
-      <section ref={heroRef} className="relative -z-10" style={{ height: '500vh' }}>
+      {/* Extended Hero Section with 3D Globe and Stars - 1.5 screens tall */}
+      <section ref={heroRef} className="relative -z-10" style={{ height: '150vh' }}>
         {/* Empty section for scroll height */}
       </section>
 
@@ -128,16 +139,16 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Transition section for star trails - 3 screens tall */}
-      <section className="relative -z-10" style={{ height: '300vh' }}>
+      {/* Transition section for star trails - 0.75 screens tall */}
+      <section className="relative -z-10" style={{ height: '75vh' }}>
         {/* Stars with trails are visible here via the fixed 3D scene */}
       </section>
 
       {/* Collections Section with Glowing Cards */}
-      <section ref={collectionsRef} className="relative min-h-screen py-32 pb-96 bg-transparent flex items-center z-10">
-        <div className="container mx-auto px-4 max-w-7xl w-full relative z-10">
+      <section ref={collectionsRef} className="relative min-h-screen py-32 pb-32 bg-transparent z-10">
+        <div className="container mx-auto px-4 max-w-[1600px] w-full relative z-10">
           <motion.h2
-            className="text-5xl md:text-6xl font-bold text-white text-center mb-20"
+            className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -189,43 +200,39 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group cursor-pointer w-full max-w-sm"
+                className="group cursor-pointer w-full max-w-sm h-full"
                 onClick={() => handleSatelliteClick(project.slug)}
               >
-                <div className="relative rounded-2xl overflow-hidden bg-black/50 backdrop-blur-sm h-full border border-white/10">
-                  <GlowingEffect
-                    disabled={false}
-                    proximity={300}
-                    spread={40}
-                    blur={8}
-                    borderWidth={3}
-                  />
+                <div className="relative rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100 transform hover:-translate-y-2">
 
-                  <div className="relative p-6 h-full flex flex-col z-10">
-                    <div className="relative w-full aspect-[4/5] mb-4 rounded-xl overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
+                  {/* Full Bleed Image */}
+                  <div className="relative w-full aspect-[4/5] overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
 
-                    <h3 className="text-xl font-bold text-white mb-2">
+                    {/* Overlay Text on Image (Optional, or keep it below) - Let's keep it clean and put text below */}
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                       {project.name}
                     </h3>
 
-                    <p className="text-sm text-gray-300 mb-4 flex-grow">
+                    <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
                       {project.description}
                     </p>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 mt-auto">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleSatelliteClick(project.slug);
                         }}
-                        className="flex-1 px-4 py-2 rounded-lg border border-white/20 text-white text-sm hover:bg-white/10 transition-colors"
+                        className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-gray-900 font-medium hover:bg-gray-50 transition-colors text-sm"
                       >
                         Learn More
                       </button>
@@ -234,9 +241,9 @@ export default function Home() {
                           e.stopPropagation();
                           navigate('/shop');
                         }}
-                        className="flex-1 px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-gray-200 transition-colors"
+                        className="flex-1 px-4 py-3 rounded-xl bg-black text-white font-medium hover:bg-gray-800 transition-colors text-sm shadow-md hover:shadow-lg"
                       >
-                        Shop
+                        Shop Collection
                       </button>
                     </div>
                   </div>
@@ -247,6 +254,8 @@ export default function Home() {
         </div>
       </section>
 
+      <ImpactSlides />
+      <FAQ />
       <Footer />
     </div>
   )

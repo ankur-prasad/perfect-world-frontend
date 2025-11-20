@@ -16,11 +16,10 @@ export default function Navigation() {
   const logoRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    if (!aboutUsRef.current || !shopRef.current || !transparencyRef.current || !menuRef.current || !logoRef.current) return
+    if (!aboutUsRef.current || !transparencyRef.current || !logoRef.current) return
 
     const ctx = gsap.context(() => {
-      // Shrink logo on scroll (0-250px scroll) - animates from h-20 (5rem) to h-12 (3rem)
-      // GSAP reads the current computed height from h-20 class and animates to 3rem
+      // Shrink logo on scroll (0-250px scroll)
       gsap.to(logoRef.current, {
         scrollTrigger: {
           trigger: 'body',
@@ -28,11 +27,12 @@ export default function Navigation() {
           end: '+=250',
           scrub: 1,
         },
-        height: '3rem', // h-12 = 48px = 3rem (final size after scroll)
+        height: '3rem',
         ease: 'power2.out',
       })
-      // Stage 1: Move Transparency UP to align with About Us (0-250px scroll)
-      gsap.to(transparencyRef.current, {
+
+      // Stage 1: Move button containers UP and align vertically (0-250px scroll)
+      gsap.to([aboutUsRef.current, transparencyRef.current], {
         scrollTrigger: {
           trigger: 'body',
           start: 'top top',
@@ -40,66 +40,56 @@ export default function Navigation() {
           scrub: 1,
         },
         top: '1.5rem',
+        transform: 'translateY(0)', // Remove vertical centering
         ease: 'power2.out',
       })
 
-      // Stage 1: Move Menu UP to align with Shop (0-250px scroll)
-      gsap.to(menuRef.current, {
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: '+=250',
-          scrub: 1,
+      // Stage 1: Shrink the actual link elements inside as scroll progresses (0-250px scroll)
+      // Explicitly animate FROM Big TO Small
+      gsap.fromTo([aboutUsRef.current?.querySelector('a'), transparencyRef.current?.querySelector('a')],
+        {
+          fontSize: '1.125rem', // Start: text-lg
+          paddingLeft: '1.5rem', // Start: px-6
+          paddingRight: '1.5rem',
+          paddingTop: '0.75rem', // Start: py-3
+          paddingBottom: '0.75rem',
         },
-        top: '1.5rem',
-        ease: 'power2.out',
-      })
+        {
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: '+=250',
+            scrub: 1,
+          },
+          fontSize: '1rem', // End: text-base
+          paddingLeft: '1rem', // End: px-4
+          paddingRight: '1rem',
+          paddingTop: '0.5rem', // End: py-2
+          paddingBottom: '0.5rem',
+          ease: 'power2.out',
+        }
+      )
 
-      // Stage 2: Move all four buttons INWARD simultaneously (250-500px scroll)
-      const stage2Start = '+=250'
-      const stage2End = '+=500'
-
+      // Stage 2: Move buttons INWARD toward logo (250-500px scroll)
       gsap.to(aboutUsRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: stage2Start,
-          end: stage2End,
+          start: '+=250',
+          end: '+=500',
           scrub: 1,
         },
         left: 'calc(50vw - 300px)',
         ease: 'power2.out',
       })
 
-      gsap.to(shopRef.current, {
-        scrollTrigger: {
-          trigger: 'body',
-          start: stage2Start,
-          end: stage2End,
-          scrub: 1,
-        },
-        right: 'calc(50vw - 300px)',
-        ease: 'power2.out',
-      })
-
       gsap.to(transparencyRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: stage2Start,
-          end: stage2End,
+          start: '+=250',
+          end: '+=500',
           scrub: 1,
         },
-        left: 'calc(50vw - 450px)',
-        ease: 'power2.out',
-      })
-
-      gsap.to(menuRef.current, {
-        scrollTrigger: {
-          trigger: 'body',
-          start: stage2Start,
-          end: stage2End,
-          scrub: 1,
-        },
-        right: 'calc(50vw - 450px)',
+        right: 'calc(50vw - 300px)',
         ease: 'power2.out',
       })
     })
@@ -127,61 +117,13 @@ export default function Navigation() {
       </motion.div>
 
       {/* Corner Navigation Links (fixed individually to avoid overlay blocking clicks) */}
-      {/* About Us - Top Left */}
+      {/* Menu - Top Left */}
       <motion.div
-        ref={aboutUsRef}
+        ref={menuRef}
         className="fixed top-6 left-6 z-40"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <Link
-          to="/about"
-          className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors inline-block"
-        >
-          About Us
-        </Link>
-      </motion.div>
-
-      {/* Shop - Top Right */}
-      <motion.div
-        ref={shopRef}
-        className="fixed top-6 right-6 z-40"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-      >
-        <Link
-          to="/shop"
-          className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors inline-block"
-        >
-          Shop
-        </Link>
-      </motion.div>
-
-      {/* Transparency - Bottom Left → Top Left (animated with GSAP) */}
-      <motion.div
-        ref={transparencyRef}
-        className="fixed bottom-6 left-6 z-40"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-      >
-        <Link
-          to="/transparency"
-          className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors inline-block"
-        >
-          Transparency
-        </Link>
-      </motion.div>
-
-      {/* Menu Button - Bottom Right → Top Right (animated with GSAP) */}
-      <motion.div
-        ref={menuRef}
-        className="fixed bottom-6 right-6 z-40"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
       >
         <button
           onClick={toggleMenu}
@@ -189,6 +131,49 @@ export default function Navigation() {
         >
           Menu
         </button>
+      </motion.div>
+
+      {/* Empty div for animation target (was Shop - Top Right) */}
+      <motion.div
+        ref={shopRef}
+        className="fixed top-6 right-6 z-40 opacity-0 pointer-events-none"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 0, x: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      />
+
+      {/* Learn More - Middle Left (starts closer to center) */}
+      <motion.div
+        ref={aboutUsRef}
+        className="fixed top-1/2 z-40"
+        style={{ left: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+      >
+        <Link
+          to="/about"
+          className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors inline-block text-lg font-medium"
+        >
+          Learn More
+        </Link>
+      </motion.div>
+
+      {/* Make a Difference - Middle Right (starts closer to center) */}
+      <motion.div
+        ref={transparencyRef}
+        className="fixed top-1/2 z-40"
+        style={{ right: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+      >
+        <Link
+          to="/shop"
+          className="px-6 py-3 rounded-full bg-white text-black hover:bg-gray-200 transition-colors inline-block text-lg font-semibold"
+        >
+          Make a Difference
+        </Link>
       </motion.div>
 
       {/* Full Screen Menu Overlay */}

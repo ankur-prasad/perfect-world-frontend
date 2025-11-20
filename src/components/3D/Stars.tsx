@@ -11,7 +11,7 @@ interface StarsProps {
 
 export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 0 }: StarsProps) {
   const starsRef = useRef<THREE.Points>(null)
-  const trailsRef = useRef<THREE.Points>(null)
+  const trailsRef = useRef<THREE.LineSegments>(null)
   const mobile = isMobile()
   const starCount = mobile ? SCENE.STAR_COUNT_MOBILE : SCENE.STAR_COUNT
 
@@ -37,28 +37,28 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
     return positions
   }, [starCount])
 
-  // Create trail positions (multiple points per star for trail effect)
-  const { trailPositions, trailOpacities } = useMemo(() => {
-    const trailLength = 20 // Increased trail points for longer trails
-    const trailPositions = new Float32Array(starCount * trailLength * 3)
-    const trailOpacities = new Float32Array(starCount * trailLength)
+  // Create trail positions (2 points per star: start and end)
+  const trailPositions = useMemo(() => {
+    const trailPositions = new Float32Array(starCount * 2 * 3) // 2 points per star
 
     for (let i = 0; i < starCount; i++) {
-      for (let j = 0; j < trailLength; j++) {
-        const idx = (i * trailLength + j) * 3
-        const opacityIdx = i * trailLength + j
+      // Initialize both points to the star's position
+      const x = positions[i * 3]
+      const y = positions[i * 3 + 1]
+      const z = positions[i * 3 + 2]
 
-        // Copy star position for each trail point
-        trailPositions[idx] = positions[i * 3]
-        trailPositions[idx + 1] = positions[i * 3 + 1]
-        trailPositions[idx + 2] = positions[i * 3 + 2]
+      // Point 1 (Start)
+      trailPositions[i * 6] = x
+      trailPositions[i * 6 + 1] = y
+      trailPositions[i * 6 + 2] = z
 
-        // Opacity decreases along trail
-        trailOpacities[opacityIdx] = 1 - (j / trailLength)
-      }
+      // Point 2 (End) - initially same as start
+      trailPositions[i * 6 + 3] = x
+      trailPositions[i * 6 + 4] = y
+      trailPositions[i * 6 + 5] = z
     }
 
-    return { trailPositions, trailOpacities }
+    return trailPositions
   }, [positions, starCount])
 
   // Animate trails based on collections scroll progress
@@ -66,18 +66,29 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
   useFrame(() => {
     if (trailsRef.current && collectionsScrollProgress > 0 && scrollProgress >= 0.8) {
       const positionAttr = trailsRef.current.geometry.attributes.position as THREE.BufferAttribute
-      const trailLength = 20
+
+      // Length multiplier - controls how long the trails get
+      const lengthMultiplier = 300.0
 
       for (let i = 0; i < starCount; i++) {
-        for (let j = 0; j < trailLength; j++) {
-          const idx = (i * trailLength + j) * 3
+        // Update the end point (Point 2) of each segment
+        const idx = i * 6 // Start index for this star's segment
 
-          // Offset trail points to create flat/horizontal trails with faster, longer effect
-          const offset = j * collectionsScrollProgress * 5.0 // Much faster and longer trails
-          positionAttr.array[idx] = positions[i * 3]
-          positionAttr.array[idx + 1] = positions[i * 3 + 1] // Keep y position same (flat)
-          positionAttr.array[idx + 2] = positions[i * 3 + 2] - offset // Trail extends in z-direction
-        }
+        // Original position (Point 1 is fixed at original position)
+        const x = positions[i * 3]
+        const y = positions[i * 3 + 1]
+        const z = positions[i * 3 + 2]
+
+        // Calculate offset based on scroll progress
+        // Extend in Z direction which maps to vertical on screen when looking down
+        // Add some randomness to length for more natural look
+        const randomFactor = 1 + Math.sin(i) * 0.2
+        const offset = collectionsScrollProgress * lengthMultiplier * randomFactor
+
+        // Update Point 2 (End)
+        positionAttr.array[idx + 3] = x
+        positionAttr.array[idx + 4] = y
+        positionAttr.array[idx + 5] = z + offset
       }
 
       positionAttr.needsUpdate = true
@@ -93,9 +104,8 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
   const trailGeometry = useMemo(() => {
     const geom = new THREE.BufferGeometry()
     geom.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3))
-    geom.setAttribute('opacity', new THREE.BufferAttribute(trailOpacities, 1))
     return geom
-  }, [trailPositions, trailOpacities])
+  }, [trailPositions])
 
   // Create circular star texture
   const starTexture = useMemo(() => {
@@ -134,18 +144,14 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
 
       {/* Star trails - only visible when rotation has stopped and collections scroll is active */}
       {collectionsScrollProgress > 0 && scrollProgress >= 0.8 && (
-        <points ref={trailsRef} geometry={trailGeometry}>
-          <pointsMaterial
-            size={0.8}
+        <lineSegments ref={trailsRef} geometry={trailGeometry}>
+          <lineBasicMaterial
             color="#ffffff"
             transparent
-            opacity={collectionsScrollProgress * 0.9}
-            sizeAttenuation
-            vertexColors={false}
-            map={starTexture}
-            alphaTest={0.01}
+            opacity={Math.min(1, collectionsScrollProgress * 1.5)} // Fade in to full opacity
+            linewidth={1} // Note: linewidth only works in some renderers/browsers, usually 1px
           />
-        </points>
+        </lineSegments>
       )}
     </>
   )
