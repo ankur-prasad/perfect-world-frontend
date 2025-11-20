@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const slides = [
     {
@@ -19,44 +20,81 @@ const slides = [
 ];
 
 export default function ImpactSlides() {
+    const [activeSlide, setActiveSlide] = useState(0);
+
     return (
         <section className="bg-white text-black relative z-10">
-            <div className="w-full">
-                {slides.map((slide, index) => (
-                    <div key={index} className="h-screen sticky top-0 bg-white/90 backdrop-blur-sm border-b border-gray-100 last:border-0">
-                        <div className="container mx-auto px-4 h-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-20">
-                            <motion.div
-                                className="flex-1 space-y-8 max-w-xl"
-                                initial={{ opacity: 0, x: -50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-20%" }}
-                                transition={{ duration: 0.8 }}
-                            >
-                                <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase leading-none">
+            <div className="flex flex-col md:flex-row">
+                {/* Left Column: Scrolling Text */}
+                <div className="w-full md:w-1/2 relative z-10">
+                    {slides.map((slide, index) => (
+                        <motion.div
+                            key={index}
+                            className="h-screen flex flex-col justify-center px-6 md:px-20 max-w-3xl mx-auto"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ amount: 0.5 }}
+                            onViewportEnter={() => setActiveSlide(index)}
+                        >
+                            <div className="space-y-8">
+                                <div className="flex items-center gap-4">
+                                    <span className="text-sm font-mono text-gray-400">0{index + 1}</span>
+                                    <div className={`h-px bg-gray-200 transition-all duration-500 ${activeSlide === index ? 'w-20 bg-black' : 'w-8'}`} />
+                                </div>
+
+                                <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase leading-[0.9]">
                                     {slide.title}
                                 </h2>
                                 <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
                                     {slide.content}
                                 </p>
-                            </motion.div>
 
-                            <motion.div
-                                className="flex-1 w-full h-[50vh] md:h-[70vh] relative overflow-hidden rounded-2xl shadow-2xl"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true, margin: "-20%" }}
-                                transition={{ duration: 0.8, delay: 0.2 }}
-                            >
-                                <img
-                                    src={slide.image}
-                                    alt={slide.title}
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-black/10" />
-                            </motion.div>
-                        </div>
+                                {/* Mobile Image */}
+                                <div className="md:hidden w-full h-[40vh] relative overflow-hidden rounded-2xl mt-8">
+                                    <img
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Right Column: Sticky Image */}
+                <div className="hidden md:block w-1/2 h-screen sticky top-0 overflow-hidden">
+                    <div className="relative w-full h-full">
+                        <AnimatePresence mode="popLayout">
+                            {slides.map((slide, index) => (
+                                activeSlide === index && (
+                                    <motion.div
+                                        key={index}
+                                        className="absolute inset-0"
+                                        initial={{ opacity: 0, scale: 1.1 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.7, ease: "easeInOut" }}
+                                    >
+                                        <img
+                                            src={slide.image}
+                                            alt={slide.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-black/10" />
+                                    </motion.div>
+                                )
+                            ))}
+                        </AnimatePresence>
                     </div>
-                ))}
+                </div>
+
+                {/* Mobile Image (Visible only on mobile, interspersed) */}
+                {/* Note: For a true split layout on mobile, we usually just stack. 
+                    But to keep the "sticky" feel, we might want to hide the sticky column and show images inline.
+                    However, the current design hides the right column on mobile. 
+                    Let's add inline images for mobile to ensure content is visible.
+                */}
             </div>
         </section>
     );
