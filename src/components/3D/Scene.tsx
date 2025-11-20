@@ -5,7 +5,6 @@ import { Group } from 'three'
 import Globe from './Globe'
 import Satellite from './Satellite'
 import Stars from './Stars'
-import Comets from './Comets'
 import { projects } from '../../data/projects'
 import { SCENE, ANIMATION } from '../../utils/constants'
 import { throttle } from '../../utils/animations'
@@ -39,7 +38,6 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   return null
 }
 
-// Globe and satellites group that rotates together
 function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectionsScrollProgress, onGlobeHoverChange }: {
   mousePosition: { x: number; y: number }
   onSatelliteClick: (slug: string) => void
@@ -48,13 +46,34 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
   onGlobeHoverChange?: (hover: boolean) => void
 }) {
   const groupRef = useRef<Group>(null)
+  const [isGlobeHovered, setIsGlobeHovered] = useState(false)
+  const { pointer } = useThree()
+  const currentSpeedRef = useRef(0) // Track current speed for smooth transitions
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return
+
+    // --- Mouse-Controlled Rotation ---
+    // Get normalized mouse X position (-1 to 1)
+    const mouseX = pointer.x
+
+    // Base rotation speed (radians per second)
+    // Set to 0.1 for very gentle rotation
+    // Positive mouseX (right) -> negative rotation (clockwise)
+    // Negative mouseX (left) -> positive rotation (counter-clockwise)
+    let targetRotationSpeed = -mouseX * 0.1
+
+    // Slow down when hovering over globe (changed from 0.1 to 0.3 for less dramatic change)
+    if (isGlobeHovered) {
+      targetRotationSpeed *= 0.3
+    }
+
+    // Smoothly interpolate to target speed (lerp factor 0.05 for gradual transitions)
+    currentSpeedRef.current += (targetRotationSpeed - currentSpeedRef.current) * 0.05
 
     // Stop rotation when scroll progress reaches 0.8 (80% through the scroll)
     const rotationMultiplier = Math.max(0, 1 - (scrollProgress - 0.8) / 0.2)
-    groupRef.current.rotation.y += ANIMATION.GLOBE_ROTATION_SPEED * rotationMultiplier
+    groupRef.current.rotation.y += currentSpeedRef.current * delta * rotationMultiplier
 
     // Reduce parallax effect when frozen
     const parallaxMultiplier = rotationMultiplier
@@ -65,6 +84,11 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
     groupRef.current.rotation.z += (targetTiltZ - groupRef.current.rotation.z) * 0.1
   })
 
+  const handleGlobeHover = (hovered: boolean) => {
+    setIsGlobeHovered(hovered)
+    if (onGlobeHoverChange) onGlobeHoverChange(hovered)
+  }
+
   return (
     <group ref={groupRef} position={[0, 0.6, 0]}>
       {/* Stars now rotate with the globe */}
@@ -73,7 +97,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
         scrollProgress={scrollProgress}
       />
 
-      <Globe onHoverChange={(v: boolean) => onGlobeHoverChange && onGlobeHoverChange(v)} />
+      <Globe onHoverChange={handleGlobeHover} />
 
       {/* Satellites rotate with the globe */}
       {projects.map((project) => (
@@ -151,8 +175,6 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
 
         {/* Scene Content */}
         <Suspense fallback={null}>
-          {/* Comets - stationary in space, not rotating with globe */}
-          <Comets count={15} scrollProgress={scrollProgress} />
 
           {/* Globe, stars, and satellites rotate together, with parallax tilt */}
           <GlobeGroup

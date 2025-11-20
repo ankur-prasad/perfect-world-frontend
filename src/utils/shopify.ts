@@ -32,12 +32,15 @@ async function shopifyFetch<T>(query: string, variables: Record<string, string |
     const json = await response.json()
 
     if (json.errors) {
+      console.error('Shopify GraphQL Errors:', json.errors)
       throw new Error(json.errors[0].message)
     }
 
     return json.data
   } catch (error) {
-    console.error('Shopify API error:', error)
+    console.error('Shopify API error details:', error)
+    console.log('Store Domain:', SHOPIFY.STORE_DOMAIN)
+    console.log('Token present:', !!SHOPIFY.STOREFRONT_API_TOKEN)
     throw error
   }
 }

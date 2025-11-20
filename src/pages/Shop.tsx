@@ -34,21 +34,21 @@ export default function Shop() {
         // Fetch products from each collection
         await Promise.all(
           projects.map(async (project) => {
-            try {
-              const collection = await getCollectionProducts(project.shopifyCollection.handle)
-              if (collection && collection.products) {
-                // Tag each product with its collection for filtering
-                const taggedProducts = collection.products.map((product) => ({
-                  ...product,
-                  collectionHandle: project.shopifyCollection.handle,
-                  collectionName: project.name,
-                  collectionColor: project.theme.primaryColor,
-                }))
-                allProducts.push(...taggedProducts)
-              }
-            } catch (err) {
-              console.error(`Failed to fetch products for ${project.name}:`, err)
+            // try {
+            const collection = await getCollectionProducts(project.shopifyCollection.handle)
+            if (collection && collection.products) {
+              // Tag each product with its collection for filtering
+              const taggedProducts = collection.products.map((product) => ({
+                ...product,
+                collectionHandle: project.shopifyCollection.handle,
+                collectionName: project.name,
+                collectionColor: project.theme.primaryColor,
+              }))
+              allProducts.push(...taggedProducts)
             }
+            // } catch (err) {
+            //   console.error(`Failed to fetch products for ${project.name}:`, err)
+            // }
           })
         )
 

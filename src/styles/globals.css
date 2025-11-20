@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-@plugin 'tailwindcss-animate';
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
 
 /* CSS Variables */
 :root {
@@ -53,12 +49,11 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 5; /* sits above the 3D scene (z-0) but below interactive UI (z-10+) so colored glows remain visible */
+  z-index: 5;
+  /* sits above the 3D scene (z-0) but below interactive UI (z-10+) so colored glows remain visible */
   background: rgba(0, 0, 0, 0.08);
-  /* Use backdrop-filter so the overlay affects the rendered 3D canvas behind it */
-  -webkit-backdrop-filter: grayscale(100%) contrast(1.15) brightness(0.92);
-  backdrop-filter: grayscale(100%) contrast(1.15) brightness(0.92);
-  transition: backdrop-filter 200ms ease, -webkit-backdrop-filter 200ms ease, background-color 200ms ease;
+  /* Removed grayscale filter to allow pin colors to show */
+  transition: background-color 200ms ease;
 }
 
 .monochrome-overlay::before {
@@ -66,7 +61,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 62%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
+  background: radial-gradient(circle at 50% 62%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 100%);
   mix-blend-mode: multiply;
   pointer-events: none;
 }
@@ -86,9 +81,7 @@
 
 .monochrome-overlay.reduced {
   /* soften or disable the desaturation so original colors (and glows) show through */
-  background: rgba(0,0,0,0.02);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .monochrome-overlay.reduced::before {
@@ -227,6 +220,7 @@ a:focus-visible {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

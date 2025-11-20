@@ -28,7 +28,7 @@ export default function Satellite({
   // Calculate position on sphere (radius 1.2 to match globe scale, plus offset)
   const globeRadius = 1.2
   const satelliteOffset = 0.4 // Distance from globe surface
-  
+
   // Memoize positions and geometry based on lat/lon
   const { satellitePos, line } = useMemo(() => {
     const surface = latLonToVector3(position.lat, position.lon, globeRadius)
@@ -88,7 +88,7 @@ export default function Satellite({
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={hovered ? 0.8 : 0.4}
+          emissiveIntensity={hovered ? 1.0 : 0.8} // Always bright, brighter on hover
           roughness={0.3}
           metalness={0.7}
         />
@@ -99,11 +99,18 @@ export default function Satellite({
           center
           distanceFactor={5}
           style={{
-            pointerEvents: 'none',
+            pointerEvents: 'auto', // Enable pointer events
             userSelect: 'none',
           }}
         >
-          <div className="px-4 py-2 bg-black/90 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', fontWeight: 300 }}>
+          <div
+            className="px-4 py-2 bg-black/90 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors"
+            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', fontWeight: 300 }}
+            onClick={(e) => {
+              e.stopPropagation()
+              onClick()
+            }}
+          >
             {label}
           </div>
         </Html>
@@ -115,7 +122,7 @@ export default function Satellite({
         <meshBasicMaterial
           color={color}
           transparent
-          opacity={hovered ? 0.3 : 0.1}
+          opacity={hovered ? 0.4 : 0.25} // More visible glow even when not hovering
         />
       </mesh>
     </group>

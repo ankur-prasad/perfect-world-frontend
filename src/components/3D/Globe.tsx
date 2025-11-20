@@ -24,17 +24,21 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       uniforms: {
         map: { value: colorMap },
         hoverPoint: { value: new THREE.Vector3(999, 999, 999) },
-        hoverRadius: { value: 0.6 },
+        hoverRadius: { value: 1.2 }, // Increased from 0.6 for bigger hover area
+        isHovered: { value: 0.0 }, // Track if globe is being hovered
       },
       vertexShader: `
         varying vec2 vUv;
         varying vec3 vPosition;
         varying vec3 vNormal;
+        varying vec3 vWorldPosition;
 
         void main() {
           vUv = uv;
           vPosition = position;
           vNormal = normalize(normalMatrix * normal);
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPosition.xyz;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
@@ -42,24 +46,39 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
         uniform sampler2D map;
         uniform vec3 hoverPoint;
         uniform float hoverRadius;
+        uniform float isHovered;
 
         varying vec2 vUv;
         varying vec3 vPosition;
         varying vec3 vNormal;
+        varying vec3 vWorldPosition;
 
         void main() {
           vec4 texColor = texture2D(map, vUv);
 
-          // Calculate grayscale
-          float gray = dot(texColor.rgb, vec3(0.299, 0.222, 0.179));
-          vec3 monochrome = vec3(gray) * vec3(0.7, 0.75, 0.8); // Cool monochrome tint
+          // Less aggressive desaturation - keep more color (50% saturation instead of full desaturation)
+          float gray = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+          vec3 desaturated = mix(texColor.rgb, vec3(gray), 0.5); // 50% desaturated
+          vec3 baseColor = desaturated * vec3(0.85, 0.9, 1.0); // Cool tint
 
-          // Calculate distance from hover point
+          // Calculate distance from hover point for hover glow
           float dist = distance(vPosition, hoverPoint);
-          float influence = smoothstep(hoverRadius, 0.0, dist);
+          float hoverInfluence = smoothstep(hoverRadius, 0.0, dist);
 
-          // Mix between monochrome and color based on hover
-          vec3 finalColor = mix(monochrome, texColor.rgb, influence);
+          // Mix in full color on hover
+          vec3 finalColor = mix(baseColor, texColor.rgb * 1.2, hoverInfluence);
+
+          // Red border glow when NOT hovering
+          vec3 viewDirection = normalize(cameraPosition - vWorldPosition);
+          float rimIntensity = 1.0 - max(0.0, dot(viewDirection, vNormal));
+          rimIntensity = pow(rimIntensity, 3.0); // Sharp falloff
+
+          // Red glow color (logo red: #f4a261)
+          vec3 redGlow = vec3(0.957, 0.635, 0.380);
+          
+          // Fade out border glow when hovering
+          float borderGlowStrength = (1.0 - isHovered) * rimIntensity * 0.6;
+          finalColor += redGlow * borderGlowStrength;
 
           gl_FragColor = vec4(finalColor, 1.0);
         }
@@ -73,17 +92,22 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
 
     raycaster.setFromCamera(pointer, camera)
     const intersects = raycaster.intersectObject(meshRef.current)
+    const isHovered = intersects.length > 0
 
-    if (intersects.length > 0) {
+    if (isHovered) {
       const point = intersects[0].point
       const localPoint = meshRef.current.worldToLocal(point.clone())
       shaderMaterial.uniforms.hoverPoint.value.copy(localPoint)
+      shaderMaterial.uniforms.isHovered.value = 1.0
+
       if (!prevHoverRef.current) {
         prevHoverRef.current = true
         if (onHoverChange) onHoverChange(true)
       }
     } else {
       shaderMaterial.uniforms.hoverPoint.value.set(999, 999, 999)
+      shaderMaterial.uniforms.isHovered.value = 0.0
+
       if (prevHoverRef.current) {
         prevHoverRef.current = false
         if (onHoverChange) onHoverChange(false)
@@ -93,7 +117,7 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
 
   return (
     <group>
-      {/* Main Globe */}
+      {/* Main Globe - renders on top */}
       <mesh ref={meshRef} scale={1.224} material={shaderMaterial}>
         <sphereGeometry args={[1, segments, segments]} />
       </mesh>
