@@ -71,12 +71,14 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
     // Smoothly interpolate to target speed (lerp factor 0.05 for gradual transitions)
     currentSpeedRef.current += (targetRotationSpeed - currentSpeedRef.current) * 0.05
 
-    // Stop rotation when scroll progress reaches 0.8 (80% through the scroll)
-    const rotationMultiplier = Math.max(0, 1 - (scrollProgress - 0.8) / 0.2)
+    // Continue rotation regardless of scroll
+    // const rotationMultiplier = Math.max(0, 1 - (scrollProgress - 0.8) / 0.2)
+    const rotationMultiplier = 1.0
     groupRef.current.rotation.y += currentSpeedRef.current * delta * rotationMultiplier
 
-    // Reduce parallax effect when frozen
-    const parallaxMultiplier = rotationMultiplier
+    // Reduce parallax effect when frozen (optional, but user said "keep movements same")
+    // We'll keep parallax active too
+    const parallaxMultiplier = 1.0
     const targetTiltX = mousePosition.y * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
     const targetTiltZ = -mousePosition.x * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
 

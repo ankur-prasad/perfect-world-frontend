@@ -12,6 +12,8 @@ import InfoTogether from './pages/InfoTogether'
 import InfoFashionTool from './pages/InfoFashionTool'
 import ComponentDemo from './pages/ComponentDemo'
 
+import CookieConsent from './components/Layout/CookieConsent'
+
 function App() {
   return (
     <Router>
@@ -29,6 +31,7 @@ function App() {
             <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />
             <Route path="/demo" element={<ComponentDemo />} />
           </Routes>
+          <CookieConsent />
         </NavigationProvider>
       </CartProvider>
     </Router>
