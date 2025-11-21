@@ -11,7 +11,8 @@ import type {
   GraphQLVariantNode
 } from '../types/shopify.types'
 
-const STOREFRONT_API_URL = `https://${SHOPIFY.STORE_DOMAIN}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
+const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
+const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
 
 // Helper function to make Shopify API requests
 async function shopifyFetch<T>(query: string, variables: Record<string, string | number | boolean | object> = {}): Promise<T> {

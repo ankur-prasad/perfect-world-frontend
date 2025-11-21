@@ -3,8 +3,8 @@ import type { Project } from '../types/project.types'
 export const projects: Project[] = [
   {
     id: '1',
-    slug: 'secore-international',
-    name: 'SECORE International',
+    slug: 'endangered-oceans',
+    name: 'Endangered Oceans',
     tagline: 'Restoring Coral Reefs',
     location: {
       lat: 18.0,
@@ -30,8 +30,8 @@ export const projects: Project[] = [
       },
     },
     shopifyCollection: {
-      handle: 'secore-international',
-      title: 'SECORE Collection',
+      handle: 'endangered-oceans',
+      title: 'Endangered Oceans',
     },
     theme: {
       primaryColor: '#0077BE',
@@ -40,8 +40,8 @@ export const projects: Project[] = [
   },
   {
     id: '2',
-    slug: 'care-in-action',
-    name: 'Care in Action',
+    slug: 'one-world',
+    name: 'One World',
     tagline: 'Fighting Poverty in East Africa',
     location: {
       lat: 48.3,
@@ -67,8 +67,8 @@ export const projects: Project[] = [
       },
     },
     shopifyCollection: {
-      handle: 'care-in-action',
-      title: 'Care in Action Collection',
+      handle: 'one-world',
+      title: 'One World',
     },
     theme: {
       primaryColor: '#E74C3C',
@@ -77,7 +77,7 @@ export const projects: Project[] = [
   },
   {
     id: '3',
-    slug: 'mental-health-initiative',
+    slug: 'talk-about-it',
     name: 'Talk About It',
     tagline: 'Breaking Mental Health Stigma',
     location: {
@@ -104,8 +104,8 @@ export const projects: Project[] = [
       },
     },
     shopifyCollection: {
-      handle: 'mental-health-initiative',
-      title: 'Talk About It Collection',
+      handle: 'talk-about-it',
+      title: 'Talk About It',
     },
     theme: {
       primaryColor: '#9B59B6',
@@ -114,8 +114,8 @@ export const projects: Project[] = [
   },
   {
     id: '4',
-    slug: 'plant-for-the-planet',
-    name: 'Plant for the Planet',
+    slug: 'cool-down',
+    name: 'Cool Down',
     tagline: 'Reforesting the Amazon',
     location: {
       lat: -3.4,
@@ -141,51 +141,51 @@ export const projects: Project[] = [
       },
     },
     shopifyCollection: {
-      handle: 'plant-for-the-planet',
-      title: 'Plant for the Planet Collection',
+      handle: 'cool-down',
+      title: 'Cool Down',
     },
     theme: {
       primaryColor: '#27AE60',
       secondaryColor: '#229954',
     },
   },
-  {
-    id: '5',
-    slug: 'elephant-endangerment',
-    name: 'Save the Elephants',
-    tagline: 'Protecting Endangered Wildlife',
-    location: {
-      lat: -8.7,
-      lon: 34.9,
-      label: 'Africa',
-    },
-    mission: {
-      heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
-      problem:
-        'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
-      solution:
-        'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
-      impact: [
-        '5,000+ elephants protected',
-        '50,000 acres of habitat preserved',
-        '100+ poachers arrested',
-      ],
-      partnerCharity: {
-        name: 'Save the Elephants',
-        description: 'Wildlife conservation organization',
-        website: 'https://www.savetheelephants.org',
-        logo: '/assets/LOGOS/elephants_for_africa_logo.png',
-      },
-    },
-    shopifyCollection: {
-      handle: 'elephant-endangerment',
-      title: 'Save the Elephants Collection',
-    },
-    theme: {
-      primaryColor: '#95A5A6',
-      secondaryColor: '#7F8C8D',
-    },
-  },
+  // {
+  //   id: '5',
+  //   slug: 'elephant-endangerment',
+  //   name: 'Save the Elephants',
+  //   tagline: 'Protecting Endangered Wildlife',
+  //   location: {
+  //     lat: -8.7,
+  //     lon: 34.9,
+  //     label: 'Africa',
+  //   },
+  //   mission: {
+  //     heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
+  //     problem:
+  //       'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
+  //     solution:
+  //       'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
+  //     impact: [
+  //       '5,000+ elephants protected',
+  //       '50,000 acres of habitat preserved',
+  //       '100+ poachers arrested',
+  //     ],
+  //     partnerCharity: {
+  //       name: 'Save the Elephants',
+  //       description: 'Wildlife conservation organization',
+  //       website: 'https://www.savetheelephants.org',
+  //       logo: '/assets/LOGOS/elephants_for_africa_logo.png',
+  //     },
+  //   },
+  //   shopifyCollection: {
+  //     handle: 'elephant-endangerment',
+  //     title: 'Save the Elephants Collection',
+  //   },
+  //   theme: {
+  //     primaryColor: '#95A5A6',
+  //     secondaryColor: '#7F8C8D',
+  //   },
+  // },
 ]
 
 export const getProjectBySlug = (slug: string): Project | undefined => {

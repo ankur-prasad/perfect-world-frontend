@@ -31,26 +31,59 @@ export default function Shop() {
       try {
         const allProducts: ShopifyProduct[] = []
 
-        // Fetch products from each collection
-        await Promise.all(
-          projects.map(async (project) => {
-            // try {
-            const collection = await getCollectionProducts(project.shopifyCollection.handle)
-            if (collection && collection.products) {
-              // Tag each product with its collection for filtering
-              const taggedProducts = collection.products.map((product) => ({
-                ...product,
-                collectionHandle: project.shopifyCollection.handle,
-                collectionName: project.name,
-                collectionColor: project.theme.primaryColor,
-              }))
-              allProducts.push(...taggedProducts)
+        // Fetch products from each project collection
+        await Promise.all([
+          ...projects.map(async (project) => {
+            try {
+              const collection = await getCollectionProducts(project.shopifyCollection.handle)
+              if (collection && collection.products) {
+                const taggedProducts = collection.products.map((product) => ({
+                  ...product,
+                  collectionHandle: project.shopifyCollection.handle,
+                  collectionName: project.name,
+                  collectionColor: project.theme.primaryColor,
+                }))
+                allProducts.push(...taggedProducts)
+              }
+            } catch (err) {
+              console.warn(`Failed to fetch products for ${project.name} (${project.shopifyCollection.handle}):`, err)
             }
-            // } catch (err) {
-            //   console.error(`Failed to fetch products for ${project.name}:`, err)
-            // }
-          })
-        )
+          }),
+          // Fetch Embroidered Logo collection
+          (async () => {
+            try {
+              const collection = await getCollectionProducts('embroidered-logo')
+              if (collection && collection.products) {
+                const taggedProducts = collection.products.map((product) => ({
+                  ...product,
+                  collectionHandle: 'embroidered-logo',
+                  collectionName: 'Embroidered Logo',
+                  collectionColor: '#FFFFFF', // White for neutral
+                }))
+                allProducts.push(...taggedProducts)
+              }
+            } catch (err) {
+              console.warn('Failed to fetch Embroidered Logo collection:', err)
+            }
+          })(),
+          // Fetch Color Collection
+          (async () => {
+            try {
+              const collection = await getCollectionProducts('color-collection')
+              if (collection && collection.products) {
+                const taggedProducts = collection.products.map((product) => ({
+                  ...product,
+                  collectionHandle: 'color-collection',
+                  collectionName: 'Color Collection',
+                  collectionColor: '#FFFFFF', // White for neutral
+                }))
+                allProducts.push(...taggedProducts)
+              }
+            } catch (err) {
+              console.warn('Failed to fetch Color Collection:', err)
+            }
+          })()
+        ])
 
         setProducts(allProducts)
       } catch (err) {
@@ -193,6 +226,8 @@ export default function Shop() {
                       {project.name}
                     </option>
                   ))}
+                  <option value="embroidered-logo">Embroidered Logo</option>
+                  <option value="color-collection">Color Collection</option>
                 </select>
 
                 {/* Price Range */}
