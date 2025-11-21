@@ -84,7 +84,7 @@ export default function ProductDetail() {
             <h1 className="text-4xl font-bold text-white mb-4">{error || 'Product Not Found'}</h1>
             <button
               onClick={() => navigate('/shop')}
-              className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
             >
               Back to Shop
             </button>
@@ -195,11 +195,10 @@ export default function ProductDetail() {
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
-                      className={`aspect-square rounded-lg overflow-hidden transition-all ${
-                        selectedImageIndex === index
+                      className={`aspect-square rounded-lg overflow-hidden transition-all ${selectedImageIndex === index
                           ? 'ring-4 ring-white'
                           : 'opacity-60 hover:opacity-100'
-                      }`}
+                        }`}
                     >
                       <img
                         src={image.url}
@@ -242,13 +241,12 @@ export default function ProductDetail() {
                         key={variant.id}
                         onClick={() => setSelectedVariantIndex(index)}
                         disabled={!variant.availableForSale}
-                        className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                          selectedVariantIndex === index
+                        className={`px-6 py-3 rounded-full font-semibold transition-all ${selectedVariantIndex === index
                             ? 'bg-white text-black'
                             : variant.availableForSale
-                            ? 'bg-white/10 text-white hover:bg-white/20'
-                            : 'bg-gray-800 text-gray-600 cursor-not-allowed line-through'
-                        }`}
+                              ? 'bg-white/10 text-white hover:bg-white/20'
+                              : 'bg-gray-800 text-gray-600 cursor-not-allowed line-through'
+                          }`}
                       >
                         {variant.title}
                       </button>
@@ -263,14 +261,14 @@ export default function ProductDetail() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
+                    className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
                   >
                     −
                   </button>
                   <span className="text-2xl font-bold text-white w-16 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
+                    className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
                   >
                     +
                   </button>
@@ -282,11 +280,10 @@ export default function ProductDetail() {
                 <button
                   onClick={handleAddToCart}
                   disabled={!isAvailable || isAdding}
-                  className={`w-full py-5 rounded-2xl font-bold text-xl transition-all ${
-                    isAvailable && !isAdding
+                  className={`w-full py-5 rounded-full font-bold text-xl transition-all ${isAvailable && !isAdding
                       ? 'bg-white text-black hover:bg-gray-200'
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                  }`}
+                    }`}
                 >
                   {isAdding ? (
                     <span className="flex items-center justify-center gap-3">
@@ -317,7 +314,7 @@ export default function ProductDetail() {
 
                 <button
                   onClick={handleShare}
-                  className="w-full py-5 rounded-2xl font-bold text-xl bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center gap-3"
+                  className="w-full py-5 rounded-full font-bold text-xl bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center gap-3"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path

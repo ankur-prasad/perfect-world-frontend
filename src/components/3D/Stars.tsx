@@ -62,9 +62,9 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
   }, [positions, starCount])
 
   // Animate trails based on collections scroll progress
-  // Only show trails after rotation has stopped (scrollProgress >= 0.8)
+  // Show trails earlier, as soon as camera starts tilting down (scrollProgress >= 0.3)
   useFrame(() => {
-    if (trailsRef.current && collectionsScrollProgress > 0 && scrollProgress >= 0.8) {
+    if (trailsRef.current && collectionsScrollProgress > 0 && scrollProgress >= 0.3) {
       const positionAttr = trailsRef.current.geometry.attributes.position as THREE.BufferAttribute
 
       // Length multiplier - controls how long the trails get
@@ -142,14 +142,20 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
         />
       </points>
 
-      {/* Star trails - only visible when rotation has stopped and collections scroll is active */}
-      {collectionsScrollProgress > 0 && scrollProgress >= 0.8 && (
+      {/* Star trails - only visible when camera is tilted and collections scroll is active */}
+      {collectionsScrollProgress > 0 && scrollProgress >= 0.3 && (
         <lineSegments ref={trailsRef} geometry={trailGeometry}>
           <lineBasicMaterial
             color="#ffffff"
             transparent
-            opacity={Math.min(1, collectionsScrollProgress * 1.5)} // Fade in to full opacity
-            linewidth={1} // Note: linewidth only works in some renderers/browsers, usually 1px
+            // Fade in at start (0 to 0.2), stay visible, then fade out as background turns white (0.6 to 0.9)
+            // Background starts turning white at 0.4 and is fully white at 0.9
+            opacity={
+              collectionsScrollProgress < 0.6
+                ? Math.min(1, collectionsScrollProgress * 5) // Quick fade in
+                : Math.max(0, 1 - (collectionsScrollProgress - 0.6) * 3.33) // Fade out before 0.9
+            }
+            linewidth={1}
           />
         </lineSegments>
       )}

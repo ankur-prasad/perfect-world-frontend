@@ -22,11 +22,11 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   const { camera } = useThree()
 
   useFrame(() => {
-    // Map scrollProgress to tilt: 0-0.15 = no tilt, 0.15-0.5 = full tilt
-    // This makes full downward tilt happen much faster (at 50% instead of 100%)
+    // Map scrollProgress to tilt: 0-0.1 = no tilt, 0.1-0.3 = full tilt
+    // This makes full downward tilt happen much faster (at 30% instead of 50%)
     let tiltProgress = 0
-    if (scrollProgress > 0.15) {
-      tiltProgress = Math.min((scrollProgress - 0.15) / 0.35, 1) // Normalize 0.15-0.5 range to 0-1
+    if (scrollProgress > 0.1) {
+      tiltProgress = Math.min((scrollProgress - 0.1) / 0.2, 1) // Normalize 0.1-0.3 range to 0-1
     }
 
     const targetRotationX = tiltProgress * -1.2 // 0 to -69 degrees
@@ -58,10 +58,10 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
     const mouseX = pointer.x
 
     // Base rotation speed (radians per second)
-    // Set to 0.1 for very gentle rotation
+    // Increased by another 15% (0.115 * 1.15 = ~0.132)
     // Positive mouseX (right) -> negative rotation (clockwise)
     // Negative mouseX (left) -> positive rotation (counter-clockwise)
-    let targetRotationSpeed = -mouseX * 0.1
+    let targetRotationSpeed = -mouseX * 0.132
 
     // Slow down when hovering over globe (changed from 0.1 to 0.3 for less dramatic change)
     if (isGlobeHovered) {

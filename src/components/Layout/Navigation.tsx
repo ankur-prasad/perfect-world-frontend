@@ -7,7 +7,11 @@ import { useNavigation } from '../../contexts/NavigationContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Navigation() {
+interface NavigationProps {
+  isDarkContent?: boolean
+}
+
+export default function Navigation({ isDarkContent = false }: NavigationProps) {
   const { isMenuOpen, toggleMenu } = useNavigation()
   const aboutUsRef = useRef<HTMLDivElement>(null)
   const shopRef = useRef<HTMLDivElement>(null)
@@ -49,8 +53,8 @@ export default function Navigation() {
       gsap.fromTo([aboutUsRef.current?.querySelector('a'), transparencyRef.current?.querySelector('a')],
         {
           fontSize: '1.125rem', // Start: text-lg
-          paddingLeft: '1.5rem', // Start: px-6
-          paddingRight: '1.5rem',
+          paddingLeft: '2rem', // Start: px-8
+          paddingRight: '2rem',
           paddingTop: '0.75rem', // Start: py-3
           paddingBottom: '0.75rem',
         },
@@ -62,8 +66,8 @@ export default function Navigation() {
             scrub: 1,
           },
           fontSize: '1rem', // End: text-base
-          paddingLeft: '1rem', // End: px-4
-          paddingRight: '1rem',
+          paddingLeft: '1.5rem', // End: px-6
+          paddingRight: '1.5rem',
           paddingTop: '0.5rem', // End: py-2
           paddingBottom: '0.5rem',
           ease: 'power2.out',
@@ -109,9 +113,9 @@ export default function Navigation() {
         <Link to="/">
           <img
             ref={logoRef}
-            src="/assets/LOGOS/perfect-world-logo-white.png"
+            src={isDarkContent ? "/assets/LOGOS/perfect-world-logo-black.png" : "/assets/LOGOS/perfect-world-logo-white.png"}
             alt="Perfect World"
-            className="h-20 w-auto"
+            className="h-20 w-auto transition-all duration-300"
           />
         </Link>
       </motion.div>
@@ -127,7 +131,10 @@ export default function Navigation() {
       >
         <button
           onClick={toggleMenu}
-          className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors"
+          className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors text-lg font-medium ${isDarkContent
+              ? 'bg-black/5 text-black hover:bg-black/10'
+              : 'bg-white/5 text-white hover:bg-white/10'
+            }`}
         >
           Menu
         </button>
@@ -153,7 +160,10 @@ export default function Navigation() {
       >
         <Link
           to="/about"
-          className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors inline-block text-lg font-medium"
+          className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors inline-block text-lg font-medium ${isDarkContent
+              ? 'bg-black/10 text-black hover:bg-black/20'
+              : 'bg-white/10 text-white hover:bg-white/20'
+            }`}
         >
           Learn More
         </Link>
@@ -170,7 +180,10 @@ export default function Navigation() {
       >
         <Link
           to="/shop"
-          className="px-6 py-3 rounded-full bg-white text-black hover:bg-gray-200 transition-colors inline-block text-lg font-semibold"
+          className={`px-8 py-3 rounded-full transition-colors inline-block text-lg font-semibold ${isDarkContent
+              ? 'bg-black text-white hover:bg-gray-800'
+              : 'bg-white text-black hover:bg-gray-200'
+            }`}
         >
           Make a Difference
         </Link>

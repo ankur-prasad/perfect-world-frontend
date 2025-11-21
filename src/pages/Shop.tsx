@@ -283,7 +283,7 @@ export default function Shop() {
                 {activeFiltersCount > 0 && (
                   <button
                     onClick={handleClearFilters}
-                    className="px-6 py-3 bg-red-500/20 text-red-300 border border-red-500/30 rounded-xl hover:bg-red-500/30 transition-colors"
+                    className="px-6 py-3 bg-red-500/20 text-red-300 border border-red-500/30 rounded-full hover:bg-red-500/30 transition-colors"
                   >
                     Clear All ({activeFiltersCount})
                   </button>
@@ -318,7 +318,7 @@ export default function Shop() {
                 <p className="text-gray-400 mb-6">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
-                  className="px-6 py-3 bg-white text-black rounded-xl hover:bg-gray-200 transition-colors font-semibold"
+                  className="px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
                 >
                   Try Again
                 </button>

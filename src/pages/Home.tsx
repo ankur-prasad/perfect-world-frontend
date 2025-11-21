@@ -71,7 +71,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen transition-colors duration-100 ease-out" style={{ backgroundColor }}>
-      <Navigation />
+      <Navigation isDarkContent={bgLightness > 50} />
 
       {/* Fixed 3D Scene - spans both hero and collections */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
@@ -92,7 +92,8 @@ export default function Home() {
       </div>
 
       {/* Monochrome overlay to apply film-like desaturate / grain / vignette */}
-      <MonochromeOverlay reduced={globeHover} />
+      {/* Smoothly fade out overlay as background turns white (bgLightness 0 -> 100 means opacity 1 -> 0) */}
+      <MonochromeOverlay reduced={globeHover} opacity={1 - (bgLightness / 100)} />
 
       {/* Extended Hero Section with 3D Globe and Stars - 1.5 screens tall */}
       <section ref={heroRef} className="relative -z-10" style={{ height: '150vh' }}>
@@ -143,6 +144,8 @@ export default function Home() {
       <section className="relative -z-10" style={{ height: '75vh' }}>
         {/* Stars with trails are visible here via the fixed 3D scene */}
       </section>
+
+
 
       {/* Collections Section with Glowing Cards */}
       <section ref={collectionsRef} className="relative min-h-screen py-32 pb-32 bg-transparent z-10">
@@ -232,7 +235,7 @@ export default function Home() {
                           e.stopPropagation();
                           handleSatelliteClick(project.slug);
                         }}
-                        className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-gray-900 font-medium hover:bg-gray-50 transition-colors text-sm"
+                        className="flex-1 px-8 py-3 rounded-full border border-gray-200 text-gray-900 font-medium hover:bg-gray-50 transition-colors text-lg"
                       >
                         Learn More
                       </button>
@@ -241,7 +244,7 @@ export default function Home() {
                           e.stopPropagation();
                           navigate('/shop');
                         }}
-                        className="flex-1 px-4 py-3 rounded-xl bg-black text-white font-medium hover:bg-gray-800 transition-colors text-sm shadow-md hover:shadow-lg"
+                        className="flex-1 px-8 py-3 rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors text-lg shadow-md hover:shadow-lg"
                       >
                         Shop Collection
                       </button>
