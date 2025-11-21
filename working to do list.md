@@ -24,4 +24,4 @@ add another tile for our collections as support all which is just the embriodere
 
 - swap our collection and info slides so they can learn as they scroll
 - hand written font and bolder like archivo black or helvetica new bold
-- theme of black 45 /white 45/red 10
+- theme of black 45 /white 45/red 10 
