@@ -59,9 +59,9 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
 
     // Base rotation speed (radians per second)
     // Increased by another 15% (0.115 * 1.15 = ~0.132)
-    // Positive mouseX (right) -> negative rotation (clockwise)
-    // Negative mouseX (left) -> positive rotation (counter-clockwise)
-    let targetRotationSpeed = -mouseX * 0.132
+    // Positive mouseX (right) -> positive rotation (counter-clockwise)
+    // Negative mouseX (left) -> negative rotation (clockwise)
+    let targetRotationSpeed = mouseX * 0.3
 
     // Slow down when hovering over globe (changed from 0.1 to 0.3 for less dramatic change)
     if (isGlobeHovered) {

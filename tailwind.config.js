@@ -16,8 +16,10 @@ export default {
         success: '#2ecc71',
       },
       fontFamily: {
-        primary: ['Inter', 'sans-serif'],
-        secondary: ['Inter', 'sans-serif'],
+        primary: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
+        secondary: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
+        handwritten: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
+        sans: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
       },
       fontSize: {
         'hero': ['4rem', { lineHeight: '1.1', fontWeight: '700' }],

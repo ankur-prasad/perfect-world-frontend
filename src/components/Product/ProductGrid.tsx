@@ -6,14 +6,15 @@ interface ProductGridProps {
   loading?: boolean
   onQuickView?: (product: ShopifyProduct) => void
   themeColor?: string
+  isLightMode?: boolean
 }
 
-export default function ProductGrid({ products, loading, onQuickView, themeColor }: ProductGridProps) {
+export default function ProductGrid({ products, loading, onQuickView, themeColor, isLightMode = false }: ProductGridProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {[...Array(6)].map((_, i) => (
-          <ProductSkeletonCard key={i} />
+          <ProductSkeletonCard key={i} isLightMode={isLightMode} />
         ))}
       </div>
     )
@@ -22,9 +23,10 @@ export default function ProductGrid({ products, loading, onQuickView, themeColor
   if (!products || products.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/5 mb-6">
+        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${isLightMode ? 'bg-gray-100' : 'bg-white/5'
+          }`}>
           <svg
-            className="w-10 h-10 text-gray-400"
+            className={`w-10 h-10 ${isLightMode ? 'text-gray-400' : 'text-gray-400'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,8 +39,10 @@ export default function ProductGrid({ products, loading, onQuickView, themeColor
             />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-white mb-2">No Products Found</h3>
-        <p className="text-gray-400 max-w-md mx-auto">
+        <h3 className={`text-2xl font-bold mb-2 ${isLightMode ? 'text-gray-900' : 'text-white'}`}>
+          No Products Found
+        </h3>
+        <p className={`max-w-md mx-auto ${isLightMode ? 'text-gray-500' : 'text-gray-400'}`}>
           We couldn't find any products matching your criteria. Try adjusting your filters or search terms.
         </p>
       </div>
@@ -53,25 +57,26 @@ export default function ProductGrid({ products, loading, onQuickView, themeColor
           product={product}
           onQuickView={onQuickView}
           themeColor={themeColor}
+          isLightMode={isLightMode}
         />
       ))}
     </div>
   )
 }
 
-function ProductSkeletonCard() {
+function ProductSkeletonCard({ isLightMode = false }: { isLightMode?: boolean }) {
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden animate-pulse">
+    <div className={`${isLightMode ? 'bg-white border border-gray-100' : 'bg-white/5 backdrop-blur-sm'} rounded-2xl overflow-hidden animate-pulse`}>
       {/* Image skeleton */}
-      <div className="aspect-[3/4] bg-gray-700" />
+      <div className={`aspect-[3/4] ${isLightMode ? 'bg-gray-200' : 'bg-gray-700'}`} />
 
       {/* Content skeleton */}
       <div className="p-6">
-        <div className="h-6 bg-gray-700 rounded mb-2 w-3/4" />
-        <div className="h-4 bg-gray-700 rounded mb-4 w-full" />
+        <div className={`h-6 rounded mb-2 w-3/4 ${isLightMode ? 'bg-gray-200' : 'bg-gray-700'}`} />
+        <div className={`h-4 rounded mb-4 w-full ${isLightMode ? 'bg-gray-200' : 'bg-gray-700'}`} />
         <div className="flex items-center justify-between">
-          <div className="h-6 bg-gray-700 rounded w-20" />
-          <div className="h-10 bg-gray-700 rounded w-28" />
+          <div className={`h-6 rounded w-20 ${isLightMode ? 'bg-gray-200' : 'bg-gray-700'}`} />
+          <div className={`h-10 rounded w-28 ${isLightMode ? 'bg-gray-200' : 'bg-gray-700'}`} />
         </div>
       </div>
     </div>

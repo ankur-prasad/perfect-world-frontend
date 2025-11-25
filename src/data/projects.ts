@@ -127,14 +127,14 @@ export const projects: Project[] = [
       problem:
         'Deforestation in the Amazon threatens biodiversity and accelerates climate change, with millions of trees lost each year.',
       solution:
-        'Plant for the Planet mobilizes global citizens to plant trees, restore ecosystems, and fight climate change through reforestation.',
+        'Plant-For-The-Planet mobilizes global citizens to plant trees, restore ecosystems, and fight climate change through reforestation.',
       impact: [
         '15 billion trees pledged',
         '100+ countries participating',
         '1 million climate ambassadors trained',
       ],
       partnerCharity: {
-        name: 'Plant for the Planet',
+        name: 'Plant-For-The-Planet',
         description: 'Global reforestation initiative',
         website: 'https://www.plant-for-the-planet.org',
         logo: '/assets/LOGOS/plant_for_the_planet_logo.png',
@@ -149,43 +149,43 @@ export const projects: Project[] = [
       secondaryColor: '#229954',
     },
   },
-  // {
-  //   id: '5',
-  //   slug: 'elephant-endangerment',
-  //   name: 'Save the Elephants',
-  //   tagline: 'Protecting Endangered Wildlife',
-  //   location: {
-  //     lat: -8.7,
-  //     lon: 34.9,
-  //     label: 'Africa',
-  //   },
-  //   mission: {
-  //     heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
-  //     problem:
-  //       'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
-  //     solution:
-  //       'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
-  //     impact: [
-  //       '5,000+ elephants protected',
-  //       '50,000 acres of habitat preserved',
-  //       '100+ poachers arrested',
-  //     ],
-  //     partnerCharity: {
-  //       name: 'Save the Elephants',
-  //       description: 'Wildlife conservation organization',
-  //       website: 'https://www.savetheelephants.org',
-  //       logo: '/assets/LOGOS/elephants_for_africa_logo.png',
-  //     },
-  //   },
-  //   shopifyCollection: {
-  //     handle: 'elephant-endangerment',
-  //     title: 'Save the Elephants Collection',
-  //   },
-  //   theme: {
-  //     primaryColor: '#95A5A6',
-  //     secondaryColor: '#7F8C8D',
-  //   },
-  // },
+  {
+    id: '5',
+    slug: 'wild-at-heart',
+    name: 'Wild at Heart',
+    tagline: 'Protecting Endangered Elephants',
+    location: {
+      lat: -8.7,
+      lon: 34.9,
+      label: 'Africa',
+    },
+    mission: {
+      heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
+      problem:
+        'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
+      solution:
+        'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
+      impact: [
+        '5,000+ elephants protected',
+        '50,000 acres of habitat preserved',
+        '100+ poachers arrested',
+      ],
+      partnerCharity: {
+        name: 'Save the Elephants',
+        description: 'Wildlife conservation organization',
+        website: 'https://www.savetheelephants.org',
+        logo: '/assets/LOGOS/elephants_for_africa_logo.png',
+      },
+    },
+    shopifyCollection: {
+      handle: 'wild-at-heart',
+      title: 'Wild at Heart Collection',
+    },
+    theme: {
+      primaryColor: '#95A5A6',
+      secondaryColor: '#7F8C8D',
+    },
+  },
 ]
 
 export const getProjectBySlug = (slug: string): Project | undefined => {

@@ -10,6 +10,7 @@ import MonochromeOverlay from '../components/ui/MonochromeOverlay'
 import { useNavigation } from '../contexts/NavigationContext'
 import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
+import MainVideo from '../components/Home/MainVideo'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -103,13 +104,13 @@ export default function Home() {
       {/* Tagline - Right above arrow - Fixed position so it's on top of everything */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          className="fixed bottom-40 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
         >
-          <p className="text-xl md:text-2xl lg:text-3xl text-white" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', fontWeight: 300 }}>
+          <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light">
             Together. Not Alone.
           </p>
         </motion.div>
@@ -118,12 +119,13 @@ export default function Home() {
       {/* Scroll Indicator */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-12 left-1/2 -translate-x-1/2 z-20"
+          className="fixed bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
           initial={{ opacity: 1 }}
           animate={{ y: [0, 10, 0], opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2, repeat: Infinity }}
         >
+          <span className="text-white/80 text-sm tracking-widest uppercase font-light">Scroll to learn more</span>
           <svg
             className="w-6 h-6 text-white opacity-50"
             fill="none"
@@ -159,7 +161,7 @@ export default function Home() {
             Our Collections
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {[
               {
                 name: 'SECORE International',
@@ -183,18 +185,25 @@ export default function Home() {
                 color: '#9B59B6'
               },
               {
-                name: 'Plant for the Planet',
+                name: 'Plant-For-The-Planet',
                 slug: 'plant-for-the-planet',
                 description: 'Fighting climate change through reforestation',
                 image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2560&auto=format&fit=crop',
                 color: '#27AE60'
               },
               {
-                name: 'Save the Elephants',
-                slug: 'elephant-endangerment',
+                name: 'Wild at Heart',
+                slug: 'wild-at-heart',
                 description: 'Protecting endangered elephant populations',
                 image: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
                 color: '#95A5A6'
+              },
+              {
+                name: 'Support All',
+                slug: 'support-all',
+                description: 'Support all our initiatives with the Embroidered Collection',
+                image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2560&auto=format&fit=crop',
+                color: '#ffffff'
               },
             ].map((project, index) => (
               <motion.div
@@ -257,6 +266,7 @@ export default function Home() {
         </div>
       </section>
 
+      <MainVideo />
       <ImpactSlides />
       <FAQ />
       <Footer />

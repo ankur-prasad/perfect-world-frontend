@@ -132,8 +132,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         <button
           onClick={toggleMenu}
           className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors text-lg font-medium ${isDarkContent
-              ? 'bg-black/5 text-black hover:bg-black/10'
-              : 'bg-white/5 text-white hover:bg-white/10'
+            ? 'bg-black/5 text-black hover:bg-black/10'
+            : 'bg-white/5 text-white hover:bg-white/10'
             }`}
         >
           Menu
@@ -159,10 +159,10 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
       >
         <Link
-          to="/about"
+          to="/projects"
           className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors inline-block text-lg font-medium ${isDarkContent
-              ? 'bg-black/10 text-black hover:bg-black/20'
-              : 'bg-white/10 text-white hover:bg-white/20'
+            ? 'bg-black/10 text-black hover:bg-black/20'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           Learn More
@@ -181,8 +181,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         <Link
           to="/shop"
           className={`px-8 py-3 rounded-full transition-colors inline-block text-lg font-semibold ${isDarkContent
-              ? 'bg-black text-white hover:bg-gray-800'
-              : 'bg-white text-black hover:bg-gray-200'
+            ? 'bg-black text-white hover:bg-gray-800'
+            : 'bg-white text-black hover:bg-gray-200'
             }`}
         >
           Make a Difference
@@ -218,6 +218,20 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
               className="text-4xl font-bold text-white hover:text-gray-300 transition-colors"
             >
               Home
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }}
+            transition={{ delay: 0.15 }}
+          >
+            <Link
+              to="/projects"
+              onClick={toggleMenu}
+              className="text-4xl font-bold text-white hover:text-gray-300 transition-colors"
+            >
+              Projects
             </Link>
           </motion.div>
 

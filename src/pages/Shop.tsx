@@ -168,9 +168,9 @@ export default function Shop() {
   ].filter(Boolean).length
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-white">
       <Header />
-      <Navigation />
+      <Navigation isDarkContent={true} />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-7xl">
@@ -179,10 +179,10 @@ export default function Shop() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center font-primary">
               Shop All Products
             </h1>
-            <p className="text-xl text-gray-300 text-center mb-12">
+            <p className="text-xl text-gray-600 text-center mb-12">
               Every purchase supports a charitable cause
             </p>
 
@@ -195,7 +195,7 @@ export default function Shop() {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 pl-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                  className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
                 />
                 <svg
                   className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -218,7 +218,7 @@ export default function Shop() {
                 <select
                   value={selectedCollection}
                   onChange={(e) => setSelectedCollection(e.target.value)}
-                  className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/30 cursor-pointer"
+                  className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
                 >
                   <option value="all">All Collections</option>
                   {projects.map((project) => (
@@ -231,8 +231,8 @@ export default function Shop() {
                 </select>
 
                 {/* Price Range */}
-                <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
-                  <span className="text-white text-sm">Price:</span>
+                <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl">
+                  <span className="text-gray-700 text-sm">Price:</span>
                   <input
                     type="number"
                     min="0"
@@ -241,7 +241,7 @@ export default function Shop() {
                     onChange={(e) =>
                       setSelectedPriceRange([parseInt(e.target.value), selectedPriceRange[1]])
                     }
-                    className="w-20 px-2 py-1 bg-white/10 text-white rounded text-sm focus:outline-none"
+                    className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
                   />
                   <span className="text-gray-400">-</span>
                   <input
@@ -252,26 +252,26 @@ export default function Shop() {
                     onChange={(e) =>
                       setSelectedPriceRange([selectedPriceRange[0], parseInt(e.target.value)])
                     }
-                    className="w-20 px-2 py-1 bg-white/10 text-white rounded text-sm focus:outline-none"
+                    className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
                   />
                 </div>
 
                 {/* Availability */}
-                <label className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl cursor-pointer hover:bg-white/15 transition-colors">
+                <label className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
                   <input
                     type="checkbox"
                     checked={showAvailableOnly}
                     onChange={(e) => setShowAvailableOnly(e.target.checked)}
-                    className="w-5 h-5 rounded"
+                    className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
                   />
-                  <span className="text-white text-sm">In Stock Only</span>
+                  <span className="text-gray-700 text-sm">In Stock Only</span>
                 </label>
 
                 {/* Sort */}
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/30 cursor-pointer"
+                  className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
                 >
                   <option value="featured">Sort: Featured</option>
                   <option value="price-low">Price: Low to High</option>
@@ -331,6 +331,7 @@ export default function Shop() {
                 products={filteredAndSortedProducts}
                 loading={loading}
                 onQuickView={setQuickViewProduct}
+                isLightMode={true}
               />
             )}
           </motion.div>

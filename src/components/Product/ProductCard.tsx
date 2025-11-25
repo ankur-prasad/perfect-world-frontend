@@ -7,9 +7,10 @@ interface ProductCardProps {
   product: ShopifyProduct
   onQuickView?: (product: ShopifyProduct) => void
   themeColor?: string
+  isLightMode?: boolean
 }
 
-export default function ProductCard({ product, onQuickView, themeColor = '#3498DB' }: ProductCardProps) {
+export default function ProductCard({ product, onQuickView, themeColor = '#3498DB', isLightMode = false }: ProductCardProps) {
   const { addToCart } = useCart()
   const [isAdding, setIsAdding] = useState(false)
 
@@ -57,7 +58,10 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
   return (
     <motion.div
-      className="group relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden cursor-pointer hover:bg-white/10 transition-all duration-300"
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${isLightMode
+          ? 'bg-white border border-gray-100 shadow-sm hover:shadow-md'
+          : 'bg-white/5 backdrop-blur-sm hover:bg-white/10'
+        }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
@@ -100,27 +104,33 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
       {/* Product Info */}
       <div className="p-6">
-        <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-gray-200 transition-colors">
+        <h3 className={`text-lg font-bold mb-2 line-clamp-2 transition-colors ${isLightMode ? 'text-gray-900 group-hover:text-blue-600' : 'text-white group-hover:text-gray-200'
+          }`}>
           {product.title}
         </h3>
 
         {product.description && (
-          <p className="text-sm text-gray-400 mb-4 line-clamp-2">
+          <p className={`text-sm mb-4 line-clamp-2 ${isLightMode ? 'text-gray-600' : 'text-gray-400'
+            }`}>
             {product.description.replace(/<[^>]*>/g, '')}
           </p>
         )}
 
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-white">{formattedPrice}</span>
+          <span className={`text-xl font-bold ${isLightMode ? 'text-gray-900' : 'text-white'
+            }`}>
+            {formattedPrice}
+          </span>
 
           <button
             onClick={handleAddToCart}
             disabled={!isAvailable || isAdding}
-            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${
-              isAvailable && !isAdding
-                ? 'bg-white text-black hover:bg-gray-200'
+            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${isAvailable && !isAdding
+                ? isLightMode
+                  ? 'bg-black text-white hover:bg-gray-800'
+                  : 'bg-white text-black hover:bg-gray-200'
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            }`}
+              }`}
           >
             {isAdding ? (
               <span className="flex items-center gap-2">
