@@ -13,7 +13,7 @@ export default function ProjectSelection() {
                 <h1 className="text-5xl md:text-7xl font-bold text-center mb-20 font-primary">Our Projects</h1>
 
                 <div className="space-y-20">
-                    {projects.map((project, index) => (
+                    {projects.map((project) => (
                         <motion.div
                             key={project.id}
                             initial={{ opacity: 0, y: 50 }}
