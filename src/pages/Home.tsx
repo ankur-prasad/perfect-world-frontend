@@ -25,35 +25,44 @@ export default function Home() {
   const [globeHover, setGlobeHover] = useState(false)
 
   useEffect(() => {
+    let ticking = false
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
-      const heroHeight = window.innerHeight * 1.5 // Reduced from 300vh to 150vh
-      const transitionHeight = window.innerHeight * 0.75 // Reduced from 150vh to 75vh
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 100)
+          const heroHeight = window.innerHeight * 1.5 // Reduced from 300vh to 150vh
+          const transitionHeight = window.innerHeight * 0.75 // Reduced from 150vh to 75vh
 
-      // Calculate scroll progress through the hero section (0 to 1)
-      const progress = Math.min(window.scrollY / heroHeight, 1)
-      setScrollProgress(progress)
+          // Calculate scroll progress through the hero section (0 to 1)
+          const progress = Math.min(window.scrollY / heroHeight, 1)
+          setScrollProgress(progress)
 
-      // Hide text when camera starts tilting down (at 15% scroll progress)
-      setShowHeroText(progress < 0.15)
+          // Hide text when camera starts tilting down (at 15% scroll progress)
+          setShowHeroText(progress < 0.15)
 
-      // Calculate star trail progress during transition section
-      // Start trails earlier (at 80% of hero height) to overlap with globe movement
-      const transitionStart = heroHeight * 0.8
-      // End transition slightly before the physical section ends to ensure full white background
-      const transitionEnd = (heroHeight + transitionHeight) - 100
+          // Calculate star trail progress during transition section
+          // Start trails when camera starts panning (at 30% of hero height)
+          const transitionStart = heroHeight * 0.3
+          // End transition slightly before the physical section ends to ensure full white background
+          const transitionEnd = (heroHeight + transitionHeight) - 100
 
-      if (window.scrollY >= transitionStart && window.scrollY <= transitionEnd) {
-        const transitionProgress = (window.scrollY - transitionStart) / (transitionEnd - transitionStart)
-        setCollectionsScrollProgress(transitionProgress)
-      } else if (window.scrollY > transitionEnd) {
-        setCollectionsScrollProgress(1)
-      } else {
-        setCollectionsScrollProgress(0)
+          if (window.scrollY >= transitionStart && window.scrollY <= transitionEnd) {
+            const transitionProgress = (window.scrollY - transitionStart) / (transitionEnd - transitionStart)
+            setCollectionsScrollProgress(transitionProgress)
+          } else if (window.scrollY > transitionEnd) {
+            setCollectionsScrollProgress(1)
+          } else {
+            setCollectionsScrollProgress(0)
+          }
+
+          ticking = false
+        })
+        ticking = true
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [setIsScrolled])
 

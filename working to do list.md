@@ -35,3 +35,19 @@
 - [x] Shop white background, and change layout of shop
 - [x] Checkout page
 - [x] Payment pages
+
+
+new comments
+colors for the designs
+star trails start earlier so they build longer and transition looks smoother
+location pin make white and text black
+mkae the pins color same as the name tag
+change the viewing of the products of tiles
+sustainbiilty statment on shop page
+go through the 
+
+issue charity how to help
+fill in text from site
+
+
+buttons gigger in hero

@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useFBO } from '@react-three/drei'
 import * as THREE from 'three'
@@ -19,7 +19,10 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
   // Load Earth texture only
   const colorMap = useMemo(() => {
     const textureLoader = new THREE.TextureLoader()
-    return textureLoader.load('/assets/textures/earth.jpg')
+    const texture = textureLoader.load('/assets/textures/earth.jpg')
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+    return texture
   }, [])
 
   // --- Ping-Pong Buffers for Fluid Simulation ---
@@ -32,6 +35,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     type: THREE.UnsignedByteType, // Standard type for compatibility
     depthBuffer: false,
     stencilBuffer: false,
+    wrapS: THREE.RepeatWrapping,
+    wrapT: THREE.RepeatWrapping,
   })
 
   const renderTargetB = useFBO(1024, 512, {
@@ -41,6 +46,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     type: THREE.UnsignedByteType,
     depthBuffer: false,
     stencilBuffer: false,
+    wrapS: THREE.RepeatWrapping,
+    wrapT: THREE.RepeatWrapping,
   })
 
   // Refs to keep track of ping-pong state
@@ -53,6 +60,14 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       this.write = temp
     }
   })
+
+  // Ensure wrapping is applied (sometimes useFBO options are not enough for internal texture)
+  useEffect(() => {
+    renderTargetA.texture.wrapS = THREE.RepeatWrapping
+    renderTargetA.texture.wrapT = THREE.RepeatWrapping
+    renderTargetB.texture.wrapS = THREE.RepeatWrapping
+    renderTargetB.texture.wrapT = THREE.RepeatWrapping
+  }, [renderTargetA, renderTargetB])
 
   // --- Scenes ---
   const { maskScene, maskCamera, brushMesh, simScene, simMesh } = useMemo(() => {
@@ -127,6 +142,7 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       depthWrite: false,
     })
     const mesh = new THREE.Mesh(geometry, material)
+    mesh.frustumCulled = false // Prevent culling when wrapping around edges
     scene.add(mesh)
 
     // 2. Simulation Scene (Advection)

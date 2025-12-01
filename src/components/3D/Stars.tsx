@@ -6,10 +6,9 @@ import { isMobile } from '../../utils/animations'
 
 interface StarsProps {
   collectionsScrollProgress?: number
-  scrollProgress?: number
 }
 
-export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 0 }: StarsProps) {
+export default function Stars({ collectionsScrollProgress = 0 }: StarsProps) {
   const starsRef = useRef<THREE.Points>(null)
   const trailsRef = useRef<THREE.LineSegments>(null)
   const mobile = isMobile()
@@ -62,13 +61,13 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
   }, [positions, starCount])
 
   // Animate trails based on collections scroll progress
-  // Show trails earlier, as soon as camera starts tilting down (scrollProgress >= 0.3)
+  // Start trails immediately when collections scroll begins
   useFrame(() => {
-    if (trailsRef.current && collectionsScrollProgress > 0 && scrollProgress >= 0.3) {
+    if (trailsRef.current && collectionsScrollProgress > 0) {
       const positionAttr = trailsRef.current.geometry.attributes.position as THREE.BufferAttribute
 
-      // Length multiplier - controls how long the trails get
-      const lengthMultiplier = 300.0
+      // Length multiplier - controls how long the trails get (reduced for slower growth)
+      const lengthMultiplier = 120.0
 
       for (let i = 0; i < starCount; i++) {
         // Update the end point (Point 2) of each segment
@@ -129,21 +128,22 @@ export default function Stars({ collectionsScrollProgress = 0, scrollProgress = 
 
   return (
     <>
-      {/* Main stars */}
+      {/* Main stars - fade out as background turns white */}
       <points ref={starsRef} geometry={geometry}>
         <pointsMaterial
           size={0.5}
           color="#ffffff"
           transparent
-          opacity={1}
+          // Fade out stars as background turns white (starts at 0.4, fully faded by 0.7)
+          opacity={collectionsScrollProgress < 0.4 ? 1 : Math.max(0, 1 - (collectionsScrollProgress - 0.4) * 3.33)}
           sizeAttenuation
           map={starTexture}
           alphaTest={0.01}
         />
       </points>
 
-      {/* Star trails - only visible when camera is tilted and collections scroll is active */}
-      {collectionsScrollProgress > 0 && scrollProgress >= 0.3 && (
+      {/* Star trails - only visible when collections scroll is active */}
+      {collectionsScrollProgress > 0 && (
         <lineSegments ref={trailsRef} geometry={trailGeometry}>
           <lineBasicMaterial
             color="#ffffff"
