@@ -83,7 +83,8 @@ export default function Satellite({
           }}
         >
           <div
-            className="px-4 py-2 bg-black/90 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors font-light"
+            className="px-6 py-3 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:opacity-90 transition-all font-semibold"
+            style={{ backgroundColor: color }}
             onClick={(e) => {
               e.stopPropagation()
               onClick()

@@ -29,54 +29,56 @@ export default function FAQ() {
 
     return (
         <section className="py-32 bg-gray-50 text-black relative z-10">
-            <div className="container mx-auto px-4 max-w-5xl">
-                <motion.h2
-                    className="text-4xl md:text-5xl font-bold mb-16 text-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    Frequently Asked Questions
-                </motion.h2>
+            <div className="flex justify-center">
+                <div className="w-full px-4 max-w-[1200px]">
+                    <motion.h2
+                        className="text-5xl md:text-6xl font-bold mb-20 text-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        Frequently Asked Questions
+                    </motion.h2>
 
-                <div className="space-y-4">
-                    {faqs.map((faq, index) => (
-                        <motion.div
-                            key={index}
-                            className="border border-gray-200 rounded-xl bg-white overflow-hidden"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <button
-                                onClick={() => setActiveIndex(activeIndex === index ? null : index)}
-                                className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                    <div className="space-y-6">
+                        {faqs.map((faq, index) => (
+                            <motion.div
+                                key={index}
+                                className="border border-gray-200 rounded-xl bg-white overflow-hidden"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
                             >
-                                <span className="text-xl font-medium">{faq.question}</span>
-                                <span className={`transform transition-transform duration-300 ${activeIndex === index ? 'rotate-180' : ''}`}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </span>
-                            </button>
+                                <button
+                                    onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+                                    className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                                >
+                                    <span className="text-2xl font-semibold">{faq.question}</span>
+                                    <span className={`transform transition-transform duration-300 ${activeIndex === index ? 'rotate-180' : ''}`}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </span>
+                                </button>
 
-                            <AnimatePresence>
-                                {activeIndex === index && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: "auto", opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    >
-                                        <div className="px-8 pb-8 text-gray-600 leading-relaxed">
-                                            {faq.answer}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    ))}
+                                <AnimatePresence>
+                                    {activeIndex === index && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        >
+                                            <div className="px-8 pb-8 text-lg text-gray-700 leading-relaxed">
+                                                {faq.answer}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

@@ -173,135 +173,33 @@ export default function Shop() {
       <Navigation isDarkContent={true} />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center font-primary">
-              Shop All Products
-            </h1>
-            <p className="text-xl text-gray-600 text-center mb-12">
-              Every purchase supports a charitable cause
-            </p>
+        <div className="flex justify-center">
+          <div className="w-full max-w-[1200px]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center font-primary">
+                Shop All Products
+              </h1>
+              <p className="text-xl text-gray-600 text-center mb-12">
+                Every purchase supports a charitable cause
+              </p>
 
-            {/* Search and Filters */}
-            <div className="mb-12 space-y-6">
-              {/* Search Bar */}
-              <div className="relative max-w-2xl mx-auto">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
-                />
-                <svg
-                  className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-
-              {/* Filter Bar */}
-              <div className="flex flex-wrap gap-4 items-center justify-between">
-                {/* Collection Filter */}
-                <select
-                  value={selectedCollection}
-                  onChange={(e) => setSelectedCollection(e.target.value)}
-                  className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
-                >
-                  <option value="all">All Collections</option>
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.shopifyCollection.handle}>
-                      {project.name}
-                    </option>
-                  ))}
-                  <option value="embroidered-logo">Embroidered Logo</option>
-                  <option value="color-collection">Color Collection</option>
-                </select>
-
-                {/* Price Range */}
-                <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl">
-                  <span className="text-gray-700 text-sm">Price:</span>
+              {/* Search and Filters */}
+              <div className="mb-12 space-y-6">
+                {/* Search Bar */}
+                <div className="relative max-w-2xl mx-auto">
                   <input
-                    type="number"
-                    min="0"
-                    max="1000"
-                    value={selectedPriceRange[0]}
-                    onChange={(e) =>
-                      setSelectedPriceRange([parseInt(e.target.value), selectedPriceRange[1]])
-                    }
-                    className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
                   />
-                  <span className="text-gray-400">-</span>
-                  <input
-                    type="number"
-                    min="0"
-                    max="1000"
-                    value={selectedPriceRange[1]}
-                    onChange={(e) =>
-                      setSelectedPriceRange([selectedPriceRange[0], parseInt(e.target.value)])
-                    }
-                    className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
-                  />
-                </div>
-
-                {/* Availability */}
-                <label className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={showAvailableOnly}
-                    onChange={(e) => setShowAvailableOnly(e.target.checked)}
-                    className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
-                  />
-                  <span className="text-gray-700 text-sm">In Stock Only</span>
-                </label>
-
-                {/* Sort */}
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
-                >
-                  <option value="featured">Sort: Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name-asc">Name: A-Z</option>
-                </select>
-
-                {/* Clear Filters */}
-                {activeFiltersCount > 0 && (
-                  <button
-                    onClick={handleClearFilters}
-                    className="px-6 py-3 bg-red-500/20 text-red-300 border border-red-500/30 rounded-full hover:bg-red-500/30 transition-colors"
-                  >
-                    Clear All ({activeFiltersCount})
-                  </button>
-                )}
-              </div>
-
-              {/* Results Count */}
-              <div className="text-center text-gray-400">
-                Showing {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'product' : 'products'}
-              </div>
-            </div>
-
-            {/* Error State */}
-            {error && (
-              <div className="text-center py-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500/20 mb-6">
                   <svg
-                    className="w-10 h-10 text-red-400"
+                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -310,31 +208,135 @@ export default function Shop() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Oops!</h3>
-                <p className="text-gray-400 mb-6">{error}</p>
-                <button
-                  onClick={() => window.location.reload()}
-                  className="px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
-                >
-                  Try Again
-                </button>
-              </div>
-            )}
 
-            {/* Product Grid */}
-            {!error && (
-              <ProductGrid
-                products={filteredAndSortedProducts}
-                loading={loading}
-                onQuickView={setQuickViewProduct}
-                isLightMode={true}
-              />
-            )}
-          </motion.div>
+                {/* Filter Bar */}
+                <div className="flex flex-wrap gap-4 items-center justify-between">
+                  {/* Collection Filter */}
+                  <select
+                    value={selectedCollection}
+                    onChange={(e) => setSelectedCollection(e.target.value)}
+                    className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
+                  >
+                    <option value="all">All Collections</option>
+                    {projects.map((project) => (
+                      <option key={project.id} value={project.shopifyCollection.handle}>
+                        {project.name}
+                      </option>
+                    ))}
+                    <option value="embroidered-logo">Embroidered Logo</option>
+                    <option value="color-collection">Color Collection</option>
+                  </select>
+
+                  {/* Price Range */}
+                  <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl">
+                    <span className="text-gray-700 text-sm">Price:</span>
+                    <input
+                      type="number"
+                      min="0"
+                      max="1000"
+                      value={selectedPriceRange[0]}
+                      onChange={(e) =>
+                        setSelectedPriceRange([parseInt(e.target.value), selectedPriceRange[1]])
+                      }
+                      className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
+                    />
+                    <span className="text-gray-400">-</span>
+                    <input
+                      type="number"
+                      min="0"
+                      max="1000"
+                      value={selectedPriceRange[1]}
+                      onChange={(e) =>
+                        setSelectedPriceRange([selectedPriceRange[0], parseInt(e.target.value)])
+                      }
+                      className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Availability */}
+                  <label className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={showAvailableOnly}
+                      onChange={(e) => setShowAvailableOnly(e.target.checked)}
+                      className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
+                    />
+                    <span className="text-gray-700 text-sm">In Stock Only</span>
+                  </label>
+
+                  {/* Sort */}
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                    className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
+                  >
+                    <option value="featured">Sort: Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-asc">Name: A-Z</option>
+                  </select>
+
+                  {/* Clear Filters */}
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={handleClearFilters}
+                      className="px-12 py-4 bg-red-500/20 text-red-300 border border-red-500/30 rounded-full hover:bg-red-500/30 transition-colors font-semibold"
+                    >
+                      Clear All ({activeFiltersCount})
+                    </button>
+                  )}
+                </div>
+
+                {/* Results Count */}
+                <div className="text-center text-gray-400">
+                  Showing {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'product' : 'products'}
+                </div>
+              </div>
+
+              {/* Error State */}
+              {error && (
+                <div className="text-center py-16">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500/20 mb-6">
+                    <svg
+                      className="w-10 h-10 text-red-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Oops!</h3>
+                  <p className="text-gray-400 mb-6">{error}</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              )}
+
+              {/* Product Grid */}
+              {!error && (
+                <ProductGrid
+                  products={filteredAndSortedProducts}
+                  loading={loading}
+                  onQuickView={setQuickViewProduct}
+                  isLightMode={true}
+                />
+              )}
+            </motion.div>
+          </div>
         </div>
       </main>
 

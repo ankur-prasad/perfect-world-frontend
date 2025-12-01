@@ -131,9 +131,9 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       >
         <button
           onClick={toggleMenu}
-          className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors text-lg font-medium ${isDarkContent
-            ? 'bg-black/5 text-black hover:bg-black/10'
-            : 'bg-white/5 text-white hover:bg-white/10'
+          className={`px-12 py-4 rounded-full transition-colors text-lg font-semibold ${isDarkContent
+            ? 'bg-gray-100 text-black hover:bg-gray-200'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           Menu
@@ -160,8 +160,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       >
         <Link
           to="/projects"
-          className={`px-8 py-3 rounded-full backdrop-blur-sm transition-colors inline-block text-lg font-medium ${isDarkContent
-            ? 'bg-black/10 text-black hover:bg-black/20'
+          className={`px-12 py-4 rounded-full transition-colors inline-block text-lg font-semibold ${isDarkContent
+            ? 'bg-gray-100 text-black hover:bg-gray-200'
             : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
@@ -180,7 +180,7 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       >
         <Link
           to="/shop"
-          className={`px-8 py-3 rounded-full transition-colors inline-block text-lg font-semibold ${isDarkContent
+          className={`px-12 py-4 rounded-full transition-colors inline-block text-lg font-semibold ${isDarkContent
             ? 'bg-black text-white hover:bg-gray-800'
             : 'bg-white text-black hover:bg-gray-200'
             }`}

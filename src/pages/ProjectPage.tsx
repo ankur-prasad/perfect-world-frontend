@@ -22,7 +22,7 @@ export default function ProjectPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
-  
+
   // Get current project index for carousel
   const currentProjectIndex = project ? projects.findIndex(p => p.slug === project.slug) : -1
   const prevProject = currentProjectIndex > 0 ? projects[currentProjectIndex - 1] : projects[projects.length - 1]
@@ -55,7 +55,7 @@ export default function ProjectPage() {
           <h1 className="text-4xl font-bold text-white mb-4">Project Not Found</h1>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
           >
             Return Home
           </button>
@@ -97,9 +97,8 @@ export default function ProjectPage() {
                 <div className="absolute left-20 top-1/2 -translate-y-1/2">
                   <button
                     onClick={() => setView('mission')}
-                    className={`px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors ${
-                      view === 'mission' ? 'bg-white/10' : ''
-                    }`}
+                    className={`px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors font-semibold ${view === 'mission' ? 'bg-white/10' : ''
+                      }`}
                   >
                     Mission
                   </button>
@@ -114,9 +113,8 @@ export default function ProjectPage() {
                 <div className="absolute right-20 top-1/2 -translate-y-1/2">
                   <button
                     onClick={() => setView('shop')}
-                    className={`px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors ${
-                      view === 'shop' ? 'bg-white/10' : ''
-                    }`}
+                    className={`px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors font-semibold ${view === 'shop' ? 'bg-white/10' : ''
+                      }`}
                   >
                     Shop
                   </button>
@@ -191,11 +189,10 @@ export default function ProjectPage() {
                     <button
                       key={index}
                       onClick={() => navigate(`/project/${projects[index].slug}`)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        index === currentProjectIndex
+                      className={`w-2 h-2 rounded-full transition-all ${index === currentProjectIndex
                           ? 'bg-white w-3 h-3'
                           : 'bg-white/30 hover:bg-white/50'
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>

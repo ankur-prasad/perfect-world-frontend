@@ -22,8 +22,8 @@ export default function ImpactSlides() {
     return (
         <section className="bg-white text-black relative z-10">
             {slides.map((slide, index) => (
-                <div key={index} className="min-h-screen flex items-center relative overflow-hidden py-20">
-                    <div className="w-full max-w-[90%] xl:max-w-[1400px] mx-auto px-12 md:px-24 lg:px-32">
+                <div key={index} className="min-h-screen flex items-center justify-center relative overflow-hidden py-20">
+                    <div className="w-full max-w-[1200px] px-12 md:px-24 lg:px-32">
                         <div className={`flex flex-col md:flex-row items-center gap-12 lg:gap-32 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''
                             }`}>
                             {/* Text Column */}

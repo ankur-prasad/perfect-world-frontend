@@ -162,7 +162,8 @@ export default function Home() {
       <section ref={collectionsRef} className="relative min-h-screen py-32 pb-32 bg-transparent z-10">
         <div className="container mx-auto px-4 max-w-[1600px] w-full relative z-10">
           <motion.h2
-            className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
+            className={`text-5xl md:text-6xl font-bold text-center mb-[280px] ${textColor}`}
+            style={{ marginBottom: '100px' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -227,7 +228,7 @@ export default function Home() {
                 <div className="relative rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100 transform hover:-translate-y-2">
 
                   {/* Full Bleed Image */}
-                  <div className="relative w-full aspect-[4/5] overflow-hidden">
+                  <div className="relative w-full aspect-[4/3] overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.name}
@@ -239,7 +240,7 @@ export default function Home() {
                   </div>
 
                   <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
                       {project.name}
                     </h3>
 
@@ -253,7 +254,7 @@ export default function Home() {
                           e.stopPropagation();
                           handleSatelliteClick(project.slug);
                         }}
-                        className="flex-1 px-8 py-3 rounded-full border border-gray-200 text-gray-900 font-medium hover:bg-gray-50 transition-colors text-lg"
+                        className="flex-1 px-12 py-4 rounded-full bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors text-lg"
                       >
                         Learn More
                       </button>
@@ -262,7 +263,7 @@ export default function Home() {
                           e.stopPropagation();
                           navigate('/shop');
                         }}
-                        className="flex-1 px-8 py-3 rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors text-lg shadow-md hover:shadow-lg"
+                        className="flex-1 px-12 py-4 rounded-full bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-lg"
                       >
                         Shop Collection
                       </button>
