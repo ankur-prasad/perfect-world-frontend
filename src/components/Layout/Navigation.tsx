@@ -207,7 +207,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
               <Link to="/">
                 <img
-                  src={isDarkContent ? "/assets/LOGOS/perfect-world-logo-black.png" : "/assets/LOGOS/perfect-world-logo-white.png"}
+                  src={isDarkContent ? "/assets/logos/perfect-world-logo-black.png" : "/assets/logos/perfect-world-logo-white.png"}
                   alt="Perfect World"
                   className="h-12 w-auto"
                 />

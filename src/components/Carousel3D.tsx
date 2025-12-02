@@ -31,7 +31,7 @@ export default function Carousel3D({
     const [isHovered, setIsHovered] = useState(false)
     const dragStartX = useRef(0)
     const dragStartRotation = useRef(0)
-    const animationRef = useRef<number | undefined>()
+    const animationRef = useRef<number | undefined>(undefined)
 
     // Auto-rotation when not dragging
     useEffect(() => {

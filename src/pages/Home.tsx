@@ -12,7 +12,7 @@ import { useNavigation } from '../contexts/NavigationContext'
 import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
 import MainVideo from '../components/Home/MainVideo'
-import GlassyButton from '../components/ui/GlassyButton'
+
 
 gsap.registerPlugin(ScrollTrigger)
 

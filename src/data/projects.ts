@@ -26,7 +26,7 @@ export const projects: Project[] = [
         name: 'SECORE International',
         description: 'Leading coral restoration organization',
         website: 'https://www.secore.org',
-        logo: '/assets/LOGOS/Secore_Logo.png',
+        logo: '/assets/logos/Secore_Logo.png',
       },
     },
     shopifyCollection: {
@@ -63,7 +63,7 @@ export const projects: Project[] = [
         name: 'Care in Action',
         description: 'Community development organization',
         website: 'https://www.careinaction.org',
-        logo: '/assets/LOGOS/care_in_action_logo.png',
+        logo: '/assets/logos/care_in_action_logo.png',
       },
     },
     shopifyCollection: {
@@ -100,7 +100,7 @@ export const projects: Project[] = [
         name: 'Talk About It',
         description: 'Mental health advocacy organization',
         website: 'https://www.talkaboutit.org',
-        logo: '/assets/LOGOS/MHI_logo.png',
+        logo: '/assets/logos/MHI_logo.png',
       },
     },
     shopifyCollection: {
@@ -137,7 +137,7 @@ export const projects: Project[] = [
         name: 'Plant-For-The-Planet',
         description: 'Global reforestation initiative',
         website: 'https://www.plant-for-the-planet.org',
-        logo: '/assets/LOGOS/plant_for_the_planet_logo.png',
+        logo: '/assets/logos/plant_for_the_planet_logo.png',
       },
     },
     shopifyCollection: {
@@ -174,7 +174,7 @@ export const projects: Project[] = [
         name: 'Save the Elephants',
         description: 'Wildlife conservation organization',
         website: 'https://www.savetheelephants.org',
-        logo: '/assets/LOGOS/elephants_for_africa_logo.png',
+        logo: '/assets/logos/elephants_for_africa_logo.png',
       },
     },
     shopifyCollection: {
