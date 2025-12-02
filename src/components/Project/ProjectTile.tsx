@@ -100,15 +100,6 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
                     />
                 </div>
 
-                {/* Hands Overlay */}
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                    <img
-                        src="/assets/images/design%20hands%20clear.webp"
-                        alt="Hands overlay"
-                        className="w-full h-full object-cover opacity-80 mix-blend-overlay"
-                    />
-                </div>
-
                 {/* Content */}
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center">
                     {/* Project Logo - Slides up */}
@@ -123,19 +114,19 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
 
                     {/* Text Content - Slides out */}
                     <div ref={textRef} className="max-w-4xl">
-                        <h2 className="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg font-primary">
+                        <h2 className="text-5xl md:text-7xl font-bold text-black mb-4 drop-shadow-lg font-primary">
                             {project.name}
                         </h2>
-                        <p className="text-2xl md:text-3xl text-white font-light drop-shadow-md">
+                        <p className="text-2xl md:text-3xl text-black font-light drop-shadow-md">
                             {project.tagline}
                         </p>
 
                         <div className="mt-8 flex items-center justify-center gap-4">
-                            <span className="text-white/80 text-sm uppercase tracking-widest">In partnership with</span>
+                            <span className="text-black/80 text-sm uppercase tracking-widest">In partnership with</span>
                             <img
                                 src={project.mission.partnerCharity.logo}
                                 alt={project.mission.partnerCharity.name}
-                                className="h-8 w-auto brightness-0 invert opacity-80"
+                                className="h-8 w-auto opacity-80"
                             />
                         </div>
                     </div>
