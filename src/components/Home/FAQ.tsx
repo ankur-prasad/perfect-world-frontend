@@ -28,8 +28,8 @@ export default function FAQ() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     return (
-        <section className="py-32 bg-gray-50 text-black relative z-10">
-            <div className="flex justify-center">
+        <section className="min-h-screen bg-gray-50 text-black relative z-10 flex items-center py-20">
+            <div className="flex justify-center w-full">
                 <div className="w-full px-4 max-w-[1200px]">
                     <motion.h2
                         className="text-5xl md:text-6xl font-bold mb-20 text-center"

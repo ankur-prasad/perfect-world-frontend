@@ -74,16 +74,17 @@ export default function Satellite({
 
         {/* Label - always visible */}
         <Html
-          position={[0, 0.2, 0]}
+          position={[0, 0.35, 0]}
           center
           distanceFactor={5}
+          zIndexRange={[100, 0]}
           style={{
-            pointerEvents: 'auto', // Enable pointer events
+            pointerEvents: 'auto',
             userSelect: 'none',
           }}
         >
           <div
-            className="px-6 py-3 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:opacity-90 transition-all font-semibold"
+            className="px-6 py-3 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:opacity-90 transition-all font-semibold shadow-lg"
             style={{ backgroundColor: color }}
             onClick={(e) => {
               e.stopPropagation()

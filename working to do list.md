@@ -1,8 +1,6 @@
 # To Do List
 
 ## Home Page - Hero & Globe
-- [x] Scroll to learn more on hero should be between the "Together Not Alone" and arrow
-- [x] Make "Together Not Alone" bigger and move up slightly to make space for the scroll down to learn more
 - [x] Make the earth look less like Google Earth. Perhaps a skin that looks sketched or hand drawn
 - [x] Edit the globe cursor effect
 - [x] Globe comes alive once you hover over it. Add clouds on hover and keep the glow all the time

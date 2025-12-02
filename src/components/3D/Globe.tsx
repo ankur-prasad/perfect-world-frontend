@@ -61,6 +61,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     }
   })
 
+  const prevUvRef = useRef<THREE.Vector2 | null>(null)
+
   // Ensure wrapping is applied (sometimes useFBO options are not enough for internal texture)
   useEffect(() => {
     renderTargetA.texture.wrapS = THREE.RepeatWrapping
@@ -78,7 +80,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     camera.lookAt(0, 0, 0)
 
     // Brush Mesh
-    const geometry = new THREE.PlaneGeometry(0.25, 0.25)
+    // Reduced brush size for finer trail (0.25 -> 0.05)
+    const geometry = new THREE.PlaneGeometry(0.05, 0.05)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -117,23 +120,11 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
           
           vec2 nUV = vUv * 3.0 + time * 0.2;
           float n1 = fbm(nUV);
-          vec2 nUV2 = vUv * 6.0 - time * 0.1;
-          float n2 = fbm(nUV2);
-          float noiseVal = mix(n1, n2, 0.5);
           
-          alpha *= smoothstep(0.2, 0.8, noiseVal);
+          // Sharper, more particle-like cloud brush
+          float cloud = smoothstep(0.4, 0.8, n1 * alpha);
           
-          // --- Dynamics ---
-          // Modulate opacity based on velocity (faster = more opaque/intense)
-          float velocityFactor = smoothstep(0.0, 0.5, uVelocity);
-          float dynamicAlpha = mix(0.5, 1.0, velocityFactor); // Increased intensity
-          
-          alpha = smoothstep(0.0, 0.8, alpha);
-          
-          // Final Color with slight off-white variation
-          vec3 cloudColor = mix(vec3(0.95, 0.95, 0.95), vec3(1.0), n1);
-
-          gl_FragColor = vec4(cloudColor, alpha * dynamicAlpha); 
+          gl_FragColor = vec4(uColor, cloud * 1.0);
         }
       `,
       transparent: true,
@@ -152,8 +143,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       uniforms: {
         uTexture: { value: null }, // Previous frame
         time: { value: 0 },
-        uDissipation: { value: 0.996 }, // Very slow fade for persistent trails
-        uCurlStrength: { value: 0.01 }, // Gentle swirl
+        uDissipation: { value: 0.98 }, // Slightly faster fade
+        uCurlStrength: { value: 0.08 }, // Stronger swirl/spreading
       },
       vertexShader: `
         varying vec2 vUv;
@@ -279,6 +270,11 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
           void main() {
             vec4 texColor = texture2D(colorMap, vUv);
             
+            // Desaturate the earth texture for a muted look
+            float gray = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+            vec3 desaturated = mix(vec3(gray), texColor.rgb, 0.4); // 60% saturation
+            texColor.rgb = desaturated;
+            
             // Sample cloud layer (already advected)
             vec4 cloudMain = texture2D(cloudLayer, vUv);
             
@@ -366,10 +362,6 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     // 3. Brush Pass (Draw on top of Advection)
     if (isHovered) {
       const intersect = intersects[0]
-      const point = intersect.point
-      const localPoint = meshRef.current.worldToLocal(point.clone())
-      shaderMaterial.uniforms.hoverPoint.value.copy(localPoint)
-      shaderMaterial.uniforms.isHovered.value += (1.0 - shaderMaterial.uniforms.isHovered.value) * 0.1
 
       if (!prevHoverRef.current) {
         prevHoverRef.current = true
@@ -378,24 +370,44 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
 
       if (intersect.uv) {
         const uv = intersect.uv
-        brushMesh.position.set(uv.x, uv.y, 0)
 
-        // Render brush to Write Buffer (additive)
-        gl.render(maskScene, maskCamera)
-
-        // Wrapping
-        if (uv.x < 0.1) {
-          brushMesh.position.set(uv.x + 1, uv.y, 0)
-          gl.render(maskScene, maskCamera)
+        // Only draw clouds if mouse has moved significantly
+        let shouldDraw = false
+        if (!prevUvRef.current) {
+          shouldDraw = true
+          prevUvRef.current = new THREE.Vector2(uv.x, uv.y)
+        } else {
+          const dist = prevUvRef.current.distanceTo(new THREE.Vector2(uv.x, uv.y))
+          if (dist > 0.001) { // Lower threshold for smoother trails
+            shouldDraw = true
+            prevUvRef.current.set(uv.x, uv.y)
+          }
         }
-        if (uv.x > 0.9) {
-          brushMesh.position.set(uv.x - 1, uv.y, 0)
+
+        if (shouldDraw) {
+          // Add random offset for "spray" effect
+          const offset = 0.02
+          const randomX = (Math.random() - 0.5) * offset
+          const randomY = (Math.random() - 0.5) * offset
+
+          brushMesh.position.set(uv.x + randomX, uv.y + randomY, 0)
+
+          // Render brush to Write Buffer (additive)
           gl.render(maskScene, maskCamera)
+
+          // Wrapping
+          if (uv.x < 0.1) {
+            brushMesh.position.set(uv.x + 1 + randomX, uv.y + randomY, 0)
+            gl.render(maskScene, maskCamera)
+          }
+          if (uv.x > 0.9) {
+            brushMesh.position.set(uv.x - 1 + randomX, uv.y + randomY, 0)
+            gl.render(maskScene, maskCamera)
+          }
         }
       }
     } else {
-      shaderMaterial.uniforms.hoverPoint.value.set(999, 999, 999)
-      shaderMaterial.uniforms.isHovered.value += (0.0 - shaderMaterial.uniforms.isHovered.value) * 0.1
+      prevUvRef.current = null
       if (prevHoverRef.current) {
         prevHoverRef.current = false
         if (onHoverChange) onHoverChange(false)
