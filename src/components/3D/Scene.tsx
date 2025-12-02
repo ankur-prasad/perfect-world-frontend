@@ -38,10 +38,9 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   return null
 }
 
-function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectionsScrollProgress, onGlobeHoverChange }: {
+function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange }: {
   mousePosition: { x: number; y: number }
   onSatelliteClick: (slug: string) => void
-  scrollProgress: number
   collectionsScrollProgress: number
   onGlobeHoverChange?: (hover: boolean) => void
 }) {
@@ -96,7 +95,6 @@ function GlobeGroup({ mousePosition, onSatelliteClick, scrollProgress, collectio
       {/* Stars now rotate with the globe */}
       <Stars
         collectionsScrollProgress={collectionsScrollProgress}
-        scrollProgress={scrollProgress}
       />
 
       <Globe onHoverChange={handleGlobeHover} />
@@ -182,7 +180,6 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
           <GlobeGroup
             mousePosition={mousePosition}
             onSatelliteClick={onSatelliteClick}
-            scrollProgress={scrollProgress}
             collectionsScrollProgress={collectionsScrollProgress}
             onGlobeHoverChange={onGlobeHoverChange}
           />
