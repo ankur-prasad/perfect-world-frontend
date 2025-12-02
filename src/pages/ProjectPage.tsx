@@ -18,6 +18,7 @@ export default function ProjectPage() {
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(false)
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   const project = slug ? getProjectBySlug(slug) : null
 
@@ -25,6 +26,22 @@ export default function ProjectPage() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
+
+  // Detect scroll position and freeze gradient when scrolled down
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY
+      setIsScrolling(scrollPosition > 100)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // Set initial state
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   // Get current project index for carousel
   const currentProjectIndex = project ? projects.findIndex(p => p.slug === project.slug) : -1
@@ -176,7 +193,7 @@ export default function ProjectPage() {
           colors={gradientColors}
           distortion={1.2}
           swirl={1.0}
-          speed={0.4}
+          speed={isScrolling ? 0 : 0.4}
           grainMixer={0}
         />
       </div>
