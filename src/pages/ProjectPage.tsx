@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import ProductGrid from '../components/Product/ProductGrid'
@@ -8,6 +9,7 @@ import ScrollExpandMedia from '../components/ScrollExpandMedia'
 import { getProjectBySlug, projects } from '../data/projects'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
+import { MeshGradient } from '@paper-design/shaders-react'
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -49,6 +51,115 @@ export default function ProjectPage() {
     }
   }, [project, view, products.length])
 
+  // Custom colors based on project theme
+  const gradientColors = project ? [
+    project.theme.primaryColor,
+    '#ffffff',
+    project.theme.secondaryColor || '#000000',
+    '#ffffff',
+    project.theme.primaryColor
+  ] : []
+
+  // Custom Background (MeshGradient + Hands Overlay)
+  const CustomBackground = project ? (
+    <div className="relative w-full h-full">
+      {/* Background Shader */}
+      <div className="absolute inset-0 z-0">
+        <MeshGradient
+          width={1920}
+          height={1080}
+          colors={gradientColors}
+          distortion={1.2}
+          swirl={1.0}
+          speed={0.4}
+          grainMixer={0}
+        />
+      </div>
+
+      {/* Hands Overlay */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        <img
+          src="/assets/images/design%20hands%20clear.webp"
+          alt="Hands overlay"
+          className="w-full h-full object-cover opacity-80 mix-blend-overlay"
+        />
+      </div>
+    </div>
+  ) : null
+
+  // Custom Header Renderer for Animations
+  const renderHeader = (progress: number) => {
+    if (!project) return null
+
+    // Animation calculations
+    const logoOpacity = Math.max(0, 1 - progress * 2)
+    const logoY = -progress * 100
+
+    // Split text animation
+    const textTranslateX = progress * 150 // Similar to ScrollExpandMedia default
+    const firstWord = project.name.split(' ')[0]
+    const restOfTitle = project.name.split(' ').slice(1).join(' ')
+
+    return (
+      <div className="flex flex-col items-center justify-center text-center relative z-20 w-full h-full pointer-events-none">
+
+        {/* Project Logo - Fades out and moves up */}
+        <div
+          className="mb-8 transition-transform duration-100 ease-out"
+          style={{
+            opacity: logoOpacity,
+            transform: `translateY(${logoY}px)`
+          }}
+        >
+          <img
+            src={project.mission.partnerCharity.logo}
+            alt={`${project.name} logo`}
+            className="h-32 w-auto object-contain drop-shadow-2xl"
+          />
+        </div>
+
+        {/* Title - Splits and slides out */}
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-4 w-full">
+            <h2
+              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg font-primary transition-transform duration-100 ease-out"
+              style={{ transform: `translateX(-${textTranslateX}vw)` }}
+            >
+              {firstWord}
+            </h2>
+            <h2
+              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg font-primary transition-transform duration-100 ease-out"
+              style={{ transform: `translateX(${textTranslateX}vw)` }}
+            >
+              {restOfTitle}
+            </h2>
+          </div>
+
+          {/* Tagline - Fades out */}
+          <p
+            className="text-2xl md:text-3xl text-white font-light drop-shadow-md mt-4 transition-opacity duration-100"
+            style={{ opacity: Math.max(0, 1 - progress * 3) }}
+          >
+            {project.tagline}
+          </p>
+
+          {/* Partner Info - Fades out */}
+          <div
+            className="mt-8 flex items-center justify-center gap-4 transition-opacity duration-100"
+            style={{ opacity: Math.max(0, 1 - progress * 3) }}
+          >
+            <span className="text-white/80 text-sm uppercase tracking-widest">In partnership with</span>
+            <img
+              src={project.mission.partnerCharity.logo}
+              alt={project.mission.partnerCharity.name}
+              className="h-8 w-auto brightness-0 invert opacity-80"
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!project) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -70,7 +181,9 @@ export default function ProjectPage() {
       <ScrollExpandMedia
         mediaType="image"
         mediaSrc={project.mission.heroImage || 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=2560&auto=format&fit=crop'}
-        bgImageSrc={project.mission.heroImage || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop'}
+        bgImageSrc="" // Overridden by customBackground
+        customBackground={CustomBackground}
+        renderHeader={renderHeader}
         title={project.name}
         scrollToExpand="Scroll to explore"
         textBlend={false}

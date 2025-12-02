@@ -9,20 +9,23 @@ import {
 import { motion } from 'framer-motion';
 
 interface ScrollExpandMediaProps {
-  mediaType?: 'video' | 'image';
-  mediaSrc: string;
+  mediaType?: 'video' | 'image' | 'custom';
+  mediaSrc?: string;
   posterSrc?: string;
-  bgImageSrc: string;
+  bgImageSrc?: string;
   title?: string;
   date?: string;
   scrollToExpand?: string;
   textBlend?: boolean;
   children?: ReactNode;
+  customContent?: ReactNode;
+  customBackground?: ReactNode;
+  renderHeader?: (progress: number) => ReactNode;
 }
 
 const ScrollExpandMedia = ({
   mediaType = 'video',
-  mediaSrc,
+  mediaSrc = '',
   posterSrc,
   bgImageSrc,
   title,
@@ -30,6 +33,9 @@ const ScrollExpandMedia = ({
   scrollToExpand,
   textBlend,
   children,
+  customContent,
+  customBackground,
+  renderHeader,
 }: ScrollExpandMediaProps) => {
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -163,12 +169,20 @@ const ScrollExpandMedia = ({
             animate={{ opacity: 1 - scrollProgress }}
             transition={{ duration: 0.1 }}
           >
-            <img
-              src={bgImageSrc}
-              alt='Background'
-              className='w-screen h-screen object-cover'
-            />
-            <div className='absolute inset-0 bg-black/10' />
+            {customBackground ? (
+              <div className="w-screen h-screen">
+                {customBackground}
+              </div>
+            ) : (
+              <>
+                <img
+                  src={bgImageSrc}
+                  alt='Background'
+                  className='w-screen h-screen object-cover'
+                />
+                <div className='absolute inset-0 bg-black/10' />
+              </>
+            )}
           </motion.div>
 
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
@@ -184,7 +198,7 @@ const ScrollExpandMedia = ({
                 }}
               >
                 {mediaType === 'video' ? (
-                  mediaSrc.includes('youtube.com') ? (
+                  mediaSrc && mediaSrc.includes('youtube.com') ? (
                     <div className='relative w-full h-full pointer-events-none'>
                       <iframe
                         width='100%'
@@ -192,11 +206,11 @@ const ScrollExpandMedia = ({
                         src={
                           mediaSrc.includes('embed')
                             ? mediaSrc +
-                              (mediaSrc.includes('?') ? '&' : '?') +
-                              'autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
+                            (mediaSrc.includes('?') ? '&' : '?') +
+                            'autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
                             : mediaSrc.replace('watch?v=', 'embed/') +
-                              '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1&playlist=' +
-                              mediaSrc.split('v=')[1]
+                            '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1&playlist=' +
+                            mediaSrc.split('v=')[1]
                         }
                         className='w-full h-full rounded-xl'
                         frameBorder='0'
@@ -242,6 +256,10 @@ const ScrollExpandMedia = ({
                       />
                     </div>
                   )
+                ) : mediaType === 'custom' ? (
+                  <div className='relative w-full h-full overflow-hidden rounded-xl bg-black'>
+                    {customContent}
+                  </div>
                 ) : (
                   <div className='relative w-full h-full'>
                     <img
@@ -279,24 +297,27 @@ const ScrollExpandMedia = ({
                 </div>
               </div>
 
-              <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${
-                  textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
-                }`}
-              >
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200 transition-none'
-                  style={{ transform: `translateX(-${textTranslateX}vw)` }}
+              {renderHeader ? (
+                renderHeader(scrollProgress)
+              ) : (
+                <div
+                  className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
+                    }`}
                 >
-                  {firstWord}
-                </motion.h2>
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-blue-200 transition-none'
-                  style={{ transform: `translateX(${textTranslateX}vw)` }}
-                >
-                  {restOfTitle}
-                </motion.h2>
-              </div>
+                  <motion.h2
+                    className='text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200 transition-none'
+                    style={{ transform: `translateX(-${textTranslateX}vw)` }}
+                  >
+                    {firstWord}
+                  </motion.h2>
+                  <motion.h2
+                    className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-blue-200 transition-none'
+                    style={{ transform: `translateX(${textTranslateX}vw)` }}
+                  >
+                    {restOfTitle}
+                  </motion.h2>
+                </div>
+              )}
             </div>
 
             <motion.section
