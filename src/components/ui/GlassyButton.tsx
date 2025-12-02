@@ -36,7 +36,7 @@ export default function GlassyButton({
   className = '',
   type = 'button',
   variant = 'primary',
-  borderRadius = 16,
+  borderRadius = 24,
   blur = 18,
   lightDirection = 'top-left',
   shadowHoverColor = 'rgba(0, 0, 0, 0.18)',
@@ -106,24 +106,24 @@ export default function GlassyButton({
   const highlightStyle = useMemo(() => {
     const dx = mouse.x - 0.5
     const dy = mouse.y - 0.5
-    const offsetX = dx * (hovered ? 28 : 16)
-    const offsetY = dy * (hovered ? 28 : 16)
+    const offsetX = dx * (hovered ? 12 : 10)
+    const offsetY = dy * (hovered ? 12 : 10)
 
     return {
       position: 'absolute' as const,
       left: `calc(${x} + ${offsetX}px)`,
-      top: `calc(${y} + ${offsetY + (hovered ? -4 : 0)}px)`,
-      width: hovered ? '74%' : '60%',
-      height: hovered ? '42%' : '30%',
+      top: `calc(${y} + ${offsetY}px)`,
+      width: hovered ? '65%' : '60%',
+      height: hovered ? '33%' : '30%',
       background: hovered
-        ? 'linear-gradient(120deg, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.18) 100%)'
-        : 'linear-gradient(120deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.12) 100%)',
+        ? 'linear-gradient(120deg, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.12) 100%)'
+        : 'linear-gradient(120deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.10) 100%)',
       borderRadius: '50%',
-      filter: `blur(${hovered ? 22 : 14}px)`,
-      opacity: hovered ? 0.82 : 0.5,
+      filter: `blur(${hovered ? 16 : 14}px)`,
+      opacity: hovered ? 0.65 : 0.5,
       pointerEvents: 'none' as const,
-      transform: `translate(-50%, -50%) scale(${hovered ? 1.13 : 1})${hovered ? ' translateY(-2.5px)' : ''}`,
-      transition: 'all 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+      transform: `translate(-50%, -50%) scale(${hovered ? 1.05 : 1})`,
+      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: 2
     }
   }, [x, y, hovered, mouse])
@@ -132,22 +132,22 @@ export default function GlassyButton({
   const reflectionStyle = useMemo(() => {
     const dx = mouse.x - 0.5
     const dy = mouse.y - 0.5
-    const offsetX = dx * (hovered ? 16 : 8)
-    const offsetY = dy * (hovered ? 16 : 8)
+    const offsetX = dx * (hovered ? 10 : 8)
+    const offsetY = dy * (hovered ? 10 : 8)
 
     return {
       position: 'absolute' as const,
       left: `calc(${x} + ${offsetX}px)`,
       top: `calc(${y} + ${offsetY}px)`,
-      width: hovered ? '38%' : '30%',
-      height: hovered ? '18%' : '14%',
-      background: 'linear-gradient(120deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 100%)',
+      width: hovered ? '35%' : '30%',
+      height: hovered ? '16%' : '14%',
+      background: 'linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 100%)',
       borderRadius: '50%',
-      filter: `blur(${hovered ? 10 : 7}px)`,
-      opacity: hovered ? 0.45 : 0.28,
+      filter: `blur(${hovered ? 8 : 7}px)`,
+      opacity: hovered ? 0.35 : 0.28,
       pointerEvents: 'none' as const,
-      transform: `translate(-50%, -50%) scale(${hovered ? 1.12 : 1})${hovered ? ' translateY(-1px)' : ''}`,
-      transition: 'all 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+      transform: `translate(-50%, -50%) scale(${hovered ? 1.05 : 1})`,
+      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: 1
     }
   }, [x, y, hovered, mouse])
@@ -162,19 +162,19 @@ export default function GlassyButton({
     borderRadius: `${borderRadius}px`,
     background: `linear-gradient(${angle}deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%), ${hovered ? style.hoverBg : style.bg}`,
     boxShadow: hovered
-      ? `0 18px ${48 * shadowHoverIntensity}px 0 ${shadowHoverColor}, 0 6px 24px 0 rgba(0,0,0,0.12)`
-      : '0 6px 18px 0 rgba(0,0,0,0.10)',
+      ? `0 4px ${16 * shadowHoverIntensity}px 0 ${shadowHoverColor}, 0 2px 8px 0 rgba(0,0,0,0.08)`
+      : '0 2px 8px 0 rgba(0,0,0,0.08)',
     backdropFilter: `blur(${blur}px) saturate(1.2)`,
     WebkitBackdropFilter: `blur(${blur}px) saturate(1.2)`,
     border: '1.5px solid rgba(255,255,255,0.22)',
     boxSizing: 'border-box' as const,
     overflow: 'hidden',
     cursor: 'pointer',
-    transition: 'box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1), background 0.32s cubic-bezier(0.4, 0, 0.2, 1), transform 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+    transition: 'box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transform: hovered ? 'translateY(-11px) scale(1.08)' : 'none',
+    transform: hovered ? 'translateY(-2px)' : 'none',
     textDecoration: 'none'
   }), [angle, style.bg, style.hoverBg, borderRadius, blur, hovered, shadowHoverColor, shadowHoverIntensity, paddingX, paddingY])
 

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useCart } from '../contexts/CartContext'
 import Navigation from '../components/Layout/Navigation'

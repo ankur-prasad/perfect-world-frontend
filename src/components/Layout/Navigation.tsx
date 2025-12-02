@@ -123,25 +123,21 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       <GlassyButton
         onClick={toggleMenu}
         variant={(isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)) ? 'light' : 'secondary'}
-        borderRadius={isStatic ? 12 : 16}
         textColor={isDarkContent ? '#000000' : '#ffffff'}
       >
-        <div className="flex items-center gap-3">
-          <div className="relative w-4 h-4 flex flex-col justify-center items-center">
-            <motion.span
-              animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 0 : -5 }}
-              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
-            />
-            <motion.span
-              animate={{ opacity: isMenuOpen ? 0 : 1 }}
-              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
-            />
-            <motion.span
-              animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? 0 : 5 }}
-              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
-            />
-          </div>
-          <span>{isMenuOpen ? 'Close' : 'Menu'}</span>
+        <div className="relative w-4 h-4 flex flex-col justify-center items-center">
+          <motion.span
+            animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 0 : -5 }}
+            className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+          />
+          <motion.span
+            animate={{ opacity: isMenuOpen ? 0 : 1 }}
+            className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+          />
+          <motion.span
+            animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? 0 : 5 }}
+            className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+          />
         </div>
       </GlassyButton>
     )
@@ -152,7 +148,6 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       label="Shop"
       to="/shop"
       variant={isDarkContent ? 'secondary' : 'light'}
-      borderRadius={isStatic ? 12 : 16}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
     />
   )
@@ -162,15 +157,11 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       <GlassyButton
         onClick={() => setIsCartOpen(true)}
         variant={isDarkContent ? 'primary' : 'light'}
-        borderRadius={isStatic ? 12 : 16}
         textColor={isDarkContent ? '#000000' : '#ffffff'}
       >
-        <div className="flex items-center gap-3">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          Cart
-        </div>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
       </GlassyButton>
       {cartCount > 0 && (
         <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center z-50">
@@ -185,7 +176,6 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       label="Learn More"
       to="/projects"
       variant={isDarkContent ? 'secondary' : 'light'}
-      borderRadius={isStatic ? 12 : 16}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
     />
   )
@@ -195,7 +185,6 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       label="Make a Difference"
       to="/shop"
       variant={isDarkContent ? 'primary' : 'light'}
-      borderRadius={isStatic ? 12 : 16}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
     />
   )
@@ -204,17 +193,17 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   if (!enableScrollAnimations) {
     return (
       <>
-        <header className={`fixed top-0 left-0 right-0 z-50 ${isDarkContent ? 'bg-white border-b border-gray-200' : 'bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-md border-b border-white/10'}`}>
-          <div className="h-28 px-16 flex items-center justify-between relative">
+        <header className="fixed top-0 left-0 right-0 z-50">
+          <div className="h-20 px-6 flex items-center justify-between relative">
 
             {/* Left: Menu */}
             <div className="flex-shrink-0 z-50">
-              <MenuButton isStatic={true} />
+              <MenuButton />
             </div>
 
             {/* Center Group: Learn More - Logo - Make a Difference */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-8 z-40">
-              <LearnMoreButton isStatic={true} />
+              <LearnMoreButton />
 
               <Link to="/">
                 <img
@@ -224,19 +213,19 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
                 />
               </Link>
 
-              <MakeDifferenceButton isStatic={true} />
+              <MakeDifferenceButton />
             </div>
 
             {/* Right: Shop & Cart */}
             <div className="flex items-center gap-3 flex-shrink-0 z-50">
-              <ShopButton isStatic={true} />
-              <CartButton isStatic={true} />
+              <ShopButton />
+              <CartButton />
             </div>
 
           </div>
         </header>
         {/* Spacer to prevent content from going behind fixed header */}
-        <div className="h-28" aria-hidden="true" />
+        <div className="h-20" aria-hidden="true" />
 
         <MenuOverlay isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
