@@ -14,7 +14,7 @@ interface Carousel3DProps {
 
 export default function Carousel3D({
     children,
-    rotateSpeed = 25,
+    rotateSpeed = 10,
     pauseOnHover = true,
     translateZ = 400,
     itemWidth = 350,
