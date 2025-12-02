@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from 'react'
+import { useRef, useState, useMemo, useCallback, startTransition } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -23,6 +23,8 @@ export default function Satellite({
 }: SatelliteProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const [hovered, setHovered] = useState(false)
+  const [labelHovered, setLabelHovered] = useState(false)
+  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 })
 
   // Calculate position on sphere (radius 1.02 to match globe scale 1.04)
   const globeRadius = 1.02
@@ -31,6 +33,67 @@ export default function Satellite({
   const satellitePos = useMemo(() => {
     return latLonToVector3(position.lat, position.lon, globeRadius)
   }, [position.lat, position.lon, globeRadius])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const mouseX = (e.clientX - rect.left) / rect.width
+    const mouseY = (e.clientY - rect.top) / rect.height
+    startTransition(() => {
+      setMouse({
+        x: Math.max(0, Math.min(1, mouseX)),
+        y: Math.max(0, Math.min(1, mouseY))
+      })
+    })
+  }, [])
+
+  // Glassy effect styles
+  const highlightStyle = useMemo(() => {
+    const dx = mouse.x - 0.5
+    const dy = mouse.y - 0.5
+    const offsetX = dx * (labelHovered ? 28 : 16)
+    const offsetY = dy * (labelHovered ? 28 : 16)
+
+    return {
+      position: 'absolute' as const,
+      left: `calc(50% + ${offsetX}px)`,
+      top: `calc(50% + ${offsetY + (labelHovered ? -4 : 0)}px)`,
+      width: labelHovered ? '74%' : '60%',
+      height: labelHovered ? '42%' : '30%',
+      background: labelHovered
+        ? 'linear-gradient(120deg, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.18) 100%)'
+        : 'linear-gradient(120deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.12) 100%)',
+      borderRadius: '50%',
+      filter: `blur(${labelHovered ? 22 : 14}px)`,
+      opacity: labelHovered ? 0.82 : 0.5,
+      pointerEvents: 'none' as const,
+      transform: `translate(-50%, -50%) scale(${labelHovered ? 1.13 : 1})${labelHovered ? ' translateY(-2.5px)' : ''}`,
+      transition: 'all 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+      zIndex: 2
+    }
+  }, [labelHovered, mouse])
+
+  const reflectionStyle = useMemo(() => {
+    const dx = mouse.x - 0.5
+    const dy = mouse.y - 0.5
+    const offsetX = dx * (labelHovered ? 16 : 8)
+    const offsetY = dy * (labelHovered ? 16 : 8)
+
+    return {
+      position: 'absolute' as const,
+      left: `calc(50% + ${offsetX}px)`,
+      top: `calc(50% + ${offsetY}px)`,
+      width: labelHovered ? '38%' : '30%',
+      height: labelHovered ? '18%' : '14%',
+      background: 'linear-gradient(120deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 100%)',
+      borderRadius: '50%',
+      filter: `blur(${labelHovered ? 10 : 7}px)`,
+      opacity: labelHovered ? 0.45 : 0.28,
+      pointerEvents: 'none' as const,
+      transform: `translate(-50%, -50%) scale(${labelHovered ? 1.12 : 1})${labelHovered ? ' translateY(-1px)' : ''}`,
+      transition: 'all 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+      zIndex: 1
+    }
+  }, [labelHovered, mouse])
 
   // Animate on hover
   useFrame(() => {
@@ -74,7 +137,7 @@ export default function Satellite({
 
         {/* Label - always visible */}
         <Html
-          position={[0, 0.35, 0]}
+          position={[0, label === 'One World' ? 0.35 : 0.15, 0]}
           center
           distanceFactor={5}
           zIndexRange={[100, 0]}
@@ -84,14 +147,58 @@ export default function Satellite({
           }}
         >
           <div
-            className="px-6 py-3 backdrop-blur-sm rounded-lg text-white text-sm whitespace-nowrap cursor-pointer hover:opacity-90 transition-all font-semibold shadow-lg"
-            style={{ backgroundColor: color }}
+            className="relative overflow-hidden cursor-pointer"
+            style={{
+              borderRadius: '16px',
+              background: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%), ${color}`,
+              border: '1.5px solid rgba(255, 255, 255, 0.22)',
+              boxShadow: labelHovered
+                ? '0 18px 48px 0 rgba(0, 0, 0, 0.18), 0 6px 24px 0 rgba(0, 0, 0, 0.12)'
+                : '0 6px 18px 0 rgba(0, 0, 0, 0.10)',
+              backdropFilter: 'blur(18px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(18px) saturate(1.2)',
+              transition: 'box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1), background 0.32s cubic-bezier(0.4, 0, 0.2, 1), transform 0.32s cubic-bezier(0.4, 0, 0.2, 1)',
+              transform: labelHovered ? 'translateY(-2px)' : 'translateY(0)'
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setLabelHovered(true)}
+            onMouseLeave={() => {
+              setLabelHovered(false)
+              setMouse({ x: 0.5, y: 0.5 })
+            }}
             onClick={(e) => {
               e.stopPropagation()
               onClick()
             }}
           >
-            {label}
+            {/* Glassy highlight effect */}
+            <div style={highlightStyle} />
+            <div style={reflectionStyle} />
+
+            {/* Inset border for depth */}
+            <div
+              style={{
+                pointerEvents: 'none',
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '16px',
+                border: '1.5px solid rgba(255,255,255,0.22)',
+                boxShadow: 'inset 0 1.5px 8px 0 rgba(255,255,255,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.06)',
+                zIndex: 4
+              }}
+            />
+
+            <div
+              className="relative whitespace-nowrap text-white text-xs font-semibold"
+              style={{
+                padding: '6px 16px',
+                zIndex: 3,
+                userSelect: 'none',
+                pointerEvents: 'none'
+              }}
+            >
+              {label}
+            </div>
           </div>
         </Html>
       </mesh>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useCart } from '../contexts/CartContext'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
+import GlassyButton from '../components/ui/GlassyButton'
 
 export default function Cart() {
     const { cart, removeFromCart, updateQuantity, cartTotal } = useCart()
@@ -19,9 +20,11 @@ export default function Cart() {
                     {cart.length === 0 ? (
                         <div className="text-center py-20">
                             <p className="text-xl text-gray-500 mb-8">Your cart is empty.</p>
-                            <Link to="/shop" className="px-12 py-4 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors">
-                                Continue Shopping
-                            </Link>
+                            <GlassyButton
+                                label="Continue Shopping"
+                                to="/shop"
+                                variant="primary"
+                            />
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -97,12 +100,14 @@ export default function Cart() {
                                         </div>
                                     </div>
 
-                                    <button
-                                        onClick={() => navigate('/checkout')}
-                                        className="w-full py-4 bg-black text-white rounded-full font-bold hover:bg-gray-800 transition-colors"
-                                    >
-                                        Proceed to Checkout
-                                    </button>
+                                    <div className="w-full">
+                                        <GlassyButton
+                                            label="Proceed to Checkout"
+                                            onClick={() => navigate('/checkout')}
+                                            variant="primary"
+                                            className="w-full"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

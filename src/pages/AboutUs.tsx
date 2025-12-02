@@ -108,7 +108,7 @@ export default function AboutUs() {
                 <div className="text-center pt-8">
                   <a
                     href="/shop"
-                    className="inline-block px-10 py-4 bg-white text-black rounded-full font-semibold text-lg hover:bg-gray-200 transition-colors"
+                    className="inline-block px-14 py-5 bg-white text-black rounded-full font-semibold text-lg hover:bg-gray-200 transition-colors"
                   >
                     Shop Now
                   </a>

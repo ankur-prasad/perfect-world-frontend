@@ -81,7 +81,7 @@ export default function ProductDetail() {
             <h1 className="text-4xl font-bold text-white mb-4">{error || 'Product Not Found'}</h1>
             <button
               onClick={() => navigate('/shop')}
-              className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
+              className="px-16 py-5 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
             >
               Back to Shop
             </button>

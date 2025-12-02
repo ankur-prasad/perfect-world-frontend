@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigation } from '../../contexts/NavigationContext'
 import { useCart } from '../../contexts/CartContext'
 import CartDrawer from '../Cart/CartDrawer'
+import GlassyButton from '../ui/GlassyButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -115,94 +116,88 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   }, [enableScrollAnimations])
 
   // Common Components
-  const MenuButton = ({ isStatic = false }) => (
-    <button
-      onClick={toggleMenu}
-      className={`rounded-full transition-colors font-semibold flex items-center gap-3 ${isStatic ? 'px-6 py-2 text-base' : 'px-12 py-4 text-lg'
-        } ${isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)
-          ? 'bg-white/10 text-white hover:bg-white/20'
-          : 'bg-gray-100 text-black hover:bg-gray-200'
-        }`}
-    >
-      <div className="relative w-4 h-4 flex flex-col justify-center items-center">
-        <motion.span
-          animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 0 : -5 }}
-          className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent) ? 'bg-white' : 'bg-black'
-            }`}
-        />
-        <motion.span
-          animate={{ opacity: isMenuOpen ? 0 : 1 }}
-          className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent) ? 'bg-white' : 'bg-black'
-            }`}
-        />
-        <motion.span
-          animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? 0 : 5 }}
-          className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent) ? 'bg-white' : 'bg-black'
-            }`}
-        />
-      </div>
-      <span>{isMenuOpen ? 'Close' : 'Menu'}</span>
-    </button>
-  )
+  const MenuButton = ({ isStatic = false }) => {
+    const iconColor = (isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)) ? 'bg-white' : 'bg-black'
+
+    return (
+      <GlassyButton
+        onClick={toggleMenu}
+        variant={(isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)) ? 'light' : 'secondary'}
+        borderRadius={isStatic ? 12 : 16}
+        textColor={isDarkContent ? '#000000' : '#ffffff'}
+      >
+        <div className="flex items-center gap-3">
+          <div className="relative w-4 h-4 flex flex-col justify-center items-center">
+            <motion.span
+              animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 0 : -5 }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+            />
+            <motion.span
+              animate={{ opacity: isMenuOpen ? 0 : 1 }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+            />
+            <motion.span
+              animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? 0 : 5 }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${iconColor}`}
+            />
+          </div>
+          <span>{isMenuOpen ? 'Close' : 'Menu'}</span>
+        </div>
+      </GlassyButton>
+    )
+  }
 
   const ShopButton = ({ isStatic = false }) => (
-    <Link
+    <GlassyButton
+      label="Shop"
       to="/shop"
-      className={`rounded-full transition-colors font-semibold ${isStatic ? 'px-6 py-2 text-base' : 'px-12 py-4 text-lg'
-        } ${isDarkContent
-          ? 'bg-gray-100 text-black hover:bg-gray-200'
-          : 'bg-white/10 text-white hover:bg-white/20'
-        }`}
-    >
-      Shop
-    </Link>
+      variant={isDarkContent ? 'secondary' : 'light'}
+      borderRadius={isStatic ? 12 : 16}
+      textColor={isDarkContent ? '#000000' : '#ffffff'}
+    />
   )
 
   const CartButton = ({ isStatic = false }) => (
-    <button
-      onClick={() => setIsCartOpen(true)}
-      className={`relative rounded-full transition-colors font-semibold flex items-center gap-3 ${isStatic ? 'px-6 py-2 text-base' : 'px-12 py-4 text-lg'
-        } ${isDarkContent
-          ? 'bg-black text-white hover:bg-gray-800'
-          : 'bg-white text-black hover:bg-gray-200'
-        }`}
-    >
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-      </svg>
-      Cart
+    <div className="relative">
+      <GlassyButton
+        onClick={() => setIsCartOpen(true)}
+        variant={isDarkContent ? 'primary' : 'light'}
+        borderRadius={isStatic ? 12 : 16}
+        textColor={isDarkContent ? '#000000' : '#ffffff'}
+      >
+        <div className="flex items-center gap-3">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          Cart
+        </div>
+      </GlassyButton>
       {cartCount > 0 && (
-        <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+        <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center z-50">
           {cartCount}
         </span>
       )}
-    </button>
+    </div>
   )
 
   const LearnMoreButton = ({ isStatic = false }) => (
-    <Link
+    <GlassyButton
+      label="Learn More"
       to="/projects"
-      className={`rounded-full transition-colors inline-block font-semibold ${isStatic ? 'px-6 py-2 text-base' : 'px-12 py-4 text-lg'
-        } ${isDarkContent
-          ? 'bg-gray-100 text-black hover:bg-gray-200'
-          : 'bg-white/10 text-white hover:bg-white/20'
-        }`}
-    >
-      Learn More
-    </Link>
+      variant={isDarkContent ? 'secondary' : 'light'}
+      borderRadius={isStatic ? 12 : 16}
+      textColor={isDarkContent ? '#000000' : '#ffffff'}
+    />
   )
 
   const MakeDifferenceButton = ({ isStatic = false }) => (
-    <Link
+    <GlassyButton
+      label="Make a Difference"
       to="/shop"
-      className={`rounded-full transition-colors inline-block font-semibold ${isStatic ? 'px-6 py-2 text-base' : 'px-12 py-4 text-lg'
-        } ${isDarkContent
-          ? 'bg-black text-white hover:bg-gray-800'
-          : 'bg-white text-black hover:bg-gray-200'
-        }`}
-    >
-      Make a Difference
-    </Link>
+      variant={isDarkContent ? 'primary' : 'light'}
+      borderRadius={isStatic ? 12 : 16}
+      textColor={isDarkContent ? '#000000' : '#ffffff'}
+    />
   )
 
   // Render for Static Header (Non-Home Pages)

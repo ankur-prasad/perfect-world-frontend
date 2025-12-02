@@ -7,6 +7,7 @@ import QuickViewModal from '../components/Product/QuickViewModal'
 import { projects } from '../data/projects'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
+import GlassyButton from '../components/ui/GlassyButton'
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name-asc'
 
@@ -280,12 +281,14 @@ export default function Shop() {
 
                   {/* Clear Filters */}
                   {activeFiltersCount > 0 && (
-                    <button
+                    <GlassyButton
+                      label={`Clear All (${activeFiltersCount})`}
                       onClick={handleClearFilters}
-                      className="px-12 py-4 bg-red-500/20 text-red-300 border border-red-500/30 rounded-full hover:bg-red-500/30 transition-colors font-semibold"
-                    >
-                      Clear All ({activeFiltersCount})
-                    </button>
+                      variant="secondary"
+                      background="rgba(239, 68, 68, 0.2)"
+                      hoverBackground="rgba(239, 68, 68, 0.3)"
+                      textColor="rgb(252, 165, 165)"
+                    />
                   )}
                 </div>
 
@@ -315,12 +318,11 @@ export default function Shop() {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Oops!</h3>
                   <p className="text-gray-400 mb-6">{error}</p>
-                  <button
+                  <GlassyButton
+                    label="Try Again"
                     onClick={() => window.location.reload()}
-                    className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
-                  >
-                    Try Again
-                  </button>
+                    variant="light"
+                  />
                 </div>
               )}
 

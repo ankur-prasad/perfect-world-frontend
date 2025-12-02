@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { useState, useEffect } from 'react'
+import GlassyButton from '../ui/GlassyButton'
 
 interface QuickViewModalProps {
   product: ShopifyProduct | null
@@ -168,14 +169,13 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
                 {/* Action Buttons */}
                 <div className="mt-auto space-y-3">
-                  <button
+                  <GlassyButton
                     onClick={handleAddToCart}
-                    disabled={!isAvailable || isAdding}
-                    className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
-                      isAvailable && !isAdding
-                        ? 'bg-white text-black hover:bg-gray-200'
-                        : 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                    }`}
+                    variant="light"
+                    className="w-full"
+                    background={!isAvailable || isAdding ? 'rgba(55, 65, 81, 0.5)' : undefined}
+                    hoverBackground={!isAvailable || isAdding ? 'rgba(55, 65, 81, 0.5)' : undefined}
+                    textColor={!isAvailable || isAdding ? 'rgb(107, 114, 128)' : undefined}
                   >
                     {isAdding ? (
                       <span className="flex items-center justify-center gap-2">
@@ -202,14 +202,17 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                     ) : (
                       'Add to Cart'
                     )}
-                  </button>
+                  </GlassyButton>
 
-                  <a
+                  <GlassyButton
                     href={`/product/${product.handle}`}
-                    className="block w-full py-4 rounded-xl font-bold text-lg text-center bg-white/10 text-white hover:bg-white/20 transition-colors"
+                    variant="primary"
+                    className="w-full"
+                    background="rgba(255, 255, 255, 0.1)"
+                    hoverBackground="rgba(255, 255, 255, 0.2)"
                   >
                     View Full Details
-                  </a>
+                  </GlassyButton>
                 </div>
               </div>
             </div>

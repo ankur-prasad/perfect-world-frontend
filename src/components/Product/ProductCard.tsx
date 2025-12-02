@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { useState } from 'react'
+import GlassyButton from '../ui/GlassyButton'
 
 interface ProductCardProps {
   product: ShopifyProduct
@@ -79,12 +80,13 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           {/* Quick View Button */}
           {onQuickView && (
-            <button
-              onClick={handleQuickView}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 bg-white text-black rounded-full font-semibold hover:bg-gray-100 transition-colors opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-90 transition-all duration-300"
-            >
-              Quick View
-            </button>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-90 transition-all duration-300">
+              <GlassyButton
+                label="Quick View"
+                onClick={handleQuickView}
+                variant="light"
+              />
+            </div>
           )}
         </div>
 
@@ -122,15 +124,12 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
             {formattedPrice}
           </span>
 
-          <button
+          <GlassyButton
             onClick={handleAddToCart}
-            disabled={!isAvailable || isAdding}
-            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${isAvailable && !isAdding
-                ? isLightMode
-                  ? 'bg-black text-white hover:bg-gray-800'
-                  : 'bg-white text-black hover:bg-gray-200'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-              }`}
+            variant={isLightMode ? 'dark' : 'light'}
+            background={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
+            hoverBackground={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
+            textColor={!isAvailable || isAdding ? 'rgb(156, 163, 175)' : undefined}
           >
             {isAdding ? (
               <span className="flex items-center gap-2">
@@ -157,7 +156,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
             ) : (
               'Add to Cart'
             )}
-          </button>
+          </GlassyButton>
         </div>
       </div>
     </motion.div>

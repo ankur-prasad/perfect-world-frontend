@@ -106,13 +106,13 @@ export default function OrderSuccess() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             to="/shop"
-                            className="px-8 py-4 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors"
+                            className="px-12 py-5 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors"
                         >
                             Continue Shopping
                         </Link>
                         <Link
                             to="/projects"
-                            className="px-8 py-4 bg-gray-100 text-black rounded-full font-semibold hover:bg-gray-200 transition-colors"
+                            className="px-12 py-5 bg-gray-100 text-black rounded-full font-semibold hover:bg-gray-200 transition-colors"
                         >
                             Explore Our Projects
                         </Link>

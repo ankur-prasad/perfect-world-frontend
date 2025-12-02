@@ -105,7 +105,7 @@ export default function Transparency() {
                 </p>
                 <a
                   href="mailto:transparency@perfectworld.global"
-                  className="inline-block px-8 py-4 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition-colors"
+                  className="inline-block px-12 py-5 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition-colors"
                 >
                   Contact Us
                 </a>

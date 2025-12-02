@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../../contexts/CartContext'
 import { useState } from 'react'
 import { createCheckout } from '../../utils/shopify'
+import GlassyButton from '../ui/GlassyButton'
 
 interface CartDrawerProps {
   isOpen: boolean
@@ -142,12 +143,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">Your cart is empty</h3>
                   <p className="text-gray-400 mb-8">Add some products to get started</p>
-                  <button
+                  <GlassyButton
+                    label="Continue Shopping"
                     onClick={onClose}
-                    className="px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-200 transition-colors"
-                  >
-                    Continue Shopping
-                  </button>
+                    variant="light"
+                  />
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -275,12 +275,14 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 </button>
 
                 {/* Continue Shopping */}
-                <button
+                <GlassyButton
+                  label="Continue Shopping"
                   onClick={onClose}
-                  className="w-full py-4 rounded-2xl font-bold text-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
-                >
-                  Continue Shopping
-                </button>
+                  variant="primary"
+                  className="w-full"
+                  background="rgba(255, 255, 255, 0.1)"
+                  hoverBackground="rgba(255, 255, 255, 0.2)"
+                />
               </div>
             )}
           </motion.div>

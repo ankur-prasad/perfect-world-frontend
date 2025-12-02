@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import ProductGrid from '../components/Product/ProductGrid'
@@ -10,6 +9,7 @@ import { getProjectBySlug, projects } from '../data/projects'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { MeshGradient } from '@paper-design/shaders-react'
+import GlassyButton from '../components/ui/GlassyButton'
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -165,12 +165,11 @@ export default function ProjectPage() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Project Not Found</h1>
-          <button
+          <GlassyButton
+            label="Return Home"
             onClick={() => navigate('/')}
-            className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
-          >
-            Return Home
-          </button>
+            variant="light"
+          />
         </div>
       </div>
     )
@@ -197,50 +196,60 @@ export default function ProjectPage() {
         <div className="container mx-auto px-4 pt-8 pb-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* View Toggle */}
-            <div className="flex items-center bg-white/10 backdrop-blur-md rounded-full p-1">
-              <button
+            <div className="flex items-center bg-white/10 backdrop-blur-md rounded-full p-1 gap-1">
+              <GlassyButton
+                label="Mission"
                 onClick={() => setView('mission')}
-                className={`px-8 py-3 rounded-full transition-all duration-300 font-semibold ${view === 'mission'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
-                  }`}
-              >
-                Mission
-              </button>
-              <button
+                variant={view === 'mission' ? 'light' : 'dark'}
+                background={view === 'mission' ? undefined : 'rgba(255, 255, 255, 0.05)'}
+                hoverBackground={view === 'mission' ? undefined : 'rgba(255, 255, 255, 0.1)'}
+                borderRadius={24}
+                blur={view === 'mission' ? 18 : 8}
+              />
+              <GlassyButton
+                label="Shop"
                 onClick={() => setView('shop')}
-                className={`px-8 py-3 rounded-full transition-all duration-300 font-semibold ${view === 'shop'
-                  ? 'bg-white text-black shadow-lg'
-                  : 'text-white hover:bg-white/10'
-                  }`}
-              >
-                Shop
-              </button>
+                variant={view === 'shop' ? 'light' : 'dark'}
+                background={view === 'shop' ? undefined : 'rgba(255, 255, 255, 0.05)'}
+                hoverBackground={view === 'shop' ? undefined : 'rgba(255, 255, 255, 0.1)'}
+                borderRadius={24}
+                blur={view === 'shop' ? 18 : 8}
+              />
             </div>
 
             {/* Project Navigation */}
             <div className="flex items-center gap-4">
-              <button
+              <GlassyButton
                 onClick={() => navigate(`/project/${prevProject.slug}`)}
-                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors backdrop-blur-md border border-white/10"
+                variant="dark"
+                background="rgba(255, 255, 255, 0.05)"
+                hoverBackground="rgba(255, 255, 255, 0.1)"
+                borderRadius={24}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                <span className="hidden md:inline">Prev Project</span>
-              </button>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="hidden md:inline">Prev Project</span>
+                </div>
+              </GlassyButton>
 
               <div className="h-8 w-[1px] bg-white/20 hidden md:block" />
 
-              <button
+              <GlassyButton
                 onClick={() => navigate(`/project/${nextProject.slug}`)}
-                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors backdrop-blur-md border border-white/10"
+                variant="dark"
+                background="rgba(255, 255, 255, 0.05)"
+                hoverBackground="rgba(255, 255, 255, 0.1)"
+                borderRadius={24}
               >
-                <span className="hidden md:inline">Next Project</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+                <div className="flex items-center gap-2">
+                  <span className="hidden md:inline">Next Project</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </GlassyButton>
             </div>
           </div>
         </div>
@@ -312,12 +321,11 @@ export default function ProjectPage() {
 
             {/* CTA */}
             <div className="text-center py-16">
-              <button
+              <GlassyButton
+                label="Support This Cause - Shop Collection"
                 onClick={() => setView('shop')}
-                className="px-12 py-5 bg-white text-black rounded-full font-semibold text-xl hover:bg-gray-200 transition-colors"
-              >
-                Support This Cause - Shop Collection
-              </button>
+                variant="light"
+              />
             </div>
           </div>
         ) : (

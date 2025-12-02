@@ -11,6 +11,7 @@ import { useNavigation } from '../contexts/NavigationContext'
 import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
 import MainVideo from '../components/Home/MainVideo'
+import GlassyButton from '../components/ui/GlassyButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -263,25 +264,25 @@ export default function Home() {
                       {project.description}
                     </p>
 
-                    <div className="flex gap-3 mt-auto">
-                      <button
+                    <div className="flex flex-col gap-4 mt-auto w-full items-center">
+                      <GlassyButton
+                        label="Learn More"
+                        variant="secondary"
+                        textColor={bgLightness > 50 ? '#000000' : '#ffffff'}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleSatelliteClick(project.slug);
                         }}
-                        className="px-12 py-4 rounded-full bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors text-lg"
-                      >
-                        Learn More
-                      </button>
-                      <button
+                      />
+                      <GlassyButton
+                        label="Make a Difference"
+                        variant="primary"
+                        textColor={bgLightness > 50 ? '#000000' : '#ffffff'}
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate('/shop');
                         }}
-                        className="px-12 py-4 rounded-full bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-lg"
-                      >
-                        Shop Collection
-                      </button>
+                      />
                     </div>
                   </div>
                 </div>
