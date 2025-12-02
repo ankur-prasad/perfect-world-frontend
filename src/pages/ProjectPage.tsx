@@ -190,8 +190,8 @@ export default function ProjectPage() {
                       key={index}
                       onClick={() => navigate(`/project/${projects[index].slug}`)}
                       className={`w-2 h-2 rounded-full transition-all ${index === currentProjectIndex
-                          ? 'bg-white w-3 h-3'
-                          : 'bg-white/30 hover:bg-white/50'
+                        ? 'bg-white w-3 h-3'
+                        : 'bg-white/30 hover:bg-white/50'
                         }`}
                     />
                   ))}

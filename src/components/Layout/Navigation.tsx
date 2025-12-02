@@ -57,7 +57,9 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       gsap.fromTo([
         aboutUsRef.current?.querySelector('a'),
         transparencyRef.current?.querySelector('a'),
-        menuRef.current?.querySelector('button')
+        menuRef.current?.querySelector('button'),
+        shopRef.current?.querySelector('a'), // Shop button
+        shopRef.current?.querySelector('button') // Cart button
       ],
         {
           fontSize: '1.125rem', // Start: text-lg
@@ -186,8 +188,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         <Link
           to="/shop"
           className={`px-12 py-4 rounded-full transition-colors text-lg font-semibold ${isDarkContent
-              ? 'bg-gray-100 text-black hover:bg-gray-200'
-              : 'bg-white/10 text-white hover:bg-white/20'
+            ? 'bg-gray-100 text-black hover:bg-gray-200'
+            : 'bg-white/10 text-white hover:bg-white/20'
             }`}
         >
           Shop
