@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import ProductCard from '../components/Product/ProductCard'
 import { getProduct, getCollectionProducts } from '../utils/shopify'
@@ -67,7 +66,6 @@ export default function ProductDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-        <Header />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-white text-2xl">Loading...</div>
         </div>
@@ -78,7 +76,6 @@ export default function ProductDetail() {
   if (error || !product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-        <Header />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-white mb-4">{error || 'Product Not Found'}</h1>
@@ -137,7 +134,6 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-      <Header />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">

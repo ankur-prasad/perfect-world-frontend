@@ -1,74 +1,111 @@
 import { motion } from 'framer-motion'
-import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 
 export default function AboutUs() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-      <Header />
       <Navigation />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
-          <div className="w-full max-w-[1200px]">
+          <div className="w-full max-w-[900px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className="space-y-8 md:space-y-10"
             >
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-16 text-center">About Us</h1>
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-12 text-center">About Us</h1>
 
-              <div className="space-y-12 md:space-y-16">
-                <p className="text-xl md:text-2xl text-gray-300 leading-loose text-center max-w-4xl mx-auto">
-                  Together. Not Alone. More than a slogan, it's a Promise for Change and Improvement.
+              <div className="prose prose-invert prose-lg md:prose-xl max-w-none">
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  You care.
                 </p>
 
-                <div className="bg-white/5 rounded-2xl p-8 md:p-10 lg:p-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-                    All Profits Donated
-                  </h2>
-                  <p className="text-lg md:text-xl text-gray-300 leading-loose text-center">
-                    A Brand built on creating tangible hope. With 100% of profits donated, Perfect
-                    World exists to help, not to exploit.
-                  </p>
-                </div>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  You see what's happening in the world — the hurt, the chaos, the things that shouldn't be normal.
+                </p>
 
-                <div className="bg-white/5 rounded-2xl p-8 md:p-10 lg:p-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-                    Fashion as a Tool
-                  </h2>
-                  <p className="text-lg md:text-xl text-gray-300 leading-loose text-center">
-                    We believe in the power fashion holds to make a Statement. Giving you a voice,
-                    while simultaneously aiding and supporting charities on the forefront of our
-                    global challenges.
-                  </p>
-                </div>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  And maybe sometimes you feel powerless, because… where do you even start?
+                </p>
 
-                <div className="bg-white/5 rounded-2xl p-8 md:p-10 lg:p-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-                    Why We Exist
-                  </h2>
-                  <p className="text-lg md:text-xl text-gray-300 leading-loose text-center">
-                    Perfect World is a brand built to create tangible hope and make a real difference
-                    by supporting partner charities tackling our biggest global challenges.
-                  </p>
-                </div>
+                <p className="text-white font-semibold text-xl md:text-2xl leading-relaxed my-8">
+                  Perfect World exists for exactly that moment.
+                </p>
 
-                <div className="bg-white/5 rounded-2xl p-8 md:p-10 lg:p-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-                    Together. Not Alone.
-                  </h2>
-                  <p className="text-lg md:text-xl text-gray-300 leading-loose text-center">
-                    More than a slogan, it's our promise for change and improvement. Join the
-                    movement and help us create hope.
-                  </p>
-                </div>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Here, what you buy becomes something meaningful.
+                </p>
 
-                <div className="text-center pt-12">
-                  <p className="text-2xl md:text-3xl text-white font-semibold mb-8">
-                    Join us in making a difference.
-                  </p>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Here, your hoodie supports mental health.<br />
+                  Your t-shirt protects elephants.<br />
+                  Your purchase helps plant trees and supports kids in crisis areas.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Because 100% of the profits go to NGOs.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Not as a marketing trick.<br />
+                  Not as "charity branding".
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  But because you deserve to live in a world where business isn't built on greed —<br />
+                  where your everyday choices can actually help someone else breathe a little easier.
+                </p>
+
+                <p className="text-white font-semibold text-xl md:text-2xl leading-relaxed my-8">
+                  You don't have to be perfect to make a difference.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  You just have to begin — with the things you already do.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  With the clothes you wear.<br />
+                  With the values you carry.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  Perfect World is here to give you a way to make that impact real.<br />
+                  To turn your voice into action.<br />
+                  To show that hope isn't naive —<br />
+                  hope is necessary.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  This isn't just clothing.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  This is you saying:<br />
+                  <span className="text-white italic">"I want my life to mean something good."</span>
+                </p>
+
+                <p className="text-white font-semibold text-xl md:text-2xl leading-relaxed my-8">
+                  Perfect World isn't a brand you buy from.<br />
+                  It's a movement you're part of.
+                </p>
+
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  A community built on honesty, compassion, and the belief that the world changes when you choose to care.
+                </p>
+
+                <p className="text-white font-bold text-2xl md:text-3xl leading-relaxed mt-12 mb-6">
+                  Welcome to Perfect World.
+                </p>
+
+                <p className="text-white font-bold text-2xl md:text-3xl leading-relaxed mb-12">
+                  Welcome to a better way of doing things.
+                </p>
+
+                <div className="text-center pt-8">
                   <a
                     href="/shop"
                     className="inline-block px-10 py-4 bg-white text-black rounded-full font-semibold text-lg hover:bg-gray-200 transition-colors"

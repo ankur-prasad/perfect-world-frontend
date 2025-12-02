@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import ProductGrid from '../components/Product/ProductGrid'
@@ -46,7 +45,7 @@ export default function Shop() {
                 allProducts.push(...taggedProducts)
               }
             } catch (err) {
-              console.warn(`Failed to fetch products for ${project.name} (${project.shopifyCollection.handle}):`, err)
+              console.warn(`Failed to fetch products for ${project.name}(${project.shopifyCollection.handle}): `, err)
             }
           }),
           // Fetch Embroidered Logo collection
@@ -169,7 +168,6 @@ export default function Shop() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
       <Navigation isDarkContent={true} />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">

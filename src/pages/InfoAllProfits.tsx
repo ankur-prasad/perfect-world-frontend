@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion'
-import Header from '../components/Layout/Header'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 
 export default function InfoAllProfits() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-      <Header />
       <Navigation />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
