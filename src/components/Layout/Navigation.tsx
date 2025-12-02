@@ -116,13 +116,13 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   }, [enableScrollAnimations])
 
   // Common Components
-  const MenuButton = ({ isStatic = false }) => {
-    const iconColor = (isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)) ? 'bg-white' : 'bg-black'
+  const MenuButton = () => {
+    const iconColor = (isMenuOpen || !isDarkContent) ? 'bg-white' : 'bg-black'
 
     return (
       <GlassyButton
         onClick={toggleMenu}
-        variant={(isMenuOpen || (!isDarkContent && !isStatic) || (isStatic && !isDarkContent)) ? 'light' : 'secondary'}
+        variant={(isMenuOpen || !isDarkContent) ? 'light' : 'secondary'}
         textColor={isDarkContent ? '#000000' : '#ffffff'}
       >
         <div className="relative w-4 h-4 flex flex-col justify-center items-center">
@@ -143,7 +143,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     )
   }
 
-  const ShopButton = ({ isStatic = false }) => (
+  const ShopButton = () => (
     <GlassyButton
       label="Shop"
       to="/shop"
@@ -152,7 +152,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     />
   )
 
-  const CartButton = ({ isStatic = false }) => (
+  const CartButton = () => (
     <div className="relative">
       <GlassyButton
         onClick={() => setIsCartOpen(true)}
@@ -171,7 +171,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     </div>
   )
 
-  const LearnMoreButton = ({ isStatic = false }) => (
+  const LearnMoreButton = () => (
     <GlassyButton
       label="Learn More"
       to="/projects"
@@ -180,7 +180,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     />
   )
 
-  const MakeDifferenceButton = ({ isStatic = false }) => (
+  const MakeDifferenceButton = () => (
     <GlassyButton
       label="Make a Difference"
       to="/shop"
