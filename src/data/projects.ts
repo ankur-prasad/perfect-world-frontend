@@ -34,8 +34,8 @@ export const projects: Project[] = [
       title: 'Endangered Oceans',
     },
     theme: {
-      primaryColor: '#0077BE',
-      secondaryColor: '#00A4CC',
+      primaryColor: '#005A8C',
+      secondaryColor: '#004D75',
     },
   },
   {
@@ -71,8 +71,8 @@ export const projects: Project[] = [
       title: 'One World',
     },
     theme: {
-      primaryColor: '#E74C3C',
-      secondaryColor: '#C0392B',
+      primaryColor: '#5DADE2',
+      secondaryColor: '#3498DB',
     },
   },
   {
@@ -108,8 +108,8 @@ export const projects: Project[] = [
       title: 'Talk About It',
     },
     theme: {
-      primaryColor: '#9B59B6',
-      secondaryColor: '#8E44AD',
+      primaryColor: '#FF8C42',
+      secondaryColor: '#FF7420',
     },
   },
   {
@@ -182,8 +182,8 @@ export const projects: Project[] = [
       title: 'Wild at Heart Collection',
     },
     theme: {
-      primaryColor: '#95A5A6',
-      secondaryColor: '#7F8C8D',
+      primaryColor: '#8B7D6B',
+      secondaryColor: '#6D5F4D',
     },
   },
 ]
