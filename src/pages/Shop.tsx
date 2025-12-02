@@ -9,6 +9,7 @@ import { projects } from '../data/projects'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import GlassyButton from '../components/ui/GlassyButton'
+import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name-asc'
 
@@ -209,8 +210,10 @@ export default function Shop() {
     <div className="min-h-screen bg-white">
       <Navigation isDarkContent={true} />
 
-      <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center">
+      <main className="pt-40 md:pt-48 pb-32">
+        <SustainabilityPromise />
+
+        <div className="px-4 sm:px-6 lg:px-8 flex justify-center">
           <div className="w-full max-w-[1200px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

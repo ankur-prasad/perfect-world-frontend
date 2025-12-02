@@ -281,31 +281,52 @@ export default function ProjectPage() {
           {view === 'mission' ? (
             <div className="space-y-32">
               <div className="text-center mb-24 py-12">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{project.tagline}</h2>
+                <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">{project.tagline}</h2>
+              </div>
+
+              {/* Video Section */}
+              <div className="w-full mb-24 rounded-2xl overflow-hidden shadow-2xl">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                  className="w-full h-auto"
+                  src={
+                    project.slug === 'endangered-oceans' ? '/assets/videos/endanger oceans vid.mp4' :
+                      project.slug === 'one-world' ? '/assets/videos/one world vid.mp4' :
+                        project.slug === 'talk-about-it' ? '/assets/videos/talk about it vid.mp4' :
+                          project.slug === 'cool-down' ? '/assets/videos/cool down vid.mp4' :
+                            ''
+                  }
+                >
+                  Your browser does not support the video tag.
+                </video>
               </div>
 
               {/* Problem */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-white mb-8">The Problem</h3>
-                <p className="text-gray-300 text-xl leading-relaxed">{project.mission.problem}</p>
+                <h3 className="text-4xl font-bold text-black mb-8">The Problem</h3>
+                <p className="text-black text-xl leading-relaxed">{project.mission.problem}</p>
               </div>
 
               {/* Solution */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-white mb-8">Our Solution</h3>
-                <p className="text-gray-300 text-xl leading-relaxed">{project.mission.solution}</p>
+                <h3 className="text-4xl font-bold text-black mb-8">Our Solution</h3>
+                <p className="text-black text-xl leading-relaxed">{project.mission.solution}</p>
               </div>
 
               {/* Impact */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[50vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-white mb-16 text-center">Impact</h3>
+                <h3 className="text-4xl font-bold text-black mb-16 text-center">Impact</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   {project.mission.impact.map((stat, index) => (
                     <div key={index} className="text-center">
                       <p className="text-6xl md:text-7xl font-bold mb-4" style={{ color: project.theme.primaryColor }}>
                         {stat.split(' ').slice(0, -1).join(' ')}
                       </p>
-                      <p className="text-gray-400 text-lg">{stat.split(' ').slice(-1)[0]}</p>
+                      <p className="text-black text-lg">{stat.split(' ').slice(-1)[0]}</p>
                     </div>
                   ))}
                 </div>
@@ -313,7 +334,7 @@ export default function ProjectPage() {
 
               {/* Partner Charity */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-white mb-12">Our Partner</h3>
+                <h3 className="text-4xl font-bold text-black mb-12">Our Partner</h3>
                 <div className="flex flex-col md:flex-row items-center gap-12">
                   <img
                     src={project.mission.partnerCharity.logo}
@@ -321,17 +342,17 @@ export default function ProjectPage() {
                     className="h-40 w-auto object-contain bg-white/5 rounded-xl p-8"
                   />
                   <div className="flex-1 text-center md:text-left">
-                    <h4 className="text-3xl font-semibold text-white mb-6">
+                    <h4 className="text-3xl font-semibold text-black mb-6">
                       {project.mission.partnerCharity.name}
                     </h4>
-                    <p className="text-gray-300 text-xl leading-relaxed mb-8">
+                    <p className="text-black text-xl leading-relaxed mb-8">
                       {project.mission.partnerCharity.description}
                     </p>
                     <a
                       href={project.mission.partnerCharity.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-semibold text-lg"
+                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-500 transition-colors font-semibold text-lg"
                     >
                       Visit Website
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
