@@ -1,5 +1,5 @@
 import { useEffect, Suspense, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -18,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { setIsScrolled } = useNavigation()
   const heroRef = useRef<HTMLElement>(null)
   const collectionsRef = useRef<HTMLElement>(null)
@@ -67,6 +68,17 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [setIsScrolled])
+
+  useEffect(() => {
+    if (location.hash === '#faq') {
+      const element = document.getElementById('faq')
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    }
+  }, [location])
 
 
   const handleSatelliteClick = (projectSlug: string) => {

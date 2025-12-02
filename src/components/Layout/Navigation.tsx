@@ -193,11 +193,11 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   if (!enableScrollAnimations) {
     return (
       <>
-        <header className="fixed top-0 left-0 right-0 z-50">
+        <header className="fixed top-0 left-0 right-0 z-[60]">
           <div className="h-20 px-6 flex items-center justify-between relative">
 
             {/* Left: Menu */}
-            <div className="flex-shrink-0 z-50">
+            <div className="flex-shrink-0 z-[60]">
               <MenuButton />
             </div>
 
@@ -246,7 +246,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <Link to="/">
           <img
             ref={logoRef}
-            src={isDarkContent ? "/assets/LOGOS/perfect-world-logo-black.png" : "/assets/LOGOS/perfect-world-logo-white.png"}
+            src={isDarkContent ? "/assets/logos/perfect-world-logo-black.png" : "/assets/logos/perfect-world-logo-white.png"}
             alt="Perfect World"
             className="h-20 w-auto transition-all duration-300"
           />
@@ -325,6 +325,7 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
           { to: "/about", label: "About Us" },
           { to: "/shop", label: "Shop" },
           { to: "/transparency", label: "Transparency" },
+          { to: "/#faq", label: "FAQ" },
         ].map((item, index) => (
           <motion.div
             key={item.to}
@@ -344,8 +345,6 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
 
         {/* External Links */}
         {[
-          { href: "https://www.perfectworld.global/collections", label: "Projects" },
-          { href: "https://www.perfectworld.global/pages/faq", label: "FAQ" },
           { href: "https://www.perfectworld.global/pages/podcasts", label: "Podcasts" },
           { href: "https://www.perfectworld.global/pages/contact", label: "Contact" },
         ].map((item, index) => (

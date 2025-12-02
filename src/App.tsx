@@ -15,6 +15,7 @@ import ProjectSelection from './pages/ProjectSelection'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
+import Founders from './pages/Founders'
 
 import CookieConsent from './components/Layout/CookieConsent'
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/transparency" element={<Transparency />} />
+            <Route path="/founders" element={<Founders />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />

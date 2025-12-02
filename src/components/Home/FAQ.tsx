@@ -239,7 +239,7 @@ export default function FAQ() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     return (
-        <section className="min-h-screen bg-gray-50 text-black relative z-10 flex items-center py-20">
+        <section id="faq" className="min-h-screen bg-gray-50 text-black relative z-10 flex items-center py-20">
             <div className="flex justify-center w-full">
                 <div className="w-full px-4 max-w-[800px]">
                     <motion.h2
