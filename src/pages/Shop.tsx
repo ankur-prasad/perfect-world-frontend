@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
@@ -12,6 +13,7 @@ import GlassyButton from '../components/ui/GlassyButton'
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name-asc'
 
 export default function Shop() {
+  const [searchParams] = useSearchParams()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -21,6 +23,14 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState<SortOption>('featured')
   const [showAvailableOnly, setShowAvailableOnly] = useState(false)
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null)
+
+  // Check URL parameters for collection filter
+  useEffect(() => {
+    const collectionParam = searchParams.get('collection')
+    if (collectionParam) {
+      setSelectedCollection(collectionParam)
+    }
+  }, [searchParams])
 
   // Fetch all products from all collections
   useEffect(() => {
@@ -151,6 +161,34 @@ export default function Shop() {
 
     return filtered
   }, [products, searchQuery, selectedCollection, selectedPriceRange, sortBy, showAvailableOnly])
+
+  // Group products by collection for display
+  const productsByCollection = useMemo(() => {
+    if (selectedCollection !== 'all') {
+      // If a specific collection is selected, return all products in one group
+      return [{
+        collectionName: filteredAndSortedProducts[0]?.collectionName || 'Products',
+        collectionHandle: selectedCollection,
+        products: filteredAndSortedProducts
+      }]
+    }
+
+    // Group by collection handle
+    const grouped = filteredAndSortedProducts.reduce((acc, product) => {
+      const handle = product.collectionHandle || 'other'
+      if (!acc[handle]) {
+        acc[handle] = {
+          collectionName: product.collectionName || 'Other',
+          collectionHandle: handle,
+          products: []
+        }
+      }
+      acc[handle].products.push(product)
+      return acc
+    }, {} as Record<string, { collectionName: string; collectionHandle: string; products: ShopifyProduct[] }>)
+
+    return Object.values(grouped)
+  }, [filteredAndSortedProducts, selectedCollection])
 
   const handleClearFilters = () => {
     setSearchQuery('')
@@ -326,14 +364,32 @@ export default function Shop() {
                 </div>
               )}
 
-              {/* Product Grid */}
+              {/* Product Grid - Organized by Collection */}
               {!error && (
-                <ProductGrid
-                  products={filteredAndSortedProducts}
-                  loading={loading}
-                  onQuickView={setQuickViewProduct}
-                  isLightMode={true}
-                />
+                <div className="space-y-16">
+                  {productsByCollection.map((collection) => (
+                    <div key={collection.collectionHandle}>
+                      {/* Collection Header - only show when viewing all collections */}
+                      {selectedCollection === 'all' && (
+                        <motion.h2
+                          className="text-3xl md:text-4xl font-bold text-gray-900 mb-8"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                        >
+                          {collection.collectionName}
+                        </motion.h2>
+                      )}
+
+                      <ProductGrid
+                        products={collection.products}
+                        loading={loading}
+                        onQuickView={setQuickViewProduct}
+                        isLightMode={true}
+                      />
+                    </div>
+                  ))}
+                </div>
               )}
             </motion.div>
           </div>

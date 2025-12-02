@@ -7,6 +7,7 @@ import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
 import Scene from '../components/3D/Scene'
 import MonochromeOverlay from '../components/ui/MonochromeOverlay'
+import Carousel3D from '../components/Carousel3D'
 import { useNavigation } from '../contexts/NavigationContext'
 import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
@@ -174,12 +175,11 @@ export default function Home() {
 
 
 
-      {/* Collections Section with Glowing Cards */}
-      <section ref={collectionsRef} className="relative min-h-screen py-32 pb-32 bg-transparent z-10">
-        <div className="container mx-auto px-4 max-w-[1600px] w-full relative z-10">
+      {/* Collections Section with 3D Carousel */}
+      <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '8rem' }}>
+        <div className="w-full relative z-10 flex flex-col items-center">
           <motion.h2
-            className={`text-5xl md:text-6xl font-bold text-center mb-[280px] ${textColor}`}
-            style={{ marginBottom: '100px' }}
+            className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -187,107 +187,77 @@ export default function Home() {
             Our Collections
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-            {[
-              {
-                name: 'SECORE International',
-                slug: 'secore-international',
-                description: 'Restoring coral reefs and marine ecosystems worldwide',
-                image: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=2560&auto=format&fit=crop',
-                color: '#0077BE'
-              },
-              {
-                name: 'Care in Action',
-                slug: 'care-in-action',
-                description: 'Supporting humanitarian relief and development',
-                image: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2560&auto=format&fit=crop',
-                color: '#E74C3C'
-              },
-              {
-                name: 'Talk About It',
-                slug: 'mental-health-initiative',
-                description: 'Breaking the stigma around mental health',
-                image: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2560&auto=format&fit=crop',
-                color: '#9B59B6'
-              },
-              {
-                name: 'Plant-For-The-Planet',
-                slug: 'plant-for-the-planet',
-                description: 'Fighting climate change through reforestation',
-                image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2560&auto=format&fit=crop',
-                color: '#27AE60'
-              },
-              {
-                name: 'Wild at Heart',
-                slug: 'wild-at-heart',
-                description: 'Protecting endangered elephant populations',
-                image: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
-                color: '#95A5A6'
-              },
-              {
-                name: 'Support All',
-                slug: 'support-all',
-                description: 'Support all our initiatives with the Embroidered Collection',
-                image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2560&auto=format&fit=crop',
-                color: '#ffffff'
-              },
-            ].map((project, index) => (
-              <motion.div
-                key={project.slug}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group cursor-pointer w-full max-w-sm h-full"
-                onClick={() => handleSatelliteClick(project.slug)}
-              >
-                <div className="relative rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100 transform hover:-translate-y-2">
-
-                  {/* Full Bleed Image */}
-                  <div className="relative w-full aspect-[4/3] overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
-
-                    {/* Overlay Text on Image (Optional, or keep it below) - Let's keep it clean and put text below */}
-                  </div>
-
-                  <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                      {project.name}
-                    </h3>
-
-                    <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-col gap-4 mt-auto w-full items-center">
-                      <GlassyButton
-                        label="Learn More"
-                        variant="secondary"
-                        textColor={bgLightness > 50 ? '#000000' : '#ffffff'}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSatelliteClick(project.slug);
-                        }}
-                      />
-                      <GlassyButton
-                        label="Make a Difference"
-                        variant="primary"
-                        textColor={bgLightness > 50 ? '#000000' : '#ffffff'}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate('/shop');
-                        }}
-                      />
-                    </div>
-                  </div>
+          <div className="w-full max-w-5xl" style={{ height: '600px' }}>
+            <Carousel3D
+              rotateSpeed={25}
+              pauseOnHover={true}
+              translateZ={400}
+              itemWidth={340}
+              itemHeight={340}
+              borderRadius={12}
+              showBackface={true}
+            >
+              {[
+                {
+                  name: 'SECORE International',
+                  collectionHandle: 'endangered-oceans',
+                  image: '/assets/images/endangered oceans back.jpg',
+                },
+                {
+                  name: 'Care in Action',
+                  collectionHandle: 'one-world',
+                  image: '/assets/images/one world back.jpg',
+                },
+                {
+                  name: 'Talk About It',
+                  collectionHandle: 'talk-about-it',
+                  image: '/assets/images/talk about it back.jpg',
+                },
+                {
+                  name: 'Plant-For-The-Planet',
+                  collectionHandle: 'cool-down',
+                  image: '/assets/images/cool down green tshirt back.jpg',
+                },
+                {
+                  name: 'Wild at Heart',
+                  collectionHandle: 'wild-at-heart',
+                  image: '/assets/images/wild at heart back.jpg',
+                },
+                {
+                  name: 'Support All',
+                  collectionHandle: 'embroidered-logo',
+                  image: '/assets/images/embriodered front.jpg',
+                },
+              ].map((project) => (
+                <div
+                  key={project.collectionHandle}
+                  onClick={() => {
+                    // Only filter by collection if it has products loaded
+                    if (['endangered-oceans', 'one-world', 'talk-about-it'].includes(project.collectionHandle)) {
+                      navigate(`/shop?collection=${project.collectionHandle}`)
+                    } else {
+                      // Navigate to shop without filter for collections not yet in Shopify
+                      navigate('/shop')
+                    }
+                  }}
+                  className="w-full h-full cursor-pointer overflow-hidden transition-transform hover:scale-110"
+                  style={{ borderRadius: '12px' }}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-contain"
+                    style={{
+                      imageRendering: 'auto',
+                      WebkitBackfaceVisibility: 'hidden',
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
+                      WebkitTransform: 'translateZ(0)',
+                    }}
+                  />
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </Carousel3D>
           </div>
         </div>
       </section>

@@ -29,8 +29,8 @@ export const SCENE = {
   CAMERA_ZOOM_POSITION: { x: 0, y: 0.6, z: 2 },
   GLOBE_SEGMENTS: 64, // For desktop, reduce for mobile
   GLOBE_MOBILE_SEGMENTS: 32,
-  STAR_COUNT: 6000,
-  STAR_COUNT_MOBILE: 3000,
+  STAR_COUNT: 1875,
+  STAR_COUNT_MOBILE: 1000,
 }
 
 // Spacing system (8px base unit)
