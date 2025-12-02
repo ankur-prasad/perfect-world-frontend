@@ -11,9 +11,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 interface NavigationProps {
   isDarkContent?: boolean
+  enableScrollAnimations?: boolean
 }
 
-export default function Navigation({ isDarkContent = false }: NavigationProps) {
+export default function Navigation({ isDarkContent = false, enableScrollAnimations = false }: NavigationProps) {
   const { isMenuOpen, toggleMenu } = useNavigation()
   const { cartCount } = useCart()
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -24,6 +25,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
   const logoRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
+    // Only run scroll animations on home page
+    if (!enableScrollAnimations) return
     if (!aboutUsRef.current || !transparencyRef.current || !logoRef.current) return
 
     const ctx = gsap.context(() => {
@@ -109,9 +112,9 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [enableScrollAnimations])
 
-  return (
+  const navContent = (
     <>
       {/* Centered Logo */}
       <motion.div
@@ -199,8 +202,8 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         <button
           onClick={() => setIsCartOpen(true)}
           className={`relative px-12 py-4 rounded-full transition-colors text-lg font-semibold flex items-center gap-3 ${isDarkContent
-              ? 'bg-black text-white hover:bg-gray-800'
-              : 'bg-white text-black hover:bg-gray-200'
+            ? 'bg-black text-white hover:bg-gray-800'
+            : 'bg-white text-black hover:bg-gray-200'
             }`}
         >
           <svg
@@ -415,4 +418,22 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   )
+
+  // If scroll animations are disabled (non-home pages), wrap in a header
+  if (!enableScrollAnimations) {
+    return (
+      <>
+        <header className={`fixed top-0 left-0 right-0 z-50 ${isDarkContent ? 'bg-white border-b border-gray-200' : 'bg-gradient-to-b from-black/90 to-black/70 backdrop-blur-md border-b border-white/10'}`}>
+          <div className="h-24">
+            {navContent}
+          </div>
+        </header>
+        {/* Spacer to prevent content from going behind fixed header */}
+        <div className="h-24" aria-hidden="true" />
+      </>
+    )
+  }
+
+  // For home page with scroll animations, return nav without wrapper
+  return navContent
 }

@@ -81,7 +81,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen transition-colors duration-100 ease-out" style={{ backgroundColor }}>
-      <Navigation isDarkContent={bgLightness > 50} />
+      <Navigation isDarkContent={bgLightness > 50} enableScrollAnimations={true} />
 
       {/* Fixed 3D Scene - spans both hero and collections */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
