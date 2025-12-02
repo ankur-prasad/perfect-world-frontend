@@ -50,13 +50,17 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
 
       // Stage 1: Shrink the actual link elements inside as scroll progresses (0-250px scroll)
       // Explicitly animate FROM Big TO Small
-      gsap.fromTo([aboutUsRef.current?.querySelector('a'), transparencyRef.current?.querySelector('a')],
+      gsap.fromTo([
+        aboutUsRef.current?.querySelector('a'),
+        transparencyRef.current?.querySelector('a'),
+        menuRef.current?.querySelector('button')
+      ],
         {
           fontSize: '1.125rem', // Start: text-lg
-          paddingLeft: '2rem', // Start: px-8
-          paddingRight: '2rem',
-          paddingTop: '0.75rem', // Start: py-3
-          paddingBottom: '0.75rem',
+          paddingLeft: '3rem', // Start: px-12
+          paddingRight: '3rem',
+          paddingTop: '1rem', // Start: py-4
+          paddingBottom: '1rem',
         },
         {
           scrollTrigger: {
@@ -124,19 +128,45 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
       {/* Menu - Top Left */}
       <motion.div
         ref={menuRef}
-        className="fixed top-6 left-6 z-40"
+        className="fixed top-6 left-6 z-[60]" // Increased z-index to stay above overlay
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <button
           onClick={toggleMenu}
-          className={`px-12 py-4 rounded-full transition-colors text-lg font-semibold ${isDarkContent
-            ? 'bg-gray-100 text-black hover:bg-gray-200'
-            : 'bg-white/10 text-white hover:bg-white/20'
+          className={`px-12 py-4 rounded-full transition-colors text-lg font-semibold flex items-center gap-3 ${isMenuOpen || !isDarkContent
+            ? 'bg-white/10 text-white hover:bg-white/20'
+            : 'bg-gray-100 text-black hover:bg-gray-200'
             }`}
         >
-          Menu
+          {/* Hamburger / X Icon */}
+          <div className="relative w-4 h-4 flex flex-col justify-center items-center">
+            <motion.span
+              animate={{
+                rotate: isMenuOpen ? 45 : 0,
+                y: isMenuOpen ? 0 : -5,
+              }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || !isDarkContent ? 'bg-white' : 'bg-black'
+                }`}
+            />
+            <motion.span
+              animate={{
+                opacity: isMenuOpen ? 0 : 1
+              }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || !isDarkContent ? 'bg-white' : 'bg-black'
+                }`}
+            />
+            <motion.span
+              animate={{
+                rotate: isMenuOpen ? -45 : 0,
+                y: isMenuOpen ? 0 : 5,
+              }}
+              className={`absolute h-0.5 w-full rounded-full transition-colors ${isMenuOpen || !isDarkContent ? 'bg-white' : 'bg-black'
+                }`}
+            />
+          </div>
+          <span>{isMenuOpen ? 'Close' : 'Menu'}</span>
         </button>
       </motion.div>
 
@@ -199,12 +229,7 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         }}
         transition={{ duration: 0.4 }}
       >
-        <button
-          onClick={toggleMenu}
-          className="absolute top-6 right-6 text-white text-4xl hover:scale-110 transition-transform"
-        >
-          ×
-        </button>
+        {/* Close button removed (integrated into main menu button) */}
 
         <nav className="flex flex-col items-center gap-8">
           <motion.div

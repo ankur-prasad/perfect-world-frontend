@@ -254,7 +254,7 @@ export default function Home() {
                           e.stopPropagation();
                           handleSatelliteClick(project.slug);
                         }}
-                        className="flex-1 px-12 py-4 rounded-full bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors text-lg"
+                        className="px-12 py-4 rounded-full bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors text-lg"
                       >
                         Learn More
                       </button>
@@ -263,7 +263,7 @@ export default function Home() {
                           e.stopPropagation();
                           navigate('/shop');
                         }}
-                        className="flex-1 px-12 py-4 rounded-full bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-lg"
+                        className="px-12 py-4 rounded-full bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-lg"
                       >
                         Shop Collection
                       </button>

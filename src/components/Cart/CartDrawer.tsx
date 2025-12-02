@@ -14,27 +14,64 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   const handleCheckout = async () => {
+    if (cart.length === 0) {
+      setCheckoutError('Your cart is empty')
+      return
+    }
+
     setIsCheckingOut(true)
     setCheckoutError(null)
 
     try {
+      console.log('Cart items:', cart)
+
       // Convert cart items to Shopify checkout format
       const lineItems = cart.map((item) => ({
         variantId: item.variantId,
         quantity: item.quantity,
       }))
 
-      const checkout = await createCheckout(lineItems)
+      console.log('Line items for checkout:', lineItems)
+
+      // Extract unique project/collection names from cart items
+      const supportedProjects = [...new Set(
+        cart
+          .map(item => item.productId.split('/').pop()) // Extract product handle
+          .filter(Boolean)
+      )].join(', ')
+
+      // Create custom attributes for order tracking
+      const customAttributes = [
+        { key: 'Source', value: 'Perfect World Frontend' },
+        { key: 'Order Type', value: 'Charity Support' },
+      ]
+
+      // Add supported projects if available
+      if (supportedProjects) {
+        customAttributes.push({
+          key: 'Supported Projects',
+          value: supportedProjects
+        })
+      }
+
+      // Create checkout using Shopify API with custom attributes
+      const checkout = await createCheckout(lineItems, {
+        customAttributes,
+        note: 'Thank you for supporting our mission to make a difference!'
+      })
+
+      console.log('Checkout created:', checkout)
 
       if (checkout && checkout.webUrl) {
         // Redirect to Shopify checkout
         window.location.href = checkout.webUrl
       } else {
-        throw new Error('Failed to create checkout')
+        throw new Error('Checkout created but no webUrl returned')
       }
     } catch (error) {
-      console.error('Checkout error:', error)
-      setCheckoutError('Failed to proceed to checkout. Please try again.')
+      console.error('Checkout error details:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      setCheckoutError(`Failed to proceed to checkout: ${errorMessage}`)
       setIsCheckingOut(false)
     }
   }
@@ -207,11 +244,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
-                  className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${
-                    isCheckingOut
+                  className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${isCheckingOut
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       : 'bg-white text-black hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   {isCheckingOut ? (
                     <span className="flex items-center justify-center gap-3">

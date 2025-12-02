@@ -3,17 +3,17 @@ import { motion } from 'framer-motion';
 const slides = [
     {
         title: "All Profits Donated",
-        content: "We believe in radical generosity. 100% of our profits go directly to the projects you choose. No overhead, no hidden fees. Just pure impact.",
+        content: "A Brand built on creating tangible hope. With 100% of profits donated, Perfect World exists to help, not to exploit.",
         image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2070&auto=format&fit=crop"
     },
     {
         title: "Reason and Change",
-        content: "The world is facing unprecedented challenges. We exist to bridge the gap between awareness and action, empowering you to be the catalyst for the change you wish to see.",
+        content: "We want to make a statement—a statement that combines style with a call for urgent change on our planet. Perfect World is about more than clothing; it’s a movement that uses fashion to advocate for a better, more compassionate world. With each purchase, we invite our customers to make that same statement, to wear their values proudly, and to join us in raising awareness for causes that matter. We are glad you are here, reading this :) let's make a difference, together.",
         image: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop"
     },
     {
         title: "Fashion as a Tool",
-        content: "Clothing is more than just fabric; it's a statement. We use fashion as a vehicle to drive conversations, raise awareness, and fund tangible solutions for a better world.",
+        content: "We believe in the power fashion holds to make a Statement. Giving you a voice, while simultaneously aiding and supporting charities on the forefront of our global challenges.",
         image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop"
     }
 ];

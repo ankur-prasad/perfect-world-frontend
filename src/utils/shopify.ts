@@ -4,7 +4,6 @@ import type {
   ShopifyProduct,
   GraphQLCollectionResponse,
   GraphQLProductResponse,
-  GraphQLCheckoutResponse,
   GraphQLProductNode,
   GraphQLEdge,
   GraphQLImageNode,
@@ -201,39 +200,160 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
   }
 }
 
-// Create checkout
-export async function createCheckout(lineItems: Array<{ variantId: string; quantity: number }>) {
+// Create checkout using Cart API (2024-01+)
+export async function createCheckout(
+  lineItems: Array<{ variantId: string; quantity: number }>,
+  options?: {
+    email?: string
+    note?: string
+    customAttributes?: Array<{ key: string; value: string }>
+  }
+) {
   const query = `
-    mutation checkoutCreate($input: CheckoutCreateInput!) {
-      checkoutCreate(input: $input) {
-        checkout {
+    mutation cartCreate($input: CartInput!) {
+      cartCreate(input: $input) {
+        cart {
           id
-          webUrl
-          lineItems(first: 10) {
+          checkoutUrl
+          lines(first: 10) {
             edges {
               node {
                 id
-                title
                 quantity
-                variant {
-                  id
-                  title
-                  priceV2 {
-                    amount
-                    currencyCode
-                  }
-                  image {
-                    url
-                    altText
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    image {
+                      url
+                      altText
+                    }
+                    product {
+                      title
+                    }
                   }
                 }
               }
             }
           }
-          subtotalPriceV2 {
+          cost {
+            subtotalAmount {
+              amount
+              currencyCode
+            }
+            totalAmount {
+              amount
+              currencyCode
+            }
+          }
+        }
+        userErrors {
+          message
+          field
+        }
+      }
+    }
+  `
+
+  const input: any = {
+    lines: lineItems.map((item) => ({
+      merchandiseId: item.variantId,
+      quantity: item.quantity,
+    })),
+  }
+
+  // Add optional parameters if provided
+  if (options?.email) {
+    input.buyerIdentity = { email: options.email }
+  }
+  if (options?.note) {
+    input.note = options.note
+  }
+  if (options?.customAttributes && options.customAttributes.length > 0) {
+    input.attributes = options.customAttributes
+  }
+
+  const data = await shopifyFetch<any>(query, { input })
+
+  if (data.cartCreate.userErrors.length > 0) {
+    throw new Error(data.cartCreate.userErrors[0].message)
+  }
+
+  // Return in checkout-compatible format
+  return {
+    id: data.cartCreate.cart.id,
+    webUrl: data.cartCreate.cart.checkoutUrl,
+    lineItems: data.cartCreate.cart.lines,
+    subtotalPrice: data.cartCreate.cart.cost.subtotalAmount,
+  }
+}
+
+// Get cart by ID (replaces getCheckout for API 2024-01+)
+export async function getCheckout(cartId: string) {
+  const query = `
+    query getCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        checkoutUrl
+        createdAt
+        updatedAt
+        lines(first: 10) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  product {
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+        cost {
+          subtotalAmount {
             amount
             currencyCode
           }
+          totalAmount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  `
+
+  const data = await shopifyFetch<any>(query, { cartId })
+  return data.cart
+}
+
+// Associate customer to checkout (if you have customer accounts enabled)
+export async function associateCustomerToCheckout(
+  checkoutId: string,
+  customerAccessToken: string
+) {
+  const query = `
+    mutation checkoutCustomerAssociateV2($checkoutId: ID!, $customerAccessToken: String!) {
+      checkoutCustomerAssociateV2(
+        checkoutId: $checkoutId
+        customerAccessToken: $customerAccessToken
+      ) {
+        checkout {
+          id
+          webUrl
         }
         checkoutUserErrors {
           message
@@ -243,18 +363,15 @@ export async function createCheckout(lineItems: Array<{ variantId: string; quant
     }
   `
 
-  const data = await shopifyFetch<GraphQLCheckoutResponse>(query, {
-    input: {
-      lineItems: lineItems.map((item) => ({
-        variantId: item.variantId,
-        quantity: item.quantity,
-      })),
-    },
+  const data = await shopifyFetch<any>(query, {
+    checkoutId,
+    customerAccessToken,
   })
 
-  if (data.checkoutCreate.checkoutUserErrors.length > 0) {
-    throw new Error(data.checkoutCreate.checkoutUserErrors[0].message)
+  if (data.checkoutCustomerAssociateV2.checkoutUserErrors.length > 0) {
+    throw new Error(data.checkoutCustomerAssociateV2.checkoutUserErrors[0].message)
   }
 
-  return data.checkoutCreate.checkout
+  return data.checkoutCustomerAssociateV2.checkout
 }
+

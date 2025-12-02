@@ -14,6 +14,7 @@ import ComponentDemo from './pages/ComponentDemo'
 import ProjectSelection from './pages/ProjectSelection'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
+import OrderSuccess from './pages/OrderSuccess'
 
 import CookieConsent from './components/Layout/CookieConsent'
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/info/all-profits-donated" element={<InfoAllProfits />} />
             <Route path="/info/together-not-alone" element={<InfoTogether />} />
             <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />

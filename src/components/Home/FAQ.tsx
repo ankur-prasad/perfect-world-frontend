@@ -3,24 +3,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const faqs = [
     {
-        question: "How much of the profit is actually donated?",
-        answer: "100%. We are committed to total transparency. Every cent of profit from your purchase goes directly to the project associated with the item."
+        question: "How do you produce your clothing?",
+        answer: "At Perfect World, we use Stanley/Stella to produce our clothing. They are committed to 100% environmentally friendly practices and fair production methods. This means every piece is made with respect for both the planet and the people who make it, ensuring high-quality,sustainable, and ethical apparel."
     },
     {
-        question: "Where are your products made?",
-        answer: "We partner with ethical manufacturers who prioritize fair labor practices and sustainable production methods. Quality and conscience go hand in hand."
+        question: "Do you accept refunds?",
+        answer: "Due to all profits being donated as well as the product being printed on Demand for every purchase, refunds / exchanges are not possible. Please check the size chart carefully. In the case that your product is faulty, message support@perfectworld. global! thanks for your support!"
     },
     {
-        question: "Can I choose which project my money supports?",
-        answer: "Yes! Each collection is tied to a specific cause. By choosing a product from that collection, you are directly supporting that specific initiative."
+        question: "Can I cancel my order?",
+        answer: "Unfortunately, since we donate all profits and use a Print on Demand Service, the same rules as issuing refunds pertains. Please be sure of your purchase, and check the size charts on each individual product! We appreciate your support, but in the current stage of our brand, we are not able to issue cancellations or refunds."
     },
     {
-        question: "Is shipping sustainable?",
-        answer: "We strive to use plastic-free, recycled, and biodegradable packaging whenever possible. We are constantly working to minimize our carbon footprint."
+        question: "How can I get in touch with you?",
+        answer: "Our support email is support@perfectworld.global, for any questions or feedback please get in touch with us here :)"
     },
     {
-        question: "How can I get more involved?",
-        answer: "Beyond purchasing, you can spread the word, follow us on social media, or volunteer with our partner organizations. Every action counts."
+        question: "Where do you ship to?",
+        answer: "Since we use a Print on Demand service, we are able to ship everywhere internationally! Shipping will usually take 1-2 Weeks, depending on location."
+    },
+    {
+        question: "How do I know where my money will go, or if it is really donated?",
+        answer: "As our brand grows, so will our transparency page. This is where you will then be able to see all of our expenditures and donations. Rest assured, in the last year, we have all been working Pro Bono to assure that all profits are truly donated. We appreciate your support in our movement and want to be as transparent as possible."
     }
 ];
 
