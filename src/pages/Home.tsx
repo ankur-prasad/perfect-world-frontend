@@ -125,6 +125,21 @@ export default function Home() {
         </motion.div>
       )}
 
+      {/* Subtitle - Between tagline and scroll indicator */}
+      {showHeroText && (
+        <motion.div
+          className="fixed bottom-28 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <p className="text-white/80 text-sm tracking-widest uppercase font-bold">
+            More than a slogan, it's a Promise for Change and Improvement.
+          </p>
+        </motion.div>
+      )}
+
       {/* Scroll Indicator */}
       {showHeroText && (
         <motion.div

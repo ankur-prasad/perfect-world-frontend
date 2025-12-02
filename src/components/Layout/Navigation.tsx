@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigation } from '../../contexts/NavigationContext'
+import { useCart } from '../../contexts/CartContext'
+import CartDrawer from '../Cart/CartDrawer'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -13,6 +15,8 @@ interface NavigationProps {
 
 export default function Navigation({ isDarkContent = false }: NavigationProps) {
   const { isMenuOpen, toggleMenu } = useNavigation()
+  const { cartCount } = useCart()
+  const [isCartOpen, setIsCartOpen] = useState(false)
   const aboutUsRef = useRef<HTMLDivElement>(null)
   const shopRef = useRef<HTMLDivElement>(null)
   const transparencyRef = useRef<HTMLDivElement>(null)
@@ -170,14 +174,54 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
         </button>
       </motion.div>
 
-      {/* Empty div for animation target (was Shop - Top Right) */}
+      {/* Cart and Shop - Top Right */}
       <motion.div
         ref={shopRef}
-        className="fixed top-6 right-6 z-40 opacity-0 pointer-events-none"
+        className="fixed top-6 right-6 z-40 flex items-center gap-3"
         initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 0, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-      />
+      >
+        {/* Shop Button */}
+        <Link
+          to="/shop"
+          className={`px-12 py-4 rounded-full transition-colors text-lg font-semibold ${isDarkContent
+              ? 'bg-gray-100 text-black hover:bg-gray-200'
+              : 'bg-white/10 text-white hover:bg-white/20'
+            }`}
+        >
+          Shop
+        </Link>
+
+        {/* Cart Button */}
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className={`relative px-12 py-4 rounded-full transition-colors text-lg font-semibold flex items-center gap-3 ${isDarkContent
+              ? 'bg-black text-white hover:bg-gray-800'
+              : 'bg-white text-black hover:bg-gray-200'
+            }`}
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+            />
+          </svg>
+          Cart
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </motion.div>
 
       {/* Learn More - Middle Left (starts closer to center) */}
       <motion.div
@@ -364,6 +408,9 @@ export default function Navigation({ isDarkContent = false }: NavigationProps) {
           </motion.div>
         </nav>
       </motion.div>
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   )
 }
