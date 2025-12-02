@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 
