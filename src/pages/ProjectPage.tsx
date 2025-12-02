@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Footer from '../components/Layout/Footer'
+import Navigation from '../components/Layout/Navigation'
 import ProductGrid from '../components/Product/ProductGrid'
 import QuickViewModal from '../components/Product/QuickViewModal'
 import ScrollExpandMedia from '../components/ScrollExpandMedia'
@@ -74,129 +75,59 @@ export default function ProjectPage() {
         scrollToExpand="Scroll to explore"
         textBlend={false}
       >
-        {/* Header with Notch Design */}
-        <div className="fixed top-0 left-0 right-0 z-50">
-          {/* Main Header Bar */}
-          <div className="relative">
-            {/* Left Section with Border */}
-            <div className="absolute top-0 left-0 h-16 bg-black/80 backdrop-blur-md border-b border-white/10" style={{ width: 'calc(50% - 200px)', borderBottomRightRadius: '24px', borderRight: '1px solid rgba(255, 255, 255, 0.1)' }}>
-              <div className="relative h-full">
-                {/* Back Button - Left aligned */}
-                <div className="absolute left-6 top-1/2 -translate-y-1/2">
-                  <button
-                    onClick={() => navigate('/')}
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                  </button>
-                </div>
+        {/* Standard Navigation */}
+        <div className="relative z-50">
+          <Navigation isDarkContent={false} />
+        </div>
 
-                {/* Mission Button - Top Left (after back button) */}
-                <div className="absolute left-20 top-1/2 -translate-y-1/2">
-                  <button
-                    onClick={() => setView('mission')}
-                    className={`px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors font-semibold ${view === 'mission' ? 'bg-white/10' : ''
-                      }`}
-                  >
-                    Mission
-                  </button>
-                </div>
-              </div>
+        {/* Project Controls & Navigation */}
+        <div className="container mx-auto px-4 pt-8 pb-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            {/* View Toggle */}
+            <div className="flex items-center bg-white/10 backdrop-blur-md rounded-full p-1">
+              <button
+                onClick={() => setView('mission')}
+                className={`px-8 py-3 rounded-full transition-all duration-300 font-semibold ${view === 'mission'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
+                  }`}
+              >
+                Mission
+              </button>
+              <button
+                onClick={() => setView('shop')}
+                className={`px-8 py-3 rounded-full transition-all duration-300 font-semibold ${view === 'shop'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'text-white hover:bg-white/10'
+                  }`}
+              >
+                Shop
+              </button>
             </div>
 
-            {/* Right Section with Border */}
-            <div className="absolute top-0 right-0 h-16 bg-black/80 backdrop-blur-md border-b border-white/10" style={{ width: 'calc(50% - 200px)', borderBottomLeftRadius: '24px', borderLeft: '1px solid rgba(255, 255, 255, 0.1)' }}>
-              <div className="relative h-full">
-                {/* Shop Button - Top Right */}
-                <div className="absolute right-20 top-1/2 -translate-y-1/2">
-                  <button
-                    onClick={() => setView('shop')}
-                    className={`px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 transition-colors font-semibold ${view === 'shop' ? 'bg-white/10' : ''
-                      }`}
-                  >
-                    Shop
-                  </button>
-                </div>
+            {/* Project Navigation */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate(`/project/${prevProject.slug}`)}
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors backdrop-blur-md border border-white/10"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="hidden md:inline">Prev Project</span>
+              </button>
 
-                {/* Cart - Right aligned */}
-                <div className="absolute right-6 top-1/2 -translate-y-1/2">
-                  <button
-                    onClick={() => navigate('/cart')}
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors relative"
-                  >
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+              <div className="h-8 w-[1px] bg-white/20 hidden md:block" />
 
-            {/* Center Notch Section */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] bg-black/80 backdrop-blur-md border border-white/10 rounded-b-3xl pt-6 pb-6">
-              <div className="flex flex-col items-center justify-center gap-3">
-                {/* Perfect World Logo */}
-                <button
-                  onClick={() => {
-                    window.scrollTo(0, 0)
-                    navigate('/')
-                  }}
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <img
-                    src="/assets/LOGOS/perfect-world-logo-white.png"
-                    alt="Perfect World"
-                    className="h-12 w-auto mb-2"
-                  />
-                </button>
-
-                <span className="text-xs text-gray-400 whitespace-nowrap">in partnership with</span>
-
-                {/* Charity Logo with Arrows - Fixed width container */}
-                <div className="relative w-[200px] flex items-center justify-center my-2">
-                  {/* Left Arrow - Fixed position */}
-                  <button
-                    onClick={() => navigate(`/project/${prevProject.slug}`)}
-                    className="absolute left-[-60px] p-2 hover:bg-white/10 rounded-full transition-colors"
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-
-                  <img
-                    src={project.mission.partnerCharity.logo}
-                    alt={project.mission.partnerCharity.name}
-                    className="h-12 md:h-14 w-auto object-contain max-w-full"
-                  />
-
-                  {/* Right Arrow - Fixed position */}
-                  <button
-                    onClick={() => navigate(`/project/${nextProject.slug}`)}
-                    className="absolute right-[-60px] p-2 hover:bg-white/10 rounded-full transition-colors"
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Dot Indicators */}
-                <div className="flex items-center gap-2 mt-2">
-                  {projects.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => navigate(`/project/${projects[index].slug}`)}
-                      className={`w-2 h-2 rounded-full transition-all ${index === currentProjectIndex
-                        ? 'bg-white w-3 h-3'
-                        : 'bg-white/30 hover:bg-white/50'
-                        }`}
-                    />
-                  ))}
-                </div>
-              </div>
+              <button
+                onClick={() => navigate(`/project/${nextProject.slug}`)}
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors backdrop-blur-md border border-white/10"
+              >
+                <span className="hidden md:inline">Next Project</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
