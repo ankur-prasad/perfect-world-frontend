@@ -12,6 +12,8 @@ import { useNavigation } from '../contexts/NavigationContext'
 import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
 import MainVideo from '../components/Home/MainVideo'
+import { useTransitionStore } from '../stores/transitionStore'
+import { projects } from '../data/projects'
 
 
 gsap.registerPlugin(ScrollTrigger)
@@ -45,8 +47,8 @@ export default function Home() {
           setShowHeroText(progress < 0.15)
 
           // Calculate star trail progress during transition section
-          // Start trails when camera starts panning (at 30% of hero height)
-          const transitionStart = heroHeight * 0.3
+          // Start trails when buttons begin moving inward (at 250px scroll)
+          const transitionStart = 250
           // End transition slightly before the physical section ends to ensure full white background
           const transitionEnd = (heroHeight + transitionHeight) - 100
 
@@ -81,14 +83,34 @@ export default function Home() {
   }, [location])
 
 
-  const handleSatelliteClick = (projectSlug: string) => {
-    navigate(`/project/${projectSlug}`)
+  const handleSatelliteClick = (projectSlug: string, clickPosition: { x: number; y: number }) => {
+    const project = projects.find(p => p.slug === projectSlug)
+    if (!project) return
+
+    // Start transition with all data
+    useTransitionStore.getState().startTransition({
+      clickPosition,
+      color: project.theme.primaryColor,
+      gradientColors: [
+        project.theme.primaryColor,
+        '#ffffff',
+        project.theme.secondaryColor,
+        '#ffffff',
+        project.theme.primaryColor
+      ],
+      projectSlug
+    })
+
+    // Navigate after brief delay to allow animation to start
+    setTimeout(() => {
+      navigate(`/project/${projectSlug}`)
+    }, 200)
   }
 
   // Calculate background color based on transition progress
   // Interpolate from Black (#000000) to White (#FFFFFF)
-  // Start transition later (0.4) to let star trails build up and "create" the white
-  const bgLightness = Math.max(0, Math.min(100, (collectionsScrollProgress - 0.4) * 2 * 100))
+  // Start transition earlier (0.15) so background changes with star trails
+  const bgLightness = Math.max(0, Math.min(100, (collectionsScrollProgress - 0.15) * 1.5 * 100))
   const backgroundColor = `hsl(0, 0%, ${bgLightness}%)`
   // When background becomes white (lightness > 50), text should be black
   const textColor = bgLightness > 50 ? 'text-black' : 'text-white'
@@ -208,6 +230,14 @@ export default function Home() {
               itemHeight={340}
               borderRadius={12}
               showBackface={true}
+              labels={[
+                'SECORE International',
+                'Care in Action',
+                'Talk About It',
+                'Plant-For-The-Planet',
+                'Wild at Heart',
+                'Support All',
+              ]}
             >
               {[
                 {
@@ -218,7 +248,7 @@ export default function Home() {
                 {
                   name: 'Care in Action',
                   collectionHandle: 'one-world',
-                  image: '/assets/images/one world back.jpg',
+                  image: '/assets/images/hoodie back one world.jpg',
                 },
                 {
                   name: 'Talk About It',
@@ -228,7 +258,7 @@ export default function Home() {
                 {
                   name: 'Plant-For-The-Planet',
                   collectionHandle: 'cool-down',
-                  image: '/assets/images/cool down green tshirt back.jpg',
+                  image: '/assets/images/hoodie cool down.jpg',
                 },
                 {
                   name: 'Wild at Heart',
@@ -238,7 +268,7 @@ export default function Home() {
                 {
                   name: 'Support All',
                   collectionHandle: 'embroidered-logo',
-                  image: '/assets/images/embriodered front.jpg',
+                  image: '/assets/images/embriodered hoodie.png',
                 },
               ].map((project) => (
                 <div

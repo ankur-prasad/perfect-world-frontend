@@ -5,7 +5,14 @@ import * as THREE from 'three'
 import { SCENE } from '../../utils/constants'
 import { isMobile } from '../../utils/animations'
 
-export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boolean) => void }) {
+interface GlobeProps {
+  onHoverChange?: (hover: boolean) => void
+  onDragStart?: () => void
+  onDragEnd?: () => void
+  isDragging?: boolean
+}
+
+export default function Globe({ onHoverChange, onDragStart, onDragEnd, isDragging = false }: GlobeProps) {
   const mobile = isMobile()
   const segments = mobile ? SCENE.GLOBE_MOBILE_SEGMENTS : SCENE.GLOBE_SEGMENTS
   const meshRef = useRef<THREE.Mesh>(null)
@@ -80,8 +87,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
     camera.lookAt(0, 0, 0)
 
     // Brush Mesh
-    // Reduced brush size for finer trail (0.25 -> 0.05)
-    const geometry = new THREE.PlaneGeometry(0.05, 0.05)
+    // Larger brush size for better visibility with slower movements
+    const geometry = new THREE.PlaneGeometry(0.15, 0.15)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -143,8 +150,8 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       uniforms: {
         uTexture: { value: null }, // Previous frame
         time: { value: 0 },
-        uDissipation: { value: 0.98 }, // Slightly faster fade
-        uCurlStrength: { value: 0.08 }, // Stronger swirl/spreading
+        uDissipation: { value: 0.992 }, // Slower fade for longer-lasting clouds
+        uCurlStrength: { value: 0.12 }, // Even stronger swirl/spreading
       },
       vertexShader: `
         varying vec2 vUv;
@@ -371,38 +378,45 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
       if (intersect.uv) {
         const uv = intersect.uv
 
-        // Only draw clouds if mouse has moved significantly
+        // Draw clouds - more frequent for slower movements
         let shouldDraw = false
+        const drawThreshold = isDragging ? 0.0005 : 0.001 // Lower threshold when dragging
+
         if (!prevUvRef.current) {
           shouldDraw = true
           prevUvRef.current = new THREE.Vector2(uv.x, uv.y)
         } else {
           const dist = prevUvRef.current.distanceTo(new THREE.Vector2(uv.x, uv.y))
-          if (dist > 0.001) { // Lower threshold for smoother trails
+          if (dist > drawThreshold) {
             shouldDraw = true
             prevUvRef.current.set(uv.x, uv.y)
           }
         }
 
         if (shouldDraw) {
-          // Add random offset for "spray" effect
-          const offset = 0.02
-          const randomX = (Math.random() - 0.5) * offset
-          const randomY = (Math.random() - 0.5) * offset
+          // Larger spray effect for slower movements
+          const baseOffset = 0.025
+          const velocityScale = Math.min(velocityRef.current * 0.5, 1.0)
+          const offset = baseOffset * (1.5 - velocityScale) // Larger splat for slow movement
 
-          brushMesh.position.set(uv.x + randomX, uv.y + randomY, 0)
+          // Draw multiple overlapping splatters for fuller coverage
+          const numSplats = isDragging ? 3 : 2
+          for (let i = 0; i < numSplats; i++) {
+            const randomX = (Math.random() - 0.5) * offset
+            const randomY = (Math.random() - 0.5) * offset
 
-          // Render brush to Write Buffer (additive)
-          gl.render(maskScene, maskCamera)
-
-          // Wrapping
-          if (uv.x < 0.1) {
-            brushMesh.position.set(uv.x + 1 + randomX, uv.y + randomY, 0)
+            brushMesh.position.set(uv.x + randomX, uv.y + randomY, 0)
             gl.render(maskScene, maskCamera)
-          }
-          if (uv.x > 0.9) {
-            brushMesh.position.set(uv.x - 1 + randomX, uv.y + randomY, 0)
-            gl.render(maskScene, maskCamera)
+
+            // Wrapping
+            if (uv.x < 0.15) {
+              brushMesh.position.set(uv.x + 1 + randomX, uv.y + randomY, 0)
+              gl.render(maskScene, maskCamera)
+            }
+            if (uv.x > 0.85) {
+              brushMesh.position.set(uv.x - 1 + randomX, uv.y + randomY, 0)
+              gl.render(maskScene, maskCamera)
+            }
           }
         }
       }
@@ -423,7 +437,28 @@ export default function Globe({ onHoverChange }: { onHoverChange?: (hover: boole
   return (
     <group>
       {/* Main Globe - renders on top */}
-      <mesh ref={meshRef} scale={1.04} material={shaderMaterial}>
+      <mesh
+        ref={meshRef}
+        scale={1.04}
+        material={shaderMaterial}
+        onPointerDown={(e) => {
+          e.stopPropagation()
+          document.body.style.cursor = 'grabbing'
+          if (onDragStart) onDragStart()
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation()
+          document.body.style.cursor = 'grab'
+          if (onDragEnd) onDragEnd()
+        }}
+        onPointerEnter={() => {
+          document.body.style.cursor = 'grab'
+        }}
+        onPointerLeave={(e) => {
+          document.body.style.cursor = 'default'
+          if (isDragging && onDragEnd) onDragEnd()
+        }}
+      >
         <sphereGeometry args={[1, segments, segments]} />
       </mesh>
 

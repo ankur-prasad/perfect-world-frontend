@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import ProductGrid from '../components/Product/ProductGrid'
@@ -10,6 +11,7 @@ import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { MeshGradient } from '@paper-design/shaders-react'
 import GlassyButton from '../components/ui/GlassyButton'
+import { useTransitionStore } from '../stores/transitionStore'
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -19,8 +21,21 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState(false)
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null)
   const [isScrolling, setIsScrolling] = useState(false)
+  const { isTransitioning, endTransition } = useTransitionStore()
 
   const project = slug ? getProjectBySlug(slug) : null
+
+  // End transition after animation completes
+  useEffect(() => {
+    if (isTransitioning) {
+      // Wait for full animation: 1100ms expansion + 100ms settling
+      // Then fade out overlay over 300ms
+      const timer = setTimeout(() => {
+        endTransition()
+      }, 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [isTransitioning, endTransition])
 
   // Scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -185,8 +200,23 @@ export default function ProjectPage() {
 
   return (
     <div className="min-h-screen relative">
+      {/* Fixed Header - Always visible */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-50"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: isTransitioning ? 0.6 : 0 }}
+      >
+        <Navigation isDarkContent={false} />
+      </motion.div>
+
       {/* Full Page Background with MeshGradient */}
-      <div className="fixed inset-0 z-0">
+      <motion.div
+        className="fixed inset-0 z-0"
+        initial={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: isTransitioning ? 1.1 : 0 }}
+      >
         <MeshGradient
           width={1920}
           height={1080}
@@ -196,10 +226,15 @@ export default function ProjectPage() {
           speed={isScrolling ? 0 : 0.4}
           grainMixer={0}
         />
-      </div>
+      </motion.div>
 
       {/* Content */}
-      <div className="relative z-10">
+      <motion.div
+        className="relative z-10"
+        initial={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: isTransitioning ? 0.9 : 0 }}
+      >
         <ScrollExpandMedia
           mediaType="image"
           mediaSrc={project.mission.heroImage || 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=2560&auto=format&fit=crop'}
@@ -210,11 +245,6 @@ export default function ProjectPage() {
           scrollToExpand="Scroll to explore"
           textBlend={false}
         >
-          {/* Standard Navigation */}
-          <div className="relative z-50">
-            <Navigation isDarkContent={false} />
-          </div>
-
           {/* Project Controls & Navigation */}
           <div className="container mx-auto px-4 pt-8 pb-12">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -399,7 +429,7 @@ export default function ProjectPage() {
           isOpen={!!quickViewProduct}
           onClose={() => setQuickViewProduct(null)}
         />
-      </div>
+      </motion.div>
     </div>
   )
 }

@@ -10,7 +10,7 @@ import { SCENE, ANIMATION } from '../../utils/constants'
 import { throttle } from '../../utils/animations'
 
 interface SceneProps {
-  onSatelliteClick: (projectSlug: string) => void
+  onSatelliteClick: (projectSlug: string, clickPosition: { x: number; y: number }) => void
   enableControls?: boolean
   scrollProgress?: number
   collectionsScrollProgress?: number
@@ -38,56 +38,95 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   return null
 }
 
-function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange }: {
+function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange, scrollProgress }: {
   mousePosition: { x: number; y: number }
   onSatelliteClick: (slug: string) => void
   collectionsScrollProgress: number
   onGlobeHoverChange?: (hover: boolean) => void
+  scrollProgress: number
 }) {
   const groupRef = useRef<Group>(null)
   const [isGlobeHovered, setIsGlobeHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const { pointer } = useThree()
   const currentSpeedRef = useRef(0) // Track current speed for smooth transitions
+  const dragStartRef = useRef({ x: 0, rotation: 0 })
+  const dragVelocityRef = useRef(0)
+  const prevPointerRef = useRef({ x: 0, y: 0 })
 
   useFrame((_, delta) => {
     if (!groupRef.current) return
 
     // --- Mouse-Controlled Rotation ---
-    // Get normalized mouse X position (-1 to 1)
-    const mouseX = pointer.x
+    let targetRotationSpeed = 0
 
-    // Base rotation speed (radians per second)
-    // Increased by another 15% (0.115 * 1.15 = ~0.132)
-    // Positive mouseX (right) -> positive rotation (counter-clockwise)
-    // Negative mouseX (left) -> negative rotation (clockwise)
-    let targetRotationSpeed = mouseX * 0.3
+    if (isDragging) {
+      // During drag: rotate based on mouse movement delta
+      const dragDelta = pointer.x - prevPointerRef.current.x
+      dragVelocityRef.current = dragDelta * 3.0 // Store velocity for momentum
+      groupRef.current.rotation.y += dragDelta * 3.0 // Direct control during drag
+    } else if (isGlobeHovered) {
+      // When hovering but not dragging: slower ambient rotation + momentum decay
+      targetRotationSpeed = -pointer.x * 0.09 // Much slower when hovered
 
-    // Slow down when hovering over globe (changed from 0.1 to 0.3 for less dramatic change)
-    if (isGlobeHovered) {
-      targetRotationSpeed *= 0.3
+      // Add decaying momentum from previous drag
+      dragVelocityRef.current *= 0.95 // Decay momentum
+      if (Math.abs(dragVelocityRef.current) > 0.001) {
+        groupRef.current.rotation.y += dragVelocityRef.current
+      }
+    } else {
+      // Normal mode: rotate based on mouse position
+      targetRotationSpeed = -pointer.x * 0.3
+      dragVelocityRef.current = 0 // Reset momentum when not hovering
     }
 
-    // Smoothly interpolate to target speed (lerp factor 0.05 for gradual transitions)
-    currentSpeedRef.current += (targetRotationSpeed - currentSpeedRef.current) * 0.05
+    // Apply normal rotation speed (when not dragging)
+    if (!isDragging) {
+      currentSpeedRef.current += (targetRotationSpeed - currentSpeedRef.current) * 0.05
+      groupRef.current.rotation.y += currentSpeedRef.current * delta
+    }
 
-    // Continue rotation regardless of scroll
-    // const rotationMultiplier = Math.max(0, 1 - (scrollProgress - 0.8) / 0.2)
-    const rotationMultiplier = 1.0
-    groupRef.current.rotation.y += currentSpeedRef.current * delta * rotationMultiplier
+    // Store previous pointer for next frame
+    prevPointerRef.current.x = pointer.x
+    prevPointerRef.current.y = pointer.y
 
-    // Reduce parallax effect when frozen (optional, but user said "keep movements same")
-    // We'll keep parallax active too
-    const parallaxMultiplier = 1.0
+    // Parallax tilt
+    const parallaxMultiplier = isDragging ? 0.5 : 1.0 // Reduce parallax during drag
     const targetTiltX = mousePosition.y * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
     const targetTiltZ = -mousePosition.x * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
 
     groupRef.current.rotation.x += (targetTiltX - groupRef.current.rotation.x) * 0.1
     groupRef.current.rotation.z += (targetTiltZ - groupRef.current.rotation.z) * 0.1
+
+    // Scroll-based upward movement (Stage 1: 0-250px scroll)
+    // 250px = 16.7% of 1500px hero height
+    const stage1End = 250 / 1500 // 0.167
+    const baseY = 0.6 // Original Y position
+    let yOffset = 0
+    if (scrollProgress > 0 && scrollProgress <= stage1End) {
+      const moveProgress = scrollProgress / stage1End // 0-1 over first 250px
+      yOffset = moveProgress * 8 // Move 8 units upward (positive Y = up)
+    } else if (scrollProgress > stage1End) {
+      yOffset = 8 // Stay at +8 after 250px
+    }
+
+    // Smooth interpolation for Y position (baseY + offset)
+    const targetY = baseY + yOffset
+    groupRef.current.position.y += (targetY - groupRef.current.position.y) * 0.1
   })
 
   const handleGlobeHover = (hovered: boolean) => {
     setIsGlobeHovered(hovered)
     if (onGlobeHoverChange) onGlobeHoverChange(hovered)
+  }
+
+  const handleDragStart = () => {
+    setIsDragging(true)
+    dragStartRef.current = { x: pointer.x, rotation: groupRef.current?.rotation.y || 0 }
+  }
+
+  const handleDragEnd = () => {
+    setIsDragging(false)
   }
 
   return (
@@ -97,7 +136,12 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
         collectionsScrollProgress={collectionsScrollProgress}
       />
 
-      <Globe onHoverChange={handleGlobeHover} />
+      <Globe
+        onHoverChange={handleGlobeHover}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        isDragging={isDragging}
+      />
 
       {/* Satellites rotate with the globe */}
       {projects.map((project) => (
@@ -106,7 +150,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
           position={project.location}
           label={project.name}
           color={project.theme.primaryColor}
-          onClick={() => onSatelliteClick(project.slug)}
+          onClick={(clickPosition) => onSatelliteClick(project.slug, clickPosition)}
         />
       ))}
     </group>
@@ -182,6 +226,7 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
             onSatelliteClick={onSatelliteClick}
             collectionsScrollProgress={collectionsScrollProgress}
             onGlobeHoverChange={onGlobeHoverChange}
+            scrollProgress={scrollProgress}
           />
         </Suspense>
 

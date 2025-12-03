@@ -54,8 +54,10 @@ const ScrollExpandMedia = ({
   useEffect(() => {
     const handleWheel = (e: Event) => {
       const wheelEvent = e as globalThis.WheelEvent;
-      if (mediaFullyExpanded && wheelEvent.deltaY < 0 && window.scrollY <= 5) {
+      // Allow collapsing when scrolling up at the top of the page (increased threshold to 50px)
+      if (mediaFullyExpanded && wheelEvent.deltaY < 0 && window.scrollY <= 50) {
         setMediaFullyExpanded(false);
+        setScrollProgress(0.99); // Start collapsing from near-full
         e.preventDefault();
       } else if (!mediaFullyExpanded) {
         e.preventDefault();
@@ -87,8 +89,10 @@ const ScrollExpandMedia = ({
       const touchY = touchEvent.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
+      // Allow collapsing when swiping down at the top of the page (increased threshold to 50px)
+      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 50) {
         setMediaFullyExpanded(false);
+        setScrollProgress(0.99); // Start collapsing from near-full
         e.preventDefault();
       } else if (!mediaFullyExpanded) {
         e.preventDefault();

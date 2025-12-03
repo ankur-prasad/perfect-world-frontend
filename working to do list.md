@@ -26,13 +26,23 @@
 
 
 new comments
-colors for the designs
-change the viewing of the products of tiles
-sustainbiilty statment on shop page
-go through the old page
+- change the viewing of the products of tiles in shop
+- go through the old page
+- add the charity how to help
+- fill in text from old site
+- add the images (General content update)
 
-issue charity how to help
-fill in text from site
-
-
-buttons gigger in hero
+- hoodie and tshirt alternate  with extra tile of tote bag 
+- learn more and make a a differnce difffernt look to stand
+- fix carousel glitch
+- add some hover effect on carousel tile with project
+-instead oif the draggable psin have arrows on both sides so that the user can clcik through
+- add tote bag to collections and shop
+- cookie banner is too hectic. normal font and cleaner look
+- add second font to make stuff more readable
+- project banners make smaller in height and 10% less wide, so that we can see more than 1 a time
+- adjust font where it is not readbale 
+- footer needs rework to match rest of site
+- logo in footer
+- add text for project pages
+- add back or home button to project pages

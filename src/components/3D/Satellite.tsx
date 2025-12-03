@@ -9,7 +9,7 @@ interface SatelliteProps {
   position: { lat: number; lon: number }
   label: string
   color: string
-  onClick: () => void
+  onClick: (clickPosition: { x: number; y: number }) => void
   visible?: boolean
   globeRotation?: number
 }
@@ -22,6 +22,7 @@ export default function Satellite({
   visible = true,
 }: SatelliteProps) {
   const meshRef = useRef<THREE.Mesh>(null)
+  const labelRef = useRef<HTMLDivElement>(null)
   const [hovered, setHovered] = useState(false)
   const [labelHovered, setLabelHovered] = useState(false)
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 })
@@ -147,6 +148,7 @@ export default function Satellite({
           }}
         >
           <div
+            ref={labelRef}
             className="relative overflow-hidden cursor-pointer"
             style={{
               borderRadius: '16px',
@@ -168,7 +170,16 @@ export default function Satellite({
             }}
             onClick={(e) => {
               e.stopPropagation()
-              onClick()
+
+              // Get click position from label center
+              const rect = labelRef.current?.getBoundingClientRect()
+              if (rect) {
+                const clickPosition = {
+                  x: rect.left + rect.width / 2,
+                  y: rect.top + rect.height / 2
+                }
+                onClick(clickPosition)
+              }
             }}
           >
             {/* Glassy highlight effect */}

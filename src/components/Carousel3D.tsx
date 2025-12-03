@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useRef, useState, useEffect } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Carousel3DProps {
     children: ReactNode[]
@@ -10,6 +11,7 @@ interface Carousel3DProps {
     itemHeight?: number
     borderRadius?: number
     showBackface?: boolean
+    labels?: string[]
 }
 
 export default function Carousel3D({
@@ -21,21 +23,21 @@ export default function Carousel3D({
     itemHeight = 450,
     borderRadius = 16,
     showBackface = false,
+    labels = [],
 }: Carousel3DProps) {
     const totalItems = children.length
     const spreadAngle = 360 / totalItems
     const containerRef = useRef<HTMLDivElement>(null)
     const carouselRef = useRef<HTMLDivElement>(null)
     const [rotation, setRotation] = useState(0)
-    const [isDragging, setIsDragging] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
-    const dragStartX = useRef(0)
-    const dragStartRotation = useRef(0)
+    const [isTransitioning, setIsTransitioning] = useState(false)
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
     const animationRef = useRef<number | undefined>(undefined)
 
-    // Auto-rotation when not dragging
+    // Auto-rotation when not hovered
     useEffect(() => {
-        if (isDragging || (pauseOnHover && isHovered)) {
+        if (pauseOnHover && isHovered) {
             return
         }
 
@@ -51,28 +53,23 @@ export default function Carousel3D({
                 cancelAnimationFrame(animationRef.current)
             }
         }
-    }, [isDragging, isHovered, rotateSpeed, pauseOnHover])
+    }, [isHovered, rotateSpeed, pauseOnHover])
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        setIsDragging(true)
-        dragStartX.current = e.clientX
-        dragStartRotation.current = rotation
+    const handlePrevious = () => {
+        if (isTransitioning) return
+        setIsTransitioning(true)
+        setRotation((prev) => prev - spreadAngle)
+        setTimeout(() => setIsTransitioning(false), 500)
     }
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging) return
-
-        const deltaX = e.clientX - dragStartX.current
-        const rotationDelta = deltaX * 0.5 // Sensitivity factor
-        setRotation((dragStartRotation.current + rotationDelta) % 360)
-    }
-
-    const handleMouseUp = () => {
-        setIsDragging(false)
+    const handleNext = () => {
+        if (isTransitioning) return
+        setIsTransitioning(true)
+        setRotation((prev) => prev + spreadAngle)
+        setTimeout(() => setIsTransitioning(false), 500)
     }
 
     const handleMouseLeave = () => {
-        setIsDragging(false)
         setIsHovered(false)
     }
 
@@ -83,19 +80,17 @@ export default function Carousel3D({
     return (
         <div
             ref={containerRef}
-            className="w-full h-full relative overflow-hidden select-none"
+            className="w-full h-full relative overflow-visible select-none"
             style={{
                 perspective: '1200px',
                 zIndex: 0,
                 pointerEvents: 'auto',
-                cursor: isDragging ? 'grabbing' : 'grab',
             }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
             onMouseEnter={handleMouseEnter}
         >
+            {/* Carousel wrapper with overflow hidden */}
+            <div className="w-full h-full overflow-hidden absolute inset-0">
             <div
                 ref={carouselRef}
                 className="absolute top-1/2 left-1/2"
@@ -103,7 +98,7 @@ export default function Carousel3D({
                     transform: `translate(-50%, -50%) rotateY(${rotation}deg)`,
                     transformStyle: 'preserve-3d',
                     transformOrigin: 'center center',
-                    transition: isDragging ? 'none' : 'transform 0.1s linear',
+                    transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'transform 0.1s linear',
                 }}
             >
                 {children.map((child, index) => {
@@ -131,6 +126,8 @@ export default function Carousel3D({
                                 borderRadius: `${borderRadius}px`,
                                 willChange: 'transform',
                             }}
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(null)}
                         >
                             <div style={{
                                 width: '100%',
@@ -138,13 +135,44 @@ export default function Carousel3D({
                                 imageRendering: 'auto',
                                 transform: 'translateZ(0)',
                                 WebkitTransform: 'translateZ(0)',
+                                position: 'relative',
                             }}>
                                 {child}
+                                {/* Label overlay on hover - bottom third only */}
+                                {labels[index] && hoveredIndex === index && (
+                                    <div
+                                        className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-lg flex items-center justify-center"
+                                        style={{
+                                            height: '33.33%',
+                                            borderBottomLeftRadius: `${borderRadius}px`,
+                                            borderBottomRightRadius: `${borderRadius}px`,
+                                        }}
+                                    >
+                                        <p className="text-xl font-light text-white tracking-wide uppercase px-4">{labels[index]}</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )
                 })}
             </div>
+            </div>
+
+            {/* Arrow buttons - positioned outside carousel wrapper */}
+            <button
+                onClick={handlePrevious}
+                className="absolute left-8 top-1/2 -translate-y-1/2 z-20 bg-black/5 hover:bg-black/10 backdrop-blur-sm p-4 rounded-full border border-black/10 transition-all hover:scale-110"
+                aria-label="Previous"
+            >
+                <ChevronLeft className="w-6 h-6 text-black" />
+            </button>
+            <button
+                onClick={handleNext}
+                className="absolute right-8 top-1/2 -translate-y-1/2 z-20 bg-black/5 hover:bg-black/10 backdrop-blur-sm p-4 rounded-full border border-black/10 transition-all hover:scale-110"
+                aria-label="Next"
+            >
+                <ChevronRight className="w-6 h-6 text-black" />
+            </button>
         </div>
     )
 }
