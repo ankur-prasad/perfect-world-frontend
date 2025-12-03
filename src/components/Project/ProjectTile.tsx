@@ -100,6 +100,15 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
                     />
                 </div>
 
+                {/* Design Hands Overlay */}
+                <div className="absolute inset-0 z-10 pointer-events-none">
+                    <img
+                        src="/assets/images/design hands clear.png"
+                        alt=""
+                        className="w-full h-full object-cover opacity-80 mix-blend-overlay"
+                    />
+                </div>
+
                 {/* Content */}
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center">
                     {/* Project Logo - Slides up */}

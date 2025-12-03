@@ -237,38 +237,44 @@ export default function Home() {
                 'Plant-For-The-Planet',
                 'Wild at Heart',
                 'Support All',
+                'Tote Bag Collection',
               ]}
             >
               {[
                 {
                   name: 'SECORE International',
                   collectionHandle: 'endangered-oceans',
-                  image: '/assets/images/endangered oceans back.jpg',
+                  image: '/assets/images/endangered oceans back.png',
                 },
                 {
                   name: 'Care in Action',
                   collectionHandle: 'one-world',
-                  image: '/assets/images/hoodie back one world.jpg',
+                  image: '/assets/images/hoodie back one world.png',
                 },
                 {
                   name: 'Talk About It',
                   collectionHandle: 'talk-about-it',
-                  image: '/assets/images/talk about it back.jpg',
+                  image: '/assets/images/talk about it back.png',
                 },
                 {
                   name: 'Plant-For-The-Planet',
                   collectionHandle: 'cool-down',
-                  image: '/assets/images/hoodie cool down.jpg',
+                  image: '/assets/images/hoodie cool down.png',
                 },
                 {
                   name: 'Wild at Heart',
                   collectionHandle: 'wild-at-heart',
-                  image: '/assets/images/wild at heart back.jpg',
+                  image: '/assets/images/wild at heart back.png',
                 },
                 {
                   name: 'Support All',
                   collectionHandle: 'embroidered-logo',
                   image: '/assets/images/embriodered hoodie.png',
+                },
+                {
+                  name: 'Tote Bag Collection',
+                  collectionHandle: 'tote-bags',
+                  image: '/assets/images/tote-bag-placeholder.png',
                 },
               ].map((project) => (
                 <div
