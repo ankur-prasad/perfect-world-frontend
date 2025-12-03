@@ -454,7 +454,7 @@ export default function Globe({ onHoverChange, onDragStart, onDragEnd, isDraggin
         onPointerEnter={() => {
           document.body.style.cursor = 'grab'
         }}
-        onPointerLeave={(e) => {
+        onPointerLeave={() => {
           document.body.style.cursor = 'default'
           if (isDragging && onDragEnd) onDragEnd()
         }}

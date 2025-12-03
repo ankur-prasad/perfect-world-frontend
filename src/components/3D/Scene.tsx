@@ -40,7 +40,7 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
 
 function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange, scrollProgress }: {
   mousePosition: { x: number; y: number }
-  onSatelliteClick: (slug: string) => void
+  onSatelliteClick: (slug: string, clickPosition: { x: number; y: number }) => void
   collectionsScrollProgress: number
   onGlobeHoverChange?: (hover: boolean) => void
   scrollProgress: number

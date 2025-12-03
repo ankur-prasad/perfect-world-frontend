@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 import { CartProvider } from './contexts/CartContext'
 import { NavigationProvider } from './contexts/NavigationContext'
 import Home from './pages/Home'

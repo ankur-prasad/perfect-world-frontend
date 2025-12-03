@@ -114,7 +114,7 @@ export default function Satellite({
         position={[satellitePos.x, satellitePos.y, satellitePos.z]}
         onClick={(e) => {
           e.stopPropagation()
-          onClick()
+          onClick({ x: e.clientX, y: e.clientY })
         }}
         onPointerEnter={(e) => {
           e.stopPropagation()
