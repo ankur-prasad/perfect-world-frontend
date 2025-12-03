@@ -7,6 +7,8 @@ import { useNavigation } from '../../contexts/NavigationContext'
 import { useCart } from '../../contexts/CartContext'
 import CartDrawer from '../Cart/CartDrawer'
 import GlassyButton from '../ui/GlassyButton'
+import logoBlack from '../../assets/logos/perfect-world-logo-black.png'
+import logoWhite from '../../assets/logos/perfect-world-logo-white.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -207,7 +209,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
               <Link to="/">
                 <img
-                  src={isDarkContent ? "/assets/logos/perfect-world-logo-black.png" : "/assets/logos/perfect-world-logo-white.png"}
+                  src={isDarkContent ? logoBlack : logoWhite}
                   alt="Perfect World"
                   className="h-12 w-auto"
                 />
@@ -246,7 +248,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <Link to="/">
           <img
             ref={logoRef}
-            src={isDarkContent ? "/assets/logos/perfect-world-logo-black.png" : "/assets/logos/perfect-world-logo-white.png"}
+            src={isDarkContent ? logoBlack : logoWhite}
             alt="Perfect World"
             className="h-20 w-auto transition-all duration-300"
           />

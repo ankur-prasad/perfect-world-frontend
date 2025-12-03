@@ -1,4 +1,9 @@
 import type { Project } from '../types/project.types'
+import secoreLogo from '../assets/logos/secore-logo.png'
+import careInActionLogo from '../assets/logos/care-in-action-logo.png'
+import mhiLogo from '../assets/logos/mhi-logo.png'
+import plantForThePlanetLogo from '../assets/logos/plant-for-the-planet-logo.png'
+import elephantsForAfricaLogo from '../assets/logos/elephants-for-africa-logo.png'
 
 export const projects: Project[] = [
   {
@@ -26,7 +31,7 @@ export const projects: Project[] = [
         name: 'SECORE International',
         description: 'Leading coral restoration organization',
         website: 'https://www.secore.org',
-        logo: '/assets/logos/secore-logo.png',
+        logo: secoreLogo,
       },
     },
     shopifyCollection: {
@@ -63,7 +68,7 @@ export const projects: Project[] = [
         name: 'Care in Action',
         description: 'Community development organization',
         website: 'https://www.careinaction.org',
-        logo: '/assets/logos/care-in-action-logo.png',
+        logo: careInActionLogo,
       },
     },
     shopifyCollection: {
@@ -100,7 +105,7 @@ export const projects: Project[] = [
         name: 'Talk About It',
         description: 'Mental health advocacy organization',
         website: 'https://www.talkaboutit.org',
-        logo: '/assets/logos/mhi-logo.png',
+        logo: mhiLogo,
       },
     },
     shopifyCollection: {
@@ -137,7 +142,7 @@ export const projects: Project[] = [
         name: 'Plant-For-The-Planet',
         description: 'Global reforestation initiative',
         website: 'https://www.plant-for-the-planet.org',
-        logo: '/assets/logos/plant-for-the-planet-logo.png',
+        logo: plantForThePlanetLogo,
       },
     },
     shopifyCollection: {
@@ -174,7 +179,7 @@ export const projects: Project[] = [
         name: 'Save the Elephants',
         description: 'Wildlife conservation organization',
         website: 'https://www.savetheelephants.org',
-        logo: '/assets/logos/elephants-for-africa-logo.png',
+        logo: elephantsForAfricaLogo,
       },
     },
     shopifyCollection: {
