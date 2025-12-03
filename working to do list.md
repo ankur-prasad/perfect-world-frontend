@@ -32,8 +32,7 @@ new comments
 - fill in text from old site
 - add the images (General content update)
 
-- hoodie and tshirt alternate  with extra tile of tote bag 
-- learn more and make a a differnce difffernt look to stand
+
 - fix carousel glitch
 - add some hover effect on carousel tile with project
 -instead oif the draggable psin have arrows on both sides so that the user can clcik through

@@ -232,12 +232,12 @@ export default function Home() {
               borderRadius={12}
               showBackface={true}
               labels={[
-                'SECORE International',
-                'Care in Action',
+                'Endangered Oceans',
+                'One World',
                 'Talk About It',
-                'Plant-For-The-Planet',
+                'Cool Down',
                 'Wild at Heart',
-                'Support All',
+                'Embroidered',
                 'Tote Bag Collection',
               ]}
             >
@@ -268,7 +268,7 @@ export default function Home() {
                   image: '/assets/images/wild at heart back.png',
                 },
                 {
-                  name: 'Support All',
+                  name: 'Embroidered',
                   collectionHandle: 'embroidered-logo',
                   image: '/assets/images/embriodered hoodie.png',
                 },

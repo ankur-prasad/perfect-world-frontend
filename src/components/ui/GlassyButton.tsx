@@ -160,7 +160,8 @@ export default function GlassyButton({
     minHeight: '48px',
     padding: `${paddingY} ${paddingX}`,
     borderRadius: `${borderRadius}px`,
-    background: `linear-gradient(${angle}deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%), ${hovered ? style.hoverBg : style.bg}`,
+    backgroundImage: `linear-gradient(${angle}deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%)`,
+    backgroundColor: hovered ? style.hoverBg : style.bg,
     boxShadow: hovered
       ? `0 4px ${16 * shadowHoverIntensity}px 0 ${shadowHoverColor}, 0 2px 8px 0 rgba(0,0,0,0.08)`
       : '0 2px 8px 0 rgba(0,0,0,0.08)',
@@ -170,7 +171,7 @@ export default function GlassyButton({
     boxSizing: 'border-box' as const,
     overflow: 'hidden',
     cursor: 'pointer',
-    transition: 'box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+    transition: 'box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

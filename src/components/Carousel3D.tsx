@@ -42,7 +42,7 @@ export default function Carousel3D({
         }
 
         const animate = () => {
-            setRotation((prev) => (prev + 360 / (rotateSpeed * 60)) % 360)
+            setRotation((prev) => prev + 360 / (rotateSpeed * 60))
             animationRef.current = requestAnimationFrame(animate)
         }
 
@@ -91,71 +91,71 @@ export default function Carousel3D({
         >
             {/* Carousel wrapper with overflow hidden */}
             <div className="w-full h-full overflow-hidden absolute inset-0">
-            <div
-                ref={carouselRef}
-                className="absolute top-1/2 left-1/2"
-                style={{
-                    transform: `translate(-50%, -50%) rotateY(${rotation}deg)`,
-                    transformStyle: 'preserve-3d',
-                    transformOrigin: 'center center',
-                    transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'transform 0.1s linear',
-                }}
-            >
-                {children.map((child, index) => {
-                    const angle = index * spreadAngle
-                    const transform = `
+                <div
+                    ref={carouselRef}
+                    className="absolute top-1/2 left-1/2"
+                    style={{
+                        transform: `translate(-50%, -50%) rotateY(${rotation}deg)`,
+                        transformStyle: 'preserve-3d',
+                        transformOrigin: 'center center',
+                        transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'transform 0.1s linear',
+                    }}
+                >
+                    {children.map((child, index) => {
+                        const angle = index * spreadAngle
+                        const transform = `
             translate(-50%, -50%)
             rotateY(${angle}deg)
             translateZ(${translateZ}px)
           `
 
-                    return (
-                        <div
-                            key={index}
-                            className="absolute"
-                            style={{
-                                width: `${itemWidth}px`,
-                                height: `${itemHeight}px`,
-                                top: '50%',
-                                left: '50%',
-                                transform,
-                                transformOrigin: 'center center',
-                                overflow: 'visible',
-                                transition: 'transform 0.5s ease',
-                                backfaceVisibility: showBackface ? 'visible' : 'hidden',
-                                borderRadius: `${borderRadius}px`,
-                                willChange: 'transform',
-                            }}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                        >
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                imageRendering: 'auto',
-                                transform: 'translateZ(0)',
-                                WebkitTransform: 'translateZ(0)',
-                                position: 'relative',
-                            }}>
-                                {child}
-                                {/* Label overlay on hover - bottom third only */}
-                                {labels[index] && hoveredIndex === index && (
-                                    <div
-                                        className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-lg flex items-center justify-center"
-                                        style={{
-                                            height: '33.33%',
-                                            borderBottomLeftRadius: `${borderRadius}px`,
-                                            borderBottomRightRadius: `${borderRadius}px`,
-                                        }}
-                                    >
-                                        <p className="text-xl font-light text-white tracking-wide uppercase px-4">{labels[index]}</p>
-                                    </div>
-                                )}
+                        return (
+                            <div
+                                key={index}
+                                className="absolute"
+                                style={{
+                                    width: `${itemWidth}px`,
+                                    height: `${itemHeight}px`,
+                                    top: '50%',
+                                    left: '50%',
+                                    transform,
+                                    transformOrigin: 'center center',
+                                    overflow: 'visible',
+                                    transition: 'transform 0.5s ease',
+                                    backfaceVisibility: showBackface ? 'visible' : 'hidden',
+                                    borderRadius: `${borderRadius}px`,
+                                    willChange: 'transform',
+                                }}
+                                onMouseEnter={() => setHoveredIndex(index)}
+                                onMouseLeave={() => setHoveredIndex(null)}
+                            >
+                                <div style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    imageRendering: 'auto',
+                                    transform: 'translateZ(0)',
+                                    WebkitTransform: 'translateZ(0)',
+                                    position: 'relative',
+                                }}>
+                                    {child}
+                                    {/* Label overlay on hover - bottom third only */}
+                                    {labels[index] && hoveredIndex === index && (
+                                        <div
+                                            className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-lg flex items-center justify-center"
+                                            style={{
+                                                height: '33.33%',
+                                                borderBottomLeftRadius: `${borderRadius}px`,
+                                                borderBottomRightRadius: `${borderRadius}px`,
+                                            }}
+                                        >
+                                            <p className="text-xl font-light text-white tracking-wide uppercase px-4">{labels[index]}</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
-            </div>
+                        )
+                    })}
+                </div>
             </div>
 
             {/* Arrow buttons - positioned outside carousel wrapper */}

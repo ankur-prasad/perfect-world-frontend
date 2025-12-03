@@ -33,24 +33,27 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     if (!aboutUsRef.current || !transparencyRef.current || !logoRef.current) return
 
     const ctx = gsap.context(() => {
-      // Shrink logo on scroll (0-250px scroll)
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+      const endValue = `+=${scrollHeight * 0.05}`
+
+      // Shrink logo on scroll (0-5% scroll)
       gsap.to(logoRef.current, {
         scrollTrigger: {
           trigger: 'body',
           start: 'top top',
-          end: '+=250',
+          end: endValue,
           scrub: 1,
         },
         height: '3rem',
         ease: 'power2.out',
       })
 
-      // Stage 1: Move button containers UP and align vertically (0-250px scroll)
+      // Stage 1: Move button containers UP and align vertically (0-5% scroll)
       gsap.to([aboutUsRef.current, transparencyRef.current], {
         scrollTrigger: {
           trigger: 'body',
           start: 'top top',
-          end: '+=250',
+          end: endValue,
           scrub: 1,
         },
         top: '1.5rem',
@@ -58,7 +61,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         ease: 'power2.out',
       })
 
-      // Stage 1: Shrink the actual link elements inside as scroll progresses (0-250px scroll)
+      // Stage 1: Shrink the actual link elements inside as scroll progresses (0-5% scroll)
       // Explicitly animate FROM Big TO Small
       gsap.fromTo([
         aboutUsRef.current?.querySelector('a'),
@@ -78,7 +81,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
           scrollTrigger: {
             trigger: 'body',
             start: 'top top',
-            end: '+=250',
+            end: endValue,
             scrub: 1,
           },
           fontSize: '1rem', // End: text-base
@@ -90,12 +93,14 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         }
       )
 
-      // Stage 2: Move buttons INWARD toward logo (250-500px scroll)
+      // Stage 2: Move buttons INWARD toward logo (5-10% scroll)
+      const stage2EndValue = `+=${scrollHeight * 0.1}` // Another 5%
+
       gsap.to(aboutUsRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: '+=250',
-          end: '+=500',
+          start: endValue,
+          end: stage2EndValue,
           scrub: 1,
         },
         left: 'calc(50vw - 300px)',
@@ -105,13 +110,62 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       gsap.to(transparencyRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: '+=250',
-          end: '+=500',
+          start: endValue,
+          end: stage2EndValue,
           scrub: 1,
         },
         right: 'calc(50vw - 300px)',
         ease: 'power2.out',
       })
+
+      // Animate Button Styles (Glow & Color -> Standard)
+      // Learn More Button
+      const learnMoreBtn = aboutUsRef.current?.querySelector('.learn-more-btn')
+      if (learnMoreBtn) {
+        gsap.fromTo(learnMoreBtn,
+          {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            boxShadow: '0 0 30px 5px rgba(255, 255, 255, 0.3)',
+            borderColor: 'rgba(255, 255, 255, 0.1)'
+          },
+          {
+            scrollTrigger: {
+              trigger: 'body',
+              start: 'top top',
+              end: endValue,
+              scrub: 1,
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.2)', // Standard light variant bg
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)', // Standard shadow
+            borderColor: 'rgba(255, 255, 255, 0.22)', // Standard border
+            ease: 'power2.out'
+          }
+        )
+      }
+
+      // Make a Difference Button
+      const makeDiffBtn = transparencyRef.current?.querySelector('.make-diff-btn')
+      if (makeDiffBtn) {
+        gsap.fromTo(makeDiffBtn,
+          {
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            boxShadow: '0 0 30px 5px rgba(255, 255, 255, 0.3)',
+            borderColor: 'rgba(255, 255, 255, 0.6)'
+          },
+          {
+            scrollTrigger: {
+              trigger: 'body',
+              start: 'top top',
+              end: endValue,
+              scrub: 1,
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.2)', // Standard light variant bg
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)', // Standard shadow
+            borderColor: 'rgba(255, 255, 255, 0.22)', // Standard border
+            ease: 'power2.out'
+          }
+        )
+      }
     })
 
     return () => ctx.revert()
@@ -179,6 +233,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       to="/projects"
       variant={isDarkContent ? 'secondary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
+      className="learn-more-btn"
     />
   )
 
@@ -188,6 +243,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       to="/shop"
       variant={isDarkContent ? 'primary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
+      className="make-diff-btn"
     />
   )
 
