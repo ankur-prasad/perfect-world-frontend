@@ -33,10 +33,8 @@ new comments
 - add the images (General content update)
 
 
-- fix carousel glitch
-- add some hover effect on carousel tile with project
--instead oif the draggable psin have arrows on both sides so that the user can clcik through
-- add tote bag to collections and shop
+
+
 - cookie banner is too hectic. normal font and cleaner look
 - add second font to make stuff more readable
 - project banners make smaller in height and 10% less wide, so that we can see more than 1 a time

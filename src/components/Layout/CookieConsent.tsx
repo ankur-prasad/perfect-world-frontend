@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import GlassyButton from '../ui/GlassyButton'
 
 interface CookiePreferences {
     necessary: boolean
@@ -69,131 +70,131 @@ export default function CookieConsent() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 100 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className="fixed bottom-0 left-0 right-0 z-50 w-full"
+                    className="fixed bottom-8 left-8 right-8 z-50"
                 >
-                    <div className="bg-black/95 backdrop-blur-xl border-t border-white/10 p-10 md:p-16">
-                        <div className="container mx-auto max-w-6xl">
-                            {/* Header */}
-                            <div className="mb-12">
-                                <h2 className="text-white text-2xl md:text-3xl font-bold mb-8">Notice</h2>
-                                <p className="text-gray-300 text-base leading-loose mb-8">
+                    <div
+                        className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl w-full"
+                        style={{
+                            paddingLeft: '15vw',
+                            paddingTop: '12vh',
+                            paddingRight: '5vw',
+                            paddingBottom: '8vh'
+                        }}
+                    >
+                        <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
+                            {/* Content */}
+                            <div className="flex-1">
+                                <h2 className="text-white text-2xl font-bold mb-4">Notice</h2>
+                                <p className="text-gray-300 text-base leading-relaxed mb-6 max-w-4xl">
                                     We (www.perfectworld.global) and selected third parties (12) collect personal information as specified in the{' '}
-                                    <a href="/privacy-policy" className="text-blue-400 hover:text-blue-300 underline">
+                                    <a href="/privacy-policy" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
                                         privacy policy
                                     </a>{' '}
                                     and use cookies or similar technologies for technical purposes and, with your consent, for{' '}
                                     <strong>functionality, experience, measurement and "marketing (personalized ads)"</strong> as specified in the{' '}
-                                    <a href="/cookie-policy" className="text-blue-400 hover:text-blue-300 underline">
+                                    <a href="/cookie-policy" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
                                         cookie policy
                                     </a>
                                     .
                                 </p>
-                                <p className="text-gray-400 text-base leading-loose mt-10">
-                                    You can freely give, deny, or withdraw your consent at any time by accessing the preferences panel. Denying consent may make related features unavailable.
-                                </p>
-                                <p className="text-gray-400 text-base leading-loose mt-6">
-                                    Use the "Accept all" button to consent. Use the "Reject all" button to continue without accepting.
-                                </p>
-                            </div>
-
-                            {/* Toggle Switches */}
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-14">
-                                {[
-                                    { key: 'necessary' as const, label: 'Necessary' },
-                                    { key: 'functionality' as const, label: 'Functionality' },
-                                    { key: 'experience' as const, label: 'Experience' },
-                                    { key: 'measurement' as const, label: 'Measurement' },
-                                    { key: 'marketing' as const, label: 'Marketing' },
-                                ].map(({ key, label }) => (
-                                    <div key={key} className="flex items-center gap-3">
-                                        <button
-                                            onClick={() => togglePreference(key)}
-                                            disabled={key === 'necessary'}
-                                            className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors ${preferences[key]
-                                                ? 'bg-emerald-500'
-                                                : 'bg-gray-600'
-                                                } ${key === 'necessary' ? 'opacity-100' : 'cursor-pointer'}`}
-                                        >
-                                            <span
-                                                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${preferences[key] ? 'translate-x-8' : 'translate-x-1'
-                                                    }`}
-                                            />
-                                        </button>
-                                        <span className="text-white text-sm font-medium">{label}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Action Buttons */}
-                            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                                <button
-                                    onClick={() => setShowDetails(!showDetails)}
-                                    className="px-12 py-4 bg-gray-700 text-white font-semibold rounded-full hover:bg-gray-600 transition-colors"
-                                >
-                                    Learn more
-                                </button>
-
-                                <div className="flex items-center gap-4">
-                                    <button
-                                        onClick={handleRejectAll}
-                                        className="px-12 py-4 bg-gray-700 text-white font-semibold rounded-full hover:bg-gray-600 transition-colors"
-                                    >
-                                        Reject all
-                                    </button>
-                                    <button
-                                        onClick={handleAcceptAll}
-                                        className="px-12 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-500 transition-colors"
-                                    >
-                                        Accept all
-                                    </button>
+                                <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-400">
+                                    <p>You can freely give, deny, or withdraw your consent at any time.</p>
+                                    <p>Denying consent may make related features unavailable.</p>
                                 </div>
                             </div>
 
-                            {/* Details Panel */}
-                            <AnimatePresence>
-                                {showDetails && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        className="mt-6 overflow-hidden"
-                                    >
-                                        <div className="bg-white/5 rounded-xl p-6 space-y-4">
-                                            <div>
-                                                <h3 className="text-white font-semibold mb-2">Necessary</h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    These cookies are essential for the website to function and cannot be disabled.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-semibold mb-2">Functionality</h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    These cookies enable enhanced functionality and personalization, such as remembering your preferences.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-semibold mb-2">Experience</h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    These cookies help us understand how you interact with our website to improve your experience.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-semibold mb-2">Measurement</h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    These cookies help us measure traffic and analyze your behavior to improve our service.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-semibold mb-2">Marketing</h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    These cookies are used to deliver personalized advertisements relevant to you and your interests.
-                                                </p>
-                                            </div>
+                            {/* Controls */}
+                            <div className="flex flex-col gap-8 lg:min-w-[400px]">
+                                {/* Toggle Switches */}
+                                <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                                    {[
+                                        { key: 'necessary' as const, label: 'Necessary' },
+                                        { key: 'functionality' as const, label: 'Functionality' },
+                                        { key: 'experience' as const, label: 'Experience' },
+                                        { key: 'measurement' as const, label: 'Measurement' },
+                                        { key: 'marketing' as const, label: 'Marketing' },
+                                    ].map(({ key, label }) => (
+                                        <div key={key} className="flex items-center gap-3">
+                                            <button
+                                                onClick={() => togglePreference(key)}
+                                                disabled={key === 'necessary'}
+                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preferences[key]
+                                                    ? 'bg-white'
+                                                    : 'bg-white/20'
+                                                    } ${key === 'necessary' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                                            >
+                                                <span
+                                                    className={`inline-block h-4 w-4 transform rounded-full bg-black transition-transform ${preferences[key] ? 'translate-x-6' : 'translate-x-1'
+                                                        }`}
+                                                />
+                                            </button>
+                                            <span className="text-gray-300 text-sm">{label}</span>
                                         </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                    ))}
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex flex-wrap items-center gap-4">
+                                    <GlassyButton
+                                        onClick={() => setShowDetails(!showDetails)}
+                                        label="Learn more"
+                                        variant="secondary"
+                                        textColor="#ffffff"
+                                        paddingX="24px"
+                                        paddingY="10px"
+                                        fontSize="14px"
+                                    />
+                                    <div className="flex items-center gap-4 ml-auto">
+                                        <GlassyButton
+                                            onClick={handleRejectAll}
+                                            label="Reject all"
+                                            variant="secondary"
+                                            textColor="#ffffff"
+                                            paddingX="24px"
+                                            paddingY="10px"
+                                            fontSize="14px"
+                                        />
+                                        <GlassyButton
+                                            onClick={handleAcceptAll}
+                                            label="Accept all"
+                                            background="rgba(255, 255, 255, 0.9)"
+                                            hoverBackground="rgba(255, 255, 255, 1)"
+                                            textColor="#000000"
+                                            paddingX="32px"
+                                            paddingY="10px"
+                                            fontSize="14px"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        {/* Details Panel */}
+                        <AnimatePresence>
+                            {showDetails && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="pt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {[
+                                            { title: 'Necessary', desc: 'Essential for the website to function and cannot be disabled.' },
+                                            { title: 'Functionality', desc: 'Enable enhanced functionality and personalization.' },
+                                            { title: 'Experience', desc: 'Help us understand how you interact with our website.' },
+                                            { title: 'Measurement', desc: 'Help us measure traffic and analyze behavior.' },
+                                            { title: 'Marketing', desc: 'Used to deliver personalized advertisements.' },
+                                        ].map((item) => (
+                                            <div key={item.title} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                                <h3 className="text-white font-semibold mb-2">{item.title}</h3>
+                                                <p className="text-gray-400 text-sm">{item.desc}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </motion.div>
             )}
