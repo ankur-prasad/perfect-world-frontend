@@ -1,10 +1,12 @@
 import { create } from 'zustand'
 
 export interface TransitionData {
-  clickPosition: { x: number; y: number }
+  clickPosition?: { x: number; y: number }
+  rect?: { top: number; left: number; width: number; height: number }
   color: string
   gradientColors: string[]
   projectSlug: string
+  source: 'globe' | 'list'
 }
 
 interface TransitionStore {

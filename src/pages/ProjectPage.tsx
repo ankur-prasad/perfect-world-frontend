@@ -21,13 +21,13 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState(false)
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null)
   const [isScrolling, setIsScrolling] = useState(false)
-  const { isTransitioning, endTransition } = useTransitionStore()
+  const { isTransitioning, endTransition, data, direction } = useTransitionStore()
 
   const project = slug ? getProjectBySlug(slug) : null
 
   // End transition after animation completes
   useEffect(() => {
-    if (isTransitioning) {
+    if (isTransitioning && direction === 'forward') {
       // Wait for full animation: 1100ms expansion + 100ms settling
       // Then fade out overlay over 300ms
       const timer = setTimeout(() => {
@@ -35,7 +35,7 @@ export default function ProjectPage() {
       }, 1200)
       return () => clearTimeout(timer)
     }
-  }, [isTransitioning, endTransition])
+  }, [isTransitioning, direction, endTransition])
 
   // Scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -92,23 +92,7 @@ export default function ProjectPage() {
     project.theme.primaryColor
   ] : []
 
-  // Custom Background (MeshGradient only)
-  const CustomBackground = project ? (
-    <div className="relative w-full h-full">
-      {/* Background Shader */}
-      <div className="absolute inset-0 z-0">
-        <MeshGradient
-          width={1920}
-          height={1080}
-          colors={gradientColors}
-          distortion={1.2}
-          swirl={1.0}
-          speed={0.4}
-          grainMixer={0}
-        />
-      </div>
-    </div>
-  ) : null
+
 
   // Custom Header Renderer for Animations
   const renderHeader = (progress: number) => {
@@ -198,6 +182,29 @@ export default function ProjectPage() {
     )
   }
 
+  // Calculate clip path based on state
+  const getClipPath = () => {
+    if (!data) return 'inset(0px 0px 0px 0px round 0px)'
+
+    if (direction === 'reverse') {
+      if (data.source === 'list' && data.rect) {
+        return `inset(${data.rect.top}px ${window.innerWidth - data.rect.left - data.rect.width}px ${window.innerHeight - data.rect.top - data.rect.height}px ${data.rect.left}px round 24px)`
+      } else if (data.clickPosition) {
+        // For globe, shrink to a small circle at click position
+        return `circle(0% at ${data.clickPosition.x}px ${data.clickPosition.y}px)`
+      }
+    } else if (isTransitioning) {
+      // Starting state for forward transition
+      if (data.source === 'list' && data.rect) {
+        return `inset(${data.rect.top}px ${window.innerWidth - data.rect.left - data.rect.width}px ${window.innerHeight - data.rect.top - data.rect.height}px ${data.rect.left}px round 24px)`
+      } else if (data.clickPosition) {
+        return `circle(0% at ${data.clickPosition.x}px ${data.clickPosition.y}px)`
+      }
+    }
+
+    return 'inset(0px 0px 0px 0px round 0px)'
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Fixed Header - Always visible */}
@@ -213,9 +220,22 @@ export default function ProjectPage() {
       {/* Full Page Background with MeshGradient */}
       <motion.div
         className="fixed inset-0 z-0"
-        initial={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: isTransitioning ? 1.1 : 0 }}
+        initial={
+          isTransitioning && direction === 'forward'
+            ? {
+              clipPath: getClipPath(),
+              opacity: 1
+            }
+            : { opacity: 1 }
+        }
+        animate={{
+          clipPath: direction === 'reverse' ? getClipPath() : 'inset(0px 0px 0px 0px round 0px)',
+          opacity: direction === 'reverse' ? 0 : 1
+        }}
+        transition={{
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1],
+        }}
       >
         <MeshGradient
           width={1920}
@@ -238,8 +258,7 @@ export default function ProjectPage() {
         <ScrollExpandMedia
           mediaType="image"
           mediaSrc={project.mission.heroImage || 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=2560&auto=format&fit=crop'}
-          bgImageSrc="" // Overridden by customBackground
-          customBackground={CustomBackground}
+          bgImageSrc="" // Overridden by global background
           renderHeader={renderHeader}
           title={project.name}
           scrollToExpand="Scroll to explore"

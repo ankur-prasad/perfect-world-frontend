@@ -1,9 +1,11 @@
 import { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { MeshGradient } from '@paper-design/shaders-react'
 import type { Project } from '../../types/project.types'
+import perfectWorldLogo from '../../assets/logos/perfect-world-logo-black.png'
+import { useTransitionStore } from '../../stores/transitionStore'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -13,6 +15,7 @@ interface ProjectTileProps {
 }
 
 export default function ProjectTile({ project, index }: ProjectTileProps) {
+    const navigate = useNavigate()
     const containerRef = useRef<HTMLDivElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
     const logoRef = useRef<HTMLImageElement>(null)
@@ -84,9 +87,42 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
     return (
         <div
             ref={containerRef}
-            className="relative w-full h-[600px] rounded-3xl overflow-hidden group"
+            className="relative w-full h-[440px] rounded-3xl overflow-hidden group"
         >
-            <Link to={`/project/${project.slug}`} className="block w-full h-full">
+            <Link
+                to={`/project/${project.slug}`}
+                className="block w-full h-full"
+                onClick={(e) => {
+                    e.preventDefault()
+                    if (containerRef.current) {
+                        const rect = containerRef.current.getBoundingClientRect()
+                        useTransitionStore.getState().startTransition({
+                            clickPosition: { x: e.clientX, y: e.clientY },
+                            rect: {
+                                top: rect.top,
+                                left: rect.left,
+                                width: rect.width,
+                                height: rect.height
+                            },
+                            color: project.theme.primaryColor,
+                            gradientColors: [
+                                project.theme.primaryColor,
+                                '#ffffff',
+                                project.theme.secondaryColor || '#000000',
+                                '#ffffff',
+                                project.theme.primaryColor
+                            ],
+                            projectSlug: project.slug,
+                            source: 'list'
+                        })
+
+                        // Small delay to ensure state is set before navigation
+                        setTimeout(() => {
+                            navigate(`/project/${project.slug}`)
+                        }, 10)
+                    }
+                }}
+            >
                 {/* Background Shader */}
                 <div className="absolute inset-0 z-0">
                     <MeshGradient
@@ -123,18 +159,20 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
 
                     {/* Text Content - Slides out */}
                     <div ref={textRef} className="max-w-4xl">
-                        <h2 className="text-5xl md:text-7xl font-bold text-black mb-4 drop-shadow-lg font-primary">
+                        <h2
+                            className="text-5xl md:text-7xl font-bold text-black mb-8 drop-shadow-lg font-primary"
+                        >
                             {project.name}
                         </h2>
-                        <p className="text-2xl md:text-3xl text-black font-light drop-shadow-md">
+                        <p className="text-2xl md:text-3xl text-black font-light drop-shadow-md leading-tight">
                             {project.tagline}
                         </p>
 
-                        <div className="mt-8 flex items-center justify-center gap-4">
+                        <div className="mt-12 flex items-center justify-center gap-4">
                             <span className="text-black/80 text-sm uppercase tracking-widest">In partnership with</span>
                             <img
-                                src={project.mission.partnerCharity.logo}
-                                alt={project.mission.partnerCharity.name}
+                                src={perfectWorldLogo}
+                                alt="Perfect World"
                                 className="h-8 w-auto opacity-80"
                             />
                         </div>

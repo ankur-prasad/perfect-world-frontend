@@ -19,12 +19,14 @@ import Founders from './pages/Founders'
 
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
+import ScrollToTop from './components/Layout/ScrollToTop'
 
 function App() {
   return (
     <Router>
       <CartProvider>
         <NavigationProvider>
+          <ScrollToTop />
           <ColorExpansionOverlay />
           <Routes>
             <Route path="/" element={<Home />} />

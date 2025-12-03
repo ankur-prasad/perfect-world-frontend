@@ -228,7 +228,7 @@ export default function Shop() {
               </p>
 
               {/* Search and Filters */}
-              <div className="mb-12 space-y-6">
+              <div className="mb-[3rem] space-y-[1.5rem]">
                 {/* Search Bar */}
                 <div className="relative max-w-2xl mx-auto">
                   <input
@@ -254,7 +254,7 @@ export default function Shop() {
                 </div>
 
                 {/* Filter Bar */}
-                <div className="flex flex-wrap gap-4 items-center justify-between">
+                <div className="flex flex-wrap gap-[1rem] items-center justify-between">
                   {/* Collection Filter */}
                   <select
                     value={selectedCollection}
@@ -369,7 +369,7 @@ export default function Shop() {
 
               {/* Product Grid - Organized by Collection */}
               {!error && (
-                <div className="space-y-16">
+                <div className="space-y-[4rem]">
                   {productsByCollection.map((collection) => (
                     <div key={collection.collectionHandle}>
                       {/* Collection Header - only show when viewing all collections */}

@@ -98,7 +98,8 @@ export default function Home() {
         '#ffffff',
         project.theme.primaryColor
       ],
-      projectSlug
+      projectSlug,
+      source: 'globe'
     })
 
     // Navigate after brief delay to allow animation to start

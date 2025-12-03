@@ -177,7 +177,7 @@ const ScrollExpandMedia = ({
               <div className="w-screen h-screen">
                 {customBackground}
               </div>
-            ) : (
+            ) : bgImageSrc ? (
               <>
                 <img
                   src={bgImageSrc}
@@ -186,7 +186,7 @@ const ScrollExpandMedia = ({
                 />
                 <div className='absolute inset-0 bg-black/10' />
               </>
-            )}
+            ) : null}
           </motion.div>
 
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>

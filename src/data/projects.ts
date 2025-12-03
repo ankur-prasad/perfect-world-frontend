@@ -7,6 +7,43 @@ import elephantsForAfricaLogo from '../assets/logos/elephants-for-africa-logo.pn
 
 export const projects: Project[] = [
   {
+    id: '5',
+    slug: 'wild-at-heart',
+    name: 'Wild at Heart',
+    tagline: 'Protecting Endangered Elephants',
+    location: {
+      lat: -8.7,
+      lon: 34.9,
+      label: 'Africa',
+    },
+    mission: {
+      heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
+      problem:
+        'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
+      solution:
+        'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
+      impact: [
+        '5,000+ elephants protected',
+        '50,000 acres of habitat preserved',
+        '100+ poachers arrested',
+      ],
+      partnerCharity: {
+        name: 'Save the Elephants',
+        description: 'Wildlife conservation organization',
+        website: 'https://www.savetheelephants.org',
+        logo: elephantsForAfricaLogo,
+      },
+    },
+    shopifyCollection: {
+      handle: 'wild-at-heart',
+      title: 'Wild at Heart Collection',
+    },
+    theme: {
+      primaryColor: '#8B7D6B',
+      secondaryColor: '#6D5F4D',
+    },
+  },
+  {
     id: '1',
     slug: 'endangered-oceans',
     name: 'Endangered Oceans',
@@ -39,8 +76,8 @@ export const projects: Project[] = [
       title: 'Endangered Oceans',
     },
     theme: {
-      primaryColor: '#005A8C',
-      secondaryColor: '#004D75',
+      primaryColor: '#002147',
+      secondaryColor: '#00152e',
     },
   },
   {
@@ -81,43 +118,6 @@ export const projects: Project[] = [
     },
   },
   {
-    id: '3',
-    slug: 'talk-about-it',
-    name: 'Talk About It',
-    tagline: 'Breaking Mental Health Stigma',
-    location: {
-      lat: 48.1,
-      lon: 11.6,
-      label: 'Munich, Germany',
-    },
-    mission: {
-      heroImage: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2560&auto=format&fit=crop',
-      problem:
-        'Mental health challenges affect millions worldwide, yet stigma prevents people from seeking help.',
-      solution:
-        'Talk About It creates safe spaces for mental health conversations, providing resources, support, and community.',
-      impact: [
-        '100,000+ people reached',
-        '500+ support groups established',
-        '24/7 crisis helpline',
-      ],
-      partnerCharity: {
-        name: 'Talk About It',
-        description: 'Mental health advocacy organization',
-        website: 'https://www.talkaboutit.org',
-        logo: mhiLogo,
-      },
-    },
-    shopifyCollection: {
-      handle: 'talk-about-it',
-      title: 'Talk About It',
-    },
-    theme: {
-      primaryColor: '#FF8C42',
-      secondaryColor: '#FF7420',
-    },
-  },
-  {
     id: '4',
     slug: 'cool-down',
     name: 'Cool Down',
@@ -155,40 +155,40 @@ export const projects: Project[] = [
     },
   },
   {
-    id: '5',
-    slug: 'wild-at-heart',
-    name: 'Wild at Heart',
-    tagline: 'Protecting Endangered Elephants',
+    id: '3',
+    slug: 'talk-about-it',
+    name: 'Talk About It',
+    tagline: 'Breaking Mental Health Stigma',
     location: {
-      lat: -8.7,
-      lon: 34.9,
-      label: 'Africa',
+      lat: 48.1,
+      lon: 11.6,
+      label: 'Munich, Germany',
     },
     mission: {
-      heroImage: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?q=80&w=2560&auto=format&fit=crop',
+      heroImage: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2560&auto=format&fit=crop',
       problem:
-        'African elephants face extinction due to poaching, habitat loss, and human-wildlife conflict.',
+        'Mental health challenges affect millions worldwide, yet stigma prevents people from seeking help.',
       solution:
-        'Save the Elephants protects elephant populations through anti-poaching efforts, habitat conservation, and community education.',
+        'Talk About It creates safe spaces for mental health conversations, providing resources, support, and community.',
       impact: [
-        '5,000+ elephants protected',
-        '50,000 acres of habitat preserved',
-        '100+ poachers arrested',
+        '100,000+ people reached',
+        '500+ support groups established',
+        '24/7 crisis helpline',
       ],
       partnerCharity: {
-        name: 'Save the Elephants',
-        description: 'Wildlife conservation organization',
-        website: 'https://www.savetheelephants.org',
-        logo: elephantsForAfricaLogo,
+        name: 'Talk About It',
+        description: 'Mental health advocacy organization',
+        website: 'https://www.talkaboutit.org',
+        logo: mhiLogo,
       },
     },
     shopifyCollection: {
-      handle: 'wild-at-heart',
-      title: 'Wild at Heart Collection',
+      handle: 'talk-about-it',
+      title: 'Talk About It',
     },
     theme: {
-      primaryColor: '#8B7D6B',
-      secondaryColor: '#6D5F4D',
+      primaryColor: '#FF8C42',
+      secondaryColor: '#FF7420',
     },
   },
 ]
