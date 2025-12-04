@@ -16,6 +16,11 @@ const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSI
 // Helper function to make Shopify API requests
 async function shopifyFetch<T>(query: string, variables: Record<string, string | number | boolean | object> = {}): Promise<T> {
   try {
+    console.log('Shopify Fetch:', {
+      url: STOREFRONT_API_URL,
+      tokenPresent: !!SHOPIFY.STOREFRONT_API_TOKEN,
+      tokenLength: SHOPIFY.STOREFRONT_API_TOKEN?.length
+    })
     const response = await fetch(STOREFRONT_API_URL, {
       method: 'POST',
       headers: {
@@ -71,6 +76,11 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
                   currencyCode
                 }
               }
+              options {
+                id
+                name
+                values
+              }
               images(first: 5) {
                 edges {
                   node {
@@ -123,6 +133,7 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
       handle: edge.node.handle,
       availableForSale: edge.node.availableForSale,
       priceRange: edge.node.priceRange,
+      options: edge.node.options,
       images: edge.node.images.edges.map((imgEdge: GraphQLEdge<GraphQLImageNode>) => imgEdge.node),
       variants: edge.node.variants.edges.map((varEdge: GraphQLEdge<GraphQLVariantNode>) => ({
         ...varEdge.node,
@@ -146,6 +157,19 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
           minVariantPrice {
             amount
             currencyCode
+          }
+        }
+        options {
+          id
+          name
+          values
+        }
+        collections(first: 1) {
+          edges {
+            node {
+              handle
+              title
+            }
           }
         }
         images(first: 10) {
@@ -192,11 +216,13 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
     handle: product.handle,
     availableForSale: product.availableForSale,
     priceRange: product.priceRange,
+    options: product.options,
     images: product.images.edges.map((edge: GraphQLEdge<GraphQLImageNode>) => edge.node),
     variants: product.variants.edges.map((edge: GraphQLEdge<GraphQLVariantNode>) => ({
       ...edge.node,
       price: edge.node.priceV2,
     })),
+    collections: product.collections.edges.map((edge: GraphQLEdge<{ handle: string; title: string }>) => edge.node),
   }
 }
 
@@ -373,5 +399,33 @@ export async function associateCustomerToCheckout(
   }
 
   return data.checkoutCustomerAssociateV2.checkout
+}
+
+// --- Customer Account API Helpers ---
+
+export function generateCustomerAccountLoginUrl(redirectUri: string, state?: string) {
+  const params = new URLSearchParams({
+    client_id: SHOPIFY.CUSTOMER_ACCOUNT_API.CLIENT_ID,
+    response_type: 'code',
+    redirect_uri: redirectUri,
+    scope: 'openid email',
+  })
+
+  if (state) {
+    params.append('state', state)
+  }
+
+  return `${SHOPIFY.CUSTOMER_ACCOUNT_API.AUTH_URL}?${params.toString()}`
+}
+
+export function generateCustomerAccountLogoutUrl(postLogoutRedirectUri?: string) {
+  const url = new URL(SHOPIFY.CUSTOMER_ACCOUNT_API.LOGOUT_URL)
+
+  if (postLogoutRedirectUri) {
+    url.searchParams.append('post_logout_redirect_uri', postLogoutRedirectUri)
+    url.searchParams.append('client_id', SHOPIFY.CUSTOMER_ACCOUNT_API.CLIENT_ID)
+  }
+
+  return url.toString()
 }
 

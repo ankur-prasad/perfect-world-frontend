@@ -13,6 +13,12 @@ export interface ShopifyPriceRange {
   maxVariantPrice?: ShopifyMoney
 }
 
+export interface ShopifyOption {
+  id: string
+  name: string
+  values: string[]
+}
+
 export interface ShopifyVariant {
   id: string
   title: string
@@ -32,7 +38,9 @@ export interface ShopifyProduct {
   handle: string
   priceRange: ShopifyPriceRange
   images: ShopifyImage[]
+  options: ShopifyOption[]
   variants: ShopifyVariant[]
+  collections?: Array<{ handle: string; title: string }>
   availableForSale: boolean
   collectionHandle?: string
   collectionName?: string
@@ -92,11 +100,19 @@ export interface GraphQLProductNode {
   handle: string
   availableForSale: boolean
   priceRange: ShopifyPriceRange
+  options: Array<{
+    id: string
+    name: string
+    values: string[]
+  }>
   images: {
     edges: Array<GraphQLEdge<GraphQLImageNode>>
   }
   variants: {
     edges: Array<GraphQLEdge<GraphQLVariantNode>>
+  }
+  collections: {
+    edges: Array<GraphQLEdge<{ handle: string; title: string }>>
   }
 }
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
+import Navigation from '../components/Layout/Navigation'
 import ProductCard from '../components/Product/ProductCard'
 import { getProduct, getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
@@ -14,6 +15,7 @@ export default function ProductDetail() {
   const { addToCart } = useCart()
 
   const [product, setProduct] = useState<ShopifyProduct | null>(null)
+  const [siblings, setSiblings] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0)
@@ -33,6 +35,29 @@ export default function ProductDetail() {
         const fetchedProduct = await getProduct(handle)
         if (fetchedProduct) {
           setProduct(fetchedProduct)
+
+          // Fetch siblings from the same collection
+          if (fetchedProduct.collections && fetchedProduct.collections.length > 0) {
+            const collectionHandle = fetchedProduct.collections[0].handle
+            const collection = await getCollectionProducts(collectionHandle)
+
+            if (collection && collection.products) {
+              // Filter for products that share the same base name
+              // Assumption: Product names are like "Base Name Color"
+              // We'll try to find the longest common prefix
+              // Updated regex to handle multi-word colors like "Worker Blue", "Heather Grey", etc.
+              const baseName = fetchedProduct.title.replace(/ (Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold).*$/i, '').trim()
+
+              const relatedProducts = collection.products.filter(p =>
+                p.id !== fetchedProduct.id && // Exclude self (actually include self in list for selector, but handle logic carefully)
+                p.title.startsWith(baseName)
+              )
+
+              // Include self in the list so we can map over all options
+              const allSiblings = [...relatedProducts, fetchedProduct].sort((a, b) => a.title.localeCompare(b.title))
+              setSiblings(allSiblings)
+            }
+          }
 
           // Fetch related products from the same collection if available
           if (fetchedProduct.collectionHandle) {
@@ -134,6 +159,7 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+      <Navigation isDarkContent={false} />
 
       <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
@@ -219,38 +245,91 @@ export default function ProductDetail() {
 
                 <div className="text-4xl font-bold text-white mb-8">{formattedPrice}</div>
 
-                {product.description && (
-                  <div
-                    className="text-gray-300 text-lg leading-relaxed mb-8"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
-                  />
-                )}
-
-                {/* Variant Selector */}
-                {product.variants.length > 1 && (
+                {/* Color Selector (Sibling Products) */}
+                {siblings.length > 0 && (
                   <div className="mb-8">
                     <label className="block text-sm font-bold text-white mb-3">
-                      Select {selectedVariant.selectedOptions?.[0]?.name || 'Option'}
+                      Color
                     </label>
                     <div className="flex flex-wrap gap-3">
-                      {product.variants.map((variant, index) => (
-                        <button
-                          key={variant.id}
-                          onClick={() => setSelectedVariantIndex(index)}
-                          disabled={!variant.availableForSale}
-                          className={`px-10 py-4 rounded-full font-semibold transition-all ${selectedVariantIndex === index
-                            ? 'bg-white text-black'
-                            : variant.availableForSale
-                              ? 'bg-white/10 text-white hover:bg-white/20'
-                              : 'bg-gray-800 text-gray-600 cursor-not-allowed line-through'
-                            }`}
-                        >
-                          {variant.title}
-                        </button>
-                      ))}
+                      {siblings.map((sibling) => {
+                        // Extract color from title (assuming format "Name Color")
+                        // Or just use the full title if we can't parse it easily
+                        // Strategy: Remove the common base name from the sibling title
+                        const baseName = product.title.replace(/ (Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold).*$/i, '').trim()
+                        const colorName = sibling.title.replace(baseName, '').trim() || sibling.title
+
+                        return (
+                          <Link
+                            key={sibling.id}
+                            to={`/product/${sibling.handle}`}
+                            className={`px-6 py-3 rounded-full font-semibold transition-all ${sibling.handle === product.handle
+                              ? 'bg-white text-black'
+                              : 'bg-white/10 text-white hover:bg-white/20'
+                              }`}
+                          >
+                            {colorName}
+                          </Link>
+                        )
+                      })}
                     </div>
                   </div>
                 )}
+
+                {/* Size Selector (Variant Options) */}
+                {product.options && product.options.map((option) => {
+                  if (option.name.toLowerCase() === 'color') return null // Skip color if handled by siblings (or if it's redundant)
+
+                  return (
+                    <div key={option.id} className="mb-8">
+                      <label className="block text-sm font-bold text-white mb-3">
+                        {option.name}
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {option.values.map((value) => {
+                          const isSelected = selectedVariant.selectedOptions?.some(
+                            (o) => o.name === option.name && o.value === value
+                          )
+
+                          return (
+                            <button
+                              key={value}
+                              onClick={() => {
+                                // Logic to select variant based on this option value
+                                // ... (same as before)
+                                const currentOptions = selectedVariant.selectedOptions || []
+                                const targetOptions = currentOptions.map(o =>
+                                  o.name === option.name ? { ...o, value } : o
+                                )
+                                const matchingVariantIndex = product.variants.findIndex(v =>
+                                  v.selectedOptions?.every(vo =>
+                                    targetOptions.some(to => to.name === vo.name && to.value === vo.value)
+                                  )
+                                )
+                                if (matchingVariantIndex !== -1) {
+                                  setSelectedVariantIndex(matchingVariantIndex)
+                                } else {
+                                  const fallbackIndex = product.variants.findIndex(v =>
+                                    v.selectedOptions?.some(o => o.name === option.name && o.value === value)
+                                  )
+                                  if (fallbackIndex !== -1) {
+                                    setSelectedVariantIndex(fallbackIndex)
+                                  }
+                                }
+                              }}
+                              className={`px-6 py-3 rounded-full font-semibold transition-all ${isSelected
+                                ? 'bg-white text-black'
+                                : 'bg-white/10 text-white hover:bg-white/20'
+                                }`}
+                            >
+                              {value}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
 
                 {/* Quantity Selector */}
                 <div className="mb-8">
@@ -324,6 +403,14 @@ export default function ProductDetail() {
                     Share Product
                   </button>
                 </div>
+
+                {/* Description - Moved here */}
+                {product.description && (
+                  <div
+                    className="text-gray-300 text-lg leading-relaxed mb-8"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
+                  />
+                )}
 
                 {/* Charitable Impact */}
                 {product.collectionName && (

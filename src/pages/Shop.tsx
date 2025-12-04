@@ -41,8 +41,19 @@ export default function Shop() {
 
       try {
         const allProducts: ShopifyProduct[] = []
+        const toteBags: ShopifyProduct[] = []
 
-        // Fetch products from each project collection
+        // 1. Fetch Tote Bags first (to distribute them later)
+        try {
+          const toteCollection = await getCollectionProducts('organic-tote-bags')
+          if (toteCollection && toteCollection.products) {
+            toteBags.push(...toteCollection.products)
+          }
+        } catch (err) {
+          console.warn('Failed to fetch Tote Bags:', err)
+        }
+
+        // 2. Fetch products from each project collection
         await Promise.all([
           ...projects.map(async (project) => {
             try {
@@ -55,6 +66,24 @@ export default function Shop() {
                   collectionColor: project.theme.primaryColor,
                 }))
                 allProducts.push(...taggedProducts)
+
+                // Add matching tote bags to this collection
+                const matchingTotes = toteBags.filter(tote =>
+                  tote.title.toLowerCase().includes(project.name.toLowerCase()) ||
+                  tote.title.toLowerCase().includes(project.slug.replace(/-/g, ' '))
+                )
+
+                matchingTotes.forEach(tote => {
+                  // Avoid duplicates if tote is already in the collection (unlikely but possible)
+                  if (!taggedProducts.find(p => p.id === tote.id)) {
+                    allProducts.push({
+                      ...tote,
+                      collectionHandle: project.shopifyCollection.handle,
+                      collectionName: project.name,
+                      collectionColor: project.theme.primaryColor,
+                    })
+                  }
+                })
               }
             } catch (err) {
               console.warn(`Failed to fetch products for ${project.name}(${project.shopifyCollection.handle}): `, err)
@@ -63,11 +92,11 @@ export default function Shop() {
           // Fetch Embroidered Logo collection
           (async () => {
             try {
-              const collection = await getCollectionProducts('embroidered-logo')
+              const collection = await getCollectionProducts('perfect-world')
               if (collection && collection.products) {
                 const taggedProducts = collection.products.map((product) => ({
                   ...product,
-                  collectionHandle: 'embroidered-logo',
+                  collectionHandle: 'perfect-world',
                   collectionName: 'Embroidered Logo',
                   collectionColor: '#FFFFFF', // White for neutral
                 }))
@@ -77,23 +106,6 @@ export default function Shop() {
               console.warn('Failed to fetch Embroidered Logo collection:', err)
             }
           })(),
-          // Fetch Color Collection
-          (async () => {
-            try {
-              const collection = await getCollectionProducts('color-collection')
-              if (collection && collection.products) {
-                const taggedProducts = collection.products.map((product) => ({
-                  ...product,
-                  collectionHandle: 'color-collection',
-                  collectionName: 'Color Collection',
-                  collectionColor: '#FFFFFF', // White for neutral
-                }))
-                allProducts.push(...taggedProducts)
-              }
-            } catch (err) {
-              console.warn('Failed to fetch Color Collection:', err)
-            }
-          })()
         ])
 
         setProducts(allProducts)
@@ -267,8 +279,7 @@ export default function Shop() {
                         {project.name}
                       </option>
                     ))}
-                    <option value="embroidered-logo">Embroidered Logo</option>
-                    <option value="color-collection">Color Collection</option>
+                    <option value="perfect-world">Embroidered Logo</option>
                   </select>
 
                   {/* Price Range */}

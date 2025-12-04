@@ -146,7 +146,7 @@ export const projects: Project[] = [
       },
     },
     shopifyCollection: {
-      handle: 'cool-down',
+      handle: 'frontpage',
       title: 'Cool Down',
     },
     theme: {
