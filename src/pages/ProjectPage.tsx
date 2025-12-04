@@ -461,7 +461,6 @@ export default function ProjectPage() {
                 products={products}
                 loading={loading}
                 onQuickView={setQuickViewProduct}
-                themeColor={project.theme.primaryColor}
               />
             </div>
           )}
