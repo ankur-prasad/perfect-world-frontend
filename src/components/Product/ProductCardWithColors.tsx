@@ -93,8 +93,8 @@ export default function ProductCardWithColors({
 
   // Product type badge
   const typeBadge = productType === 'tshirt' ? 'T-SHIRT' :
-                    productType === 'hoodie' ? 'HOODIE' :
-                    productType === 'tote' ? 'TOTE BAG' : ''
+    productType === 'hoodie' ? 'HOODIE' :
+      productType === 'tote' ? 'TOTE BAG' : ''
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -140,7 +140,7 @@ export default function ProductCardWithColors({
         className="block cursor-pointer"
         onClick={() => window.location.href = `/product/${displayProduct?.handle || product.handle}`}
       >
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
+        <div className="relative aspect-[4/5] overflow-hidden bg-white">
           <AnimatePresence mode="wait">
             <motion.img
               key={displayProduct?.id || product.id}
@@ -184,9 +184,8 @@ export default function ProductCardWithColors({
           {/* Color Selector Overlay - Visible on card hover - Glassy Style */}
           {siblings.length > 0 && (
             <div
-              className={`absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 ${
-                isHoveringCard ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 ${isHoveringCard ? 'opacity-100' : 'opacity-0'
+                }`}
             >
               <div className="flex flex-wrap gap-10 justify-center">
                 {siblings.map((sibling) => {
@@ -200,9 +199,8 @@ export default function ProductCardWithColors({
                     <Link
                       key={sibling.id}
                       to={`/product/${sibling.handle}`}
-                      className={`group relative transition-all duration-200 ${
-                        isHovered ? 'scale-125' : 'scale-100'
-                      }`}
+                      className={`group relative transition-all duration-200 ${isHovered ? 'scale-125' : 'scale-100'
+                        }`}
                       onMouseEnter={(e) => {
                         e.preventDefault()
                         setHoveredProduct(sibling)
@@ -219,11 +217,10 @@ export default function ProductCardWithColors({
                       {/* Color swatch circle - Enhanced Glassy Style */}
                       <div className="relative">
                         <div
-                          className={`w-12 h-12 rounded-full transition-all duration-300 ${
-                            isCurrentProduct
+                          className={`w-12 h-12 rounded-full transition-all duration-300 ${isCurrentProduct
                               ? 'ring-2 ring-white/90 ring-offset-2 ring-offset-black/60 shadow-xl scale-110'
                               : 'ring-1 ring-white/50 hover:ring-2 hover:ring-white/90 hover:scale-110 hover:shadow-xl'
-                          }`}
+                            }`}
                           style={{
                             background: colorValue,
                             boxShadow: isCurrentProduct

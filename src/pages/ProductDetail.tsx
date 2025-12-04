@@ -8,7 +8,7 @@ import { getProduct, getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
 import { sanitizeHtml } from '../utils/sanitize'
-import { extractBaseName, extractColorFromTitle } from '../utils/productGrouping'
+import { extractBaseName, extractColorFromTitle, extractProductType } from '../utils/productGrouping'
 import { projects } from '../data/projects'
 
 // Color name to hex code mapping (same as ProductCardWithColors)
@@ -111,14 +111,18 @@ export default function ProductDetail() {
                 // 1. Must not be the current product
                 if (p.id === fetchedProduct.id) return false
 
-                // 2. Must share the same base name
-                if (!p.title.startsWith(baseName)) return false
+                // 2. Must share the same base name (case-insensitive)
+                if (!p.title.toLowerCase().startsWith(baseName.toLowerCase())) return false
 
                 // 3. Must belong to the same project collection
                 // This prevents "Cool Down" (frontpage) mixing with "One World" (one-world)
                 // if they happen to share a collection or base name pattern
                 const pCollections = p.collections?.map(c => c.handle) || []
-                return pCollections.includes(projectHandle)
+                if (!pCollections.includes(projectHandle)) return false
+
+                // 4. Must be the same product type (tshirt, hoodie, etc.)
+                // This prevents "Wild at Heart" (tshirt) from matching "Wild at Heart Hoodie"
+                return extractProductType(p.title) === extractProductType(fetchedProduct.title)
               })
 
               // Include self in the list so we can map over all options
@@ -382,7 +386,18 @@ export default function ProductDetail() {
                         {option.name}
                       </label>
                       <div className="flex flex-wrap gap-3">
-                        {option.values.map((value) => {
+                        {option.values.sort((a, b) => {
+                          const sizeOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL']
+                          const indexA = sizeOrder.indexOf(a)
+                          const indexB = sizeOrder.indexOf(b)
+                          // If both are in the list, sort by index
+                          if (indexA !== -1 && indexB !== -1) return indexA - indexB
+                          // If only one is in the list, prioritize it
+                          if (indexA !== -1) return -1
+                          if (indexB !== -1) return 1
+                          // Otherwise sort alphabetically
+                          return a.localeCompare(b)
+                        }).map((value) => {
                           const isSelected = selectedVariant.selectedOptions?.some(
                             (o) => o.name === option.name && o.value === value
                           )

@@ -60,8 +60,8 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
   return (
     <motion.div
       className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${isLightMode
-          ? 'bg-white border border-gray-100 shadow-sm hover:shadow-md'
-          : 'bg-white/5 backdrop-blur-sm hover:bg-white/10'
+        ? 'bg-white border border-gray-100 shadow-sm hover:shadow-md'
+        : 'bg-white/5 backdrop-blur-sm hover:bg-white/10'
         }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

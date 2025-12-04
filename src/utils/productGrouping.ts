@@ -47,10 +47,13 @@ export function extractBaseName(title: string): string {
 export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyProduct[]): ShopifyProduct[] {
   const baseName = extractBaseName(product.title)
 
-  // Find all products with the same base name (case-insensitive)
+  // Find all products with the same base name (case-insensitive) AND same product type
+  const productType = extractProductType(product.title)
+
   const siblings = allProducts.filter(p =>
     p.title.toLowerCase().startsWith(baseName.toLowerCase()) &&
-    p.collectionHandle === product.collectionHandle
+    p.collectionHandle === product.collectionHandle &&
+    extractProductType(p.title) === productType
   )
 
   console.log(`Finding siblings for "${product.title}"`, {
@@ -65,7 +68,7 @@ export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyP
 
 /**
  * Group products by type for a collection
- * Prioritizes Black color variants when available
+ * Prioritizes specific colors for certain products, then Black, then first available
  */
 export function groupProductsByTypeForCollection(products: ShopifyProduct[]): {
   tshirt: ShopifyProduct | null
@@ -76,27 +79,48 @@ export function groupProductsByTypeForCollection(products: ShopifyProduct[]): {
   const hoodies = products.filter(p => extractProductType(p.title) === 'hoodie')
   const totes = products.filter(p => extractProductType(p.title) === 'tote')
 
-  console.log('Grouping products by type:', {
-    tshirts: tshirts.map(p => p.title),
-    hoodies: hoodies.map(p => p.title),
-    totes: totes.map(p => p.title)
-  })
+  // Preferred colors for specific products (case-insensitive)
+  const PREFERRED_COLORS: Record<string, string> = {
+    'wild at heart': 'indian grey',
+    'endangered oceans': 'worker blue',
+    'one world': 'sky blue',
+    'cool down': 'green bay',
+    'talk about it': 'fiesta'
+  }
 
-  // Helper to pick preferred color (Black first, then first available)
-  const pickPreferredProduct = (productList: ShopifyProduct[]): ShopifyProduct | null => {
+  // Helper to pick preferred product
+  const pickPreferredProduct = (productList: ShopifyProduct[], isHoodie: boolean = false): ShopifyProduct | null => {
     if (productList.length === 0) return null
 
-    // Try to find Black color
+    // 1. Check for specific preferred color based on base name (skip for hoodies)
+    if (!isHoodie) {
+      for (const product of productList) {
+        const baseName = extractBaseName(product.title).toLowerCase()
+
+        // Check if any key in PREFERRED_COLORS is contained in baseName
+        const matchedKey = Object.keys(PREFERRED_COLORS).find(key => baseName.includes(key))
+
+        if (matchedKey) {
+          const preferredColor = PREFERRED_COLORS[matchedKey]
+          const color = extractColorFromTitle(product.title).toLowerCase()
+          if (color === preferredColor) return product
+        }
+      }
+    }
+
+    // 2. Fallback to Black
     const blackProduct = productList.find(p =>
       extractColorFromTitle(p.title).toLowerCase() === 'black'
     )
+    if (blackProduct) return blackProduct
 
-    return blackProduct || productList[0]
+    // 3. Fallback to first available
+    return productList[0]
   }
 
   return {
     tshirt: pickPreferredProduct(tshirts),
-    hoodie: pickPreferredProduct(hoodies),
+    hoodie: pickPreferredProduct(hoodies, true),
     tote: pickPreferredProduct(totes),
   }
 }
