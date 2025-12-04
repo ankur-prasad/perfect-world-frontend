@@ -70,7 +70,7 @@ export default function Header({ showBackButton = false, onBackClick, centerCont
                   transition={{ duration: 0.6, ease: 'easeOut' }}
                 >
                   <Link to="/">
-                    <h1 className="text-4xl font-bold text-white tracking-wider">
+                    <h1 className="text-4xl font-bold text-white tracking-wider font-primary">
                       PERFECT WORLD
                     </h1>
                   </Link>

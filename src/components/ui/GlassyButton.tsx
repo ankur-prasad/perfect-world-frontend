@@ -186,6 +186,7 @@ export default function GlassyButton({
     userSelect: 'none' as const,
     fontWeight,
     fontSize,
+    fontFamily: '"Shadows Into Light", "Indie Flower", cursive',
     letterSpacing: '-0.01em',
     lineHeight: '1.2em',
     textAlign: 'center' as const,

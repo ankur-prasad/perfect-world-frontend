@@ -107,7 +107,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {/* Header */}
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-white">Your Cart</h2>
+                <h2 className="text-2xl font-bold text-white font-primary">Your Cart</h2>
                 <p className="text-sm text-gray-400">
                   {cartCount} {cartCount === 1 ? 'item' : 'items'}
                 </p>
@@ -141,7 +141,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Your cart is empty</h3>
+                  <h3 className="text-xl font-bold text-white mb-2 font-primary">Your cart is empty</h3>
                   <p className="text-gray-400 mb-8">Add some products to get started</p>
                   <GlassyButton
                     label="Continue Shopping"

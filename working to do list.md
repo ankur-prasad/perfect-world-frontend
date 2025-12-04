@@ -35,11 +35,13 @@ new comments
 
 
 
-- cookie banner is too hectic. normal font and cleaner look
+
 - add second font to make stuff more readable
-- project banners make smaller in height and 10% less wide, so that we can see more than 1 a time
 - adjust font where it is not readbale 
 - footer needs rework to match rest of site
 - logo in footer
 - add text for project pages
 - add back or home button to project pages
+
+- connect the frontend to headless
+- add the products to the shop

@@ -106,7 +106,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
       {/* Product Info */}
       <div className="p-6">
-        <h3 className={`text-lg font-bold mb-2 line-clamp-2 transition-colors ${isLightMode ? 'text-gray-900 group-hover:text-blue-600' : 'text-white group-hover:text-gray-200'
+        <h3 className={`text-lg font-bold mb-2 line-clamp-2 transition-colors font-primary ${isLightMode ? 'text-gray-900 group-hover:text-blue-600' : 'text-white group-hover:text-gray-200'
           }`}>
           {product.title}
         </h3>

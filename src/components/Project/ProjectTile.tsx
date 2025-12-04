@@ -160,11 +160,12 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
                     {/* Text Content - Slides out */}
                     <div ref={textRef} className="max-w-4xl">
                         <h2
-                            className="text-5xl md:text-7xl font-bold text-black mb-8 drop-shadow-lg font-primary"
+                            className="text-5xl md:text-7xl font-bold text-black mb-8 drop-shadow-lg"
+                            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
                         >
                             {project.name}
                         </h2>
-                        <p className="text-2xl md:text-3xl text-black font-light drop-shadow-md leading-tight">
+                        <p className="text-2xl md:text-3xl text-black font-light drop-shadow-md leading-tight" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
                             {project.tagline}
                         </p>
 

@@ -17,9 +17,9 @@ export default {
       },
       fontFamily: {
         primary: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
-        secondary: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
+        secondary: ['"Poppins"', 'system-ui', 'sans-serif'],
         handwritten: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
-        sans: ['"Shadows Into Light"', '"Indie Flower"', 'cursive'],
+        sans: ['"Poppins"', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'hero': ['4rem', { lineHeight: '1.1', fontWeight: '700' }],

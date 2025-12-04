@@ -34,15 +34,34 @@ export default function Carousel3D({
     const [isTransitioning, setIsTransitioning] = useState(false)
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
     const animationRef = useRef<number | undefined>(undefined)
+    const lastTimeRef = useRef<number>(0)
 
-    // Auto-rotation when not hovered
+    // Auto-rotation when not hovered - improved with timestamp-based animation
     useEffect(() => {
         if (pauseOnHover && isHovered) {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current)
+                animationRef.current = undefined
+            }
             return
         }
 
-        const animate = () => {
-            setRotation((prev) => prev + 360 / (rotateSpeed * 60))
+        lastTimeRef.current = performance.now()
+
+        const animate = (currentTime: number) => {
+            const deltaTime = currentTime - lastTimeRef.current
+            lastTimeRef.current = currentTime
+
+            // Calculate rotation increment based on actual time elapsed
+            // This ensures smooth rotation regardless of frame rate
+            const rotationIncrement = (360 / (rotateSpeed * 1000)) * deltaTime
+
+            setRotation((prev) => {
+                // Normalize rotation to prevent infinite accumulation
+                const newRotation = (prev + rotationIncrement) % 360
+                return newRotation
+            })
+
             animationRef.current = requestAnimationFrame(animate)
         }
 
@@ -51,6 +70,7 @@ export default function Carousel3D({
         return () => {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current)
+                animationRef.current = undefined
             }
         }
     }, [isHovered, rotateSpeed, pauseOnHover])
@@ -58,15 +78,15 @@ export default function Carousel3D({
     const handlePrevious = () => {
         if (isTransitioning) return
         setIsTransitioning(true)
-        setRotation((prev) => prev - spreadAngle)
-        setTimeout(() => setIsTransitioning(false), 500)
+        setRotation((prev) => (prev - spreadAngle + 360) % 360)
+        setTimeout(() => setIsTransitioning(false), 600)
     }
 
     const handleNext = () => {
         if (isTransitioning) return
         setIsTransitioning(true)
-        setRotation((prev) => prev + spreadAngle)
-        setTimeout(() => setIsTransitioning(false), 500)
+        setRotation((prev) => (prev + spreadAngle) % 360)
+        setTimeout(() => setIsTransitioning(false), 600)
     }
 
     const handleMouseLeave = () => {
@@ -98,7 +118,8 @@ export default function Carousel3D({
                         transform: `translate(-50%, -50%) rotateY(${rotation}deg)`,
                         transformStyle: 'preserve-3d',
                         transformOrigin: 'center center',
-                        transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'transform 0.1s linear',
+                        transition: isTransitioning ? 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                        willChange: 'transform',
                     }}
                 >
                     {children.map((child, index) => {

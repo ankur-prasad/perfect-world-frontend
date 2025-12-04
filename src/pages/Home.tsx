@@ -156,7 +156,7 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
         >
-          <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light">
+          <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
             Together. Not Alone.
           </p>
         </motion.div>
@@ -171,7 +171,7 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <p className="text-white/80 text-sm tracking-widest uppercase font-bold">
+          <p className="text-white/80 text-sm tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
             More than a slogan, it's a Promise for Change and Improvement.
           </p>
         </motion.div>
@@ -215,6 +215,7 @@ export default function Home() {
         <div className="w-full relative z-10 flex flex-col items-center">
           <motion.h2
             className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
+            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

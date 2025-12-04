@@ -375,7 +375,7 @@ export default function Shop() {
                       {/* Collection Header - only show when viewing all collections */}
                       {selectedCollection === 'all' && (
                         <motion.h2
-                          className="text-3xl md:text-4xl font-bold text-gray-900 mb-8"
+                          className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 font-primary"
                           initial={{ opacity: 0, x: -20 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}

@@ -150,7 +150,7 @@ function FAQItem({ faq, index, isActive, onClick }: FAQItemProps) {
             >
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex-1">
-                        <h3 className="text-lg font-normal text-black text-left">
+                        <h3 className="text-lg font-normal text-black text-left font-primary">
                             {faq.question}
                         </h3>
                     </div>
@@ -244,6 +244,7 @@ export default function FAQ() {
                 <div className="w-full px-4 max-w-[800px]">
                     <motion.h2
                         className="text-5xl md:text-6xl font-bold mb-12 text-center"
+                        style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

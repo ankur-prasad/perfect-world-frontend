@@ -129,14 +129,14 @@ export default function ProjectPage() {
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex items-center justify-center gap-4 w-full">
             <h2
-              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg font-primary transition-transform duration-100 ease-out"
-              style={{ transform: `translateX(-${textTranslateX}vw)` }}
+              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg transition-transform duration-100 ease-out"
+              style={{ transform: `translateX(-${textTranslateX}vw)`, fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
             >
               {firstWord}
             </h2>
             <h2
-              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg font-primary transition-transform duration-100 ease-out"
-              style={{ transform: `translateX(${textTranslateX}vw)` }}
+              className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg transition-transform duration-100 ease-out"
+              style={{ transform: `translateX(${textTranslateX}vw)`, fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
             >
               {restOfTitle}
             </h2>
@@ -145,7 +145,7 @@ export default function ProjectPage() {
           {/* Tagline - Fades out */}
           <p
             className="text-2xl md:text-3xl text-white font-light drop-shadow-md mt-4 transition-opacity duration-100"
-            style={{ opacity: Math.max(0, 1 - progress * 3) }}
+            style={{ opacity: Math.max(0, 1 - progress * 3), fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
           >
             {project.tagline}
           </p>

@@ -12,7 +12,7 @@ export default function AboutUs() {
           <div className="w-full max-w-[900px]">
 
             <div className="text-center mb-20">
-              <h1 className="text-5xl font-bold tracking-tight mb-4">About Us</h1>
+              <h1 className="text-5xl font-bold tracking-tight mb-4 font-primary">About Us</h1>
             </div>
 
             <div className="space-y-10 text-lg leading-relaxed text-gray-700">
