@@ -23,7 +23,7 @@ export default function Shop() {
 
       try {
         const allProducts: ShopifyProduct[] = []
-        const toteBags: ShopifyProduct[] = []
+
 
         // 0. Fetch Test Product (tote bag for testing checkout flow) - Store separately
         try {

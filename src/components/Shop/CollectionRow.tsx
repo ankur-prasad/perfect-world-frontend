@@ -13,7 +13,6 @@ interface CollectionRowProps {
 
 export default function CollectionRow({
   collectionName,
-  collectionHandle,
   collectionColor,
   products,
   allProducts,

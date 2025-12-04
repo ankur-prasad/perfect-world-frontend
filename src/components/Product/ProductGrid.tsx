@@ -6,11 +6,11 @@ interface ProductGridProps {
   products: ShopifyProduct[]
   loading?: boolean
   onQuickView?: (product: ShopifyProduct) => void
-  themeColor?: string
+
   isLightMode?: boolean
 }
 
-export default function ProductGrid({ products, loading, onQuickView, themeColor, isLightMode = false }: ProductGridProps) {
+export default function ProductGrid({ products, loading, onQuickView, isLightMode = false }: ProductGridProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
