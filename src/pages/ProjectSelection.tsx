@@ -10,12 +10,23 @@ export default function ProjectSelection() {
 
             <div className="pt-44 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-[1200px]">
-                    <h1 className="text-5xl md:text-7xl font-bold text-center font-primary">Our Projects</h1>
+                    <h1 className="text-5xl md:text-7xl font-bold text-center" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>Our Projects</h1>
 
                     {/* Spacer */}
                     <div style={{ height: '50px' }}></div>
 
-                    <div className="flex flex-col gap-[5rem]">
+                    {/* Introduction Text */}
+                    <div className="text-center" style={{ marginBottom: '30px' }}>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>Charities and Causes we support</h2>
+                        <p className="text-lg md:text-xl leading-relaxed font-secondary">
+                            Together with our partner charities, Perfect World invites you to be a part of a movement that
+                            transcends borders, bringing joy and support to those who need it the most. Explore our
+                            collaborative products, knowing that each purchase contributes to the well-being and future of
+                            the planet. Learn more about our individual charities below.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col gap-[1.25rem]">
                         {projects.map((project, index) => (
                             <ProjectTile key={project.id} project={project} index={index} />
                         ))}

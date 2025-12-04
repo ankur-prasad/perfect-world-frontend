@@ -12,6 +12,7 @@ import type { ShopifyProduct } from '../types/shopify.types'
 import { MeshGradient } from '@paper-design/shaders-react'
 import GlassyButton from '../components/ui/GlassyButton'
 import { useTransitionStore } from '../stores/transitionStore'
+import perfectWorldLogo from '../assets/logos/perfect-world-logo-white.png'
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -157,9 +158,9 @@ export default function ProjectPage() {
           >
             <span className="text-white/80 text-sm uppercase tracking-widest">In partnership with</span>
             <img
-              src={project.mission.partnerCharity.logo}
-              alt={project.mission.partnerCharity.name}
-              className="h-8 w-auto brightness-0 invert opacity-80"
+              src={perfectWorldLogo}
+              alt="Perfect World"
+              className="h-8 w-auto opacity-80"
             />
           </div>
         </div>
@@ -364,21 +365,6 @@ export default function ProjectPage() {
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
                 <h3 className="text-4xl font-bold text-black mb-8">Our Solution</h3>
                 <p className="text-black text-xl leading-relaxed">{project.mission.solution}</p>
-              </div>
-
-              {/* Impact */}
-              <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[50vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-16 text-center">Impact</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  {project.mission.impact.map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <p className="text-6xl md:text-7xl font-bold mb-4" style={{ color: project.theme.primaryColor }}>
-                        {stat.split(' ').slice(0, -1).join(' ')}
-                      </p>
-                      <p className="text-black text-lg">{stat.split(' ').slice(-1)[0]}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* Partner Charity */}
