@@ -91,7 +91,7 @@ export const projects: Project[] = [
       label: 'Ukraine',
     },
     mission: {
-      heroImage: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2560&auto=format&fit=crop',
+      heroImage: '/assets/images/one%20world.png',
       problem:
         'Countless children around the world grow up without parental care, facing disadvantages that can shape their entire lives. For those caught in war-torn regions, the challenges are even more severe—lacking access to basic necessities, education, and the nurturing environment every child deserves.',
       solution:
