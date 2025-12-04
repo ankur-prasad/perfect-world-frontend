@@ -1,5 +1,6 @@
 import type { ShopifyProduct } from '../../types/shopify.types'
-import ProductCard from './ProductCard'
+import ProductCardWithColors from './ProductCardWithColors'
+import { groupProductsByTypeForCollection, findColorSiblings } from '../../utils/productGrouping'
 
 interface ProductGridProps {
   products: ShopifyProduct[]
@@ -49,14 +50,29 @@ export default function ProductGrid({ products, loading, onQuickView, themeColor
     )
   }
 
+  // Group products by type (tshirt, hoodie, tote)
+  const { tshirt, hoodie, tote } = groupProductsByTypeForCollection(products)
+
+  // Find color siblings for each product type
+  const tshirtSiblings = tshirt ? findColorSiblings(tshirt, products) : []
+  const hoodieSiblings = hoodie ? findColorSiblings(hoodie, products) : []
+  const toteSiblings = tote ? findColorSiblings(tote, products) : []
+
+  // Create an array of items to render
+  const itemsToRender = [
+    { product: tshirt, siblings: tshirtSiblings },
+    { product: hoodie, siblings: hoodieSiblings },
+    { product: tote, siblings: toteSiblings }
+  ].filter(item => item.product !== null) as { product: ShopifyProduct, siblings: ShopifyProduct[] }[]
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-      {products.map((product) => (
-        <ProductCard
+      {itemsToRender.map(({ product, siblings }) => (
+        <ProductCardWithColors
           key={product.id}
           product={product}
+          siblings={siblings}
           onQuickView={onQuickView}
-          themeColor={themeColor}
           isLightMode={isLightMode}
         />
       ))}

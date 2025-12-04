@@ -1,37 +1,19 @@
-import { useState, useEffect, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
-import ProductGrid from '../components/Product/ProductGrid'
-import QuickViewModal from '../components/Product/QuickViewModal'
+import CollectionRow from '../components/Shop/CollectionRow'
+import ProductCardWithColors from '../components/Product/ProductCardWithColors'
 import { projects } from '../data/projects'
-import { getCollectionProducts } from '../utils/shopify'
+import { getCollectionProducts, getProduct } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
-import GlassyButton from '../components/ui/GlassyButton'
 import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
 
-type SortOption = 'featured' | 'price-low' | 'price-high' | 'name-asc'
-
 export default function Shop() {
-  const [searchParams] = useSearchParams()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
+  const [testProduct, setTestProduct] = useState<ShopifyProduct | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCollection, setSelectedCollection] = useState<string>('all')
-  const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number]>([0, 1000])
-  const [sortBy, setSortBy] = useState<SortOption>('featured')
-  const [showAvailableOnly, setShowAvailableOnly] = useState(false)
-  const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null)
-
-  // Check URL parameters for collection filter
-  useEffect(() => {
-    const collectionParam = searchParams.get('collection')
-    if (collectionParam) {
-      setSelectedCollection(collectionParam)
-    }
-  }, [searchParams])
 
   // Fetch all products from all collections
   useEffect(() => {
@@ -43,17 +25,23 @@ export default function Shop() {
         const allProducts: ShopifyProduct[] = []
         const toteBags: ShopifyProduct[] = []
 
-        // 1. Fetch Tote Bags first (to distribute them later)
+        // 0. Fetch Test Product (tote bag for testing checkout flow) - Store separately
         try {
-          const toteCollection = await getCollectionProducts('organic-tote-bags')
-          if (toteCollection && toteCollection.products) {
-            toteBags.push(...toteCollection.products)
+          const fetchedTestProduct = await getProduct('test')
+          if (fetchedTestProduct) {
+            // Store test product separately, not in main products array
+            setTestProduct({
+              ...fetchedTestProduct,
+              collectionHandle: 'test',
+              collectionName: 'Test Product',
+              collectionColor: '#000000',
+            })
           }
         } catch (err) {
-          console.warn('Failed to fetch Tote Bags:', err)
+          console.warn('Failed to fetch test product:', err)
         }
 
-        // 2. Fetch products from each project collection
+        // 1. Fetch products from each project collection
         await Promise.all([
           ...projects.map(async (project) => {
             try {
@@ -66,29 +54,57 @@ export default function Shop() {
                   collectionColor: project.theme.primaryColor,
                 }))
                 allProducts.push(...taggedProducts)
-
-                // Add matching tote bags to this collection
-                const matchingTotes = toteBags.filter(tote =>
-                  tote.title.toLowerCase().includes(project.name.toLowerCase()) ||
-                  tote.title.toLowerCase().includes(project.slug.replace(/-/g, ' '))
-                )
-
-                matchingTotes.forEach(tote => {
-                  // Avoid duplicates if tote is already in the collection (unlikely but possible)
-                  if (!taggedProducts.find(p => p.id === tote.id)) {
-                    allProducts.push({
-                      ...tote,
-                      collectionHandle: project.shopifyCollection.handle,
-                      collectionName: project.name,
-                      collectionColor: project.theme.primaryColor,
-                    })
-                  }
-                })
               }
             } catch (err) {
               console.warn(`Failed to fetch products for ${project.name}(${project.shopifyCollection.handle}): `, err)
             }
           }),
+          // Fetch Organic Tote Bags collection and distribute to matching projects
+          (async () => {
+            try {
+              // Try different possible collection handles for tote bags
+              const possibleHandles = ['organic-tote-bags', 'tote-bags', 'organic-totes', 'totes']
+              let toteCollection = null
+
+              for (const handle of possibleHandles) {
+                try {
+                  toteCollection = await getCollectionProducts(handle)
+                  if (toteCollection && toteCollection.products && toteCollection.products.length > 0) {
+                    console.log(`Found tote bags in collection '${handle}':`, toteCollection.products.map(p => p.title))
+                    break
+                  }
+                } catch {
+                  continue
+                }
+              }
+
+              if (toteCollection && toteCollection.products) {
+                // Distribute totes to matching projects
+                toteCollection.products.forEach(tote => {
+                  // Try to match tote to a project by name
+                  const matchingProject = projects.find(project =>
+                    tote.title.toLowerCase().includes(project.name.toLowerCase()) ||
+                    tote.title.toLowerCase().includes(project.slug.replace(/-/g, ' ').toLowerCase())
+                  )
+
+                  if (matchingProject) {
+                    allProducts.push({
+                      ...tote,
+                      collectionHandle: matchingProject.shopifyCollection.handle,
+                      collectionName: matchingProject.name,
+                      collectionColor: matchingProject.theme.primaryColor,
+                    })
+                  } else {
+                    console.warn(`No matching project found for tote: ${tote.title}`)
+                  }
+                })
+              } else {
+                console.warn('Could not find tote bags collection with any known handle')
+              }
+            } catch (err) {
+              console.warn('Failed to fetch Tote Bags:', err)
+            }
+          })(),
           // Fetch Embroidered Logo collection
           (async () => {
             try {
@@ -120,103 +136,51 @@ export default function Shop() {
     fetchAllProducts()
   }, [])
 
-  // Filter and sort products
-  const filteredAndSortedProducts = useMemo(() => {
-    let filtered = [...products]
-
-    // Search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(
-        (product) =>
-          product.title.toLowerCase().includes(query) ||
-          product.description?.toLowerCase().includes(query)
-      )
-    }
-
-    // Collection filter
-    if (selectedCollection !== 'all') {
-      filtered = filtered.filter((product) => product.collectionHandle === selectedCollection)
-    }
-
-    // Price range filter
-    filtered = filtered.filter((product) => {
-      const price = parseFloat(product.priceRange.minVariantPrice.amount)
-      return price >= selectedPriceRange[0] && price <= selectedPriceRange[1]
-    })
-
-    // Availability filter
-    if (showAvailableOnly) {
-      filtered = filtered.filter((product) => product.availableForSale)
-    }
-
-    // Sort
-    switch (sortBy) {
-      case 'price-low':
-        filtered.sort(
-          (a, b) =>
-            parseFloat(a.priceRange.minVariantPrice.amount) -
-            parseFloat(b.priceRange.minVariantPrice.amount)
-        )
-        break
-      case 'price-high':
-        filtered.sort(
-          (a, b) =>
-            parseFloat(b.priceRange.minVariantPrice.amount) -
-            parseFloat(a.priceRange.minVariantPrice.amount)
-        )
-        break
-      case 'name-asc':
-        filtered.sort((a, b) => a.title.localeCompare(b.title))
-        break
-      // 'featured' - keep original order
-    }
-
-    return filtered
-  }, [products, searchQuery, selectedCollection, selectedPriceRange, sortBy, showAvailableOnly])
-
-  // Group products by collection for display
-  const productsByCollection = useMemo(() => {
-    if (selectedCollection !== 'all') {
-      // If a specific collection is selected, return all products in one group
-      return [{
-        collectionName: filteredAndSortedProducts[0]?.collectionName || 'Products',
-        collectionHandle: selectedCollection,
-        products: filteredAndSortedProducts
-      }]
-    }
-
-    // Group by collection handle
-    const grouped = filteredAndSortedProducts.reduce((acc, product) => {
-      const handle = product.collectionHandle || 'other'
-      if (!acc[handle]) {
-        acc[handle] = {
-          collectionName: product.collectionName || 'Other',
-          collectionHandle: handle,
-          products: []
-        }
-      }
-      acc[handle].products.push(product)
-      return acc
-    }, {} as Record<string, { collectionName: string; collectionHandle: string; products: ShopifyProduct[] }>)
-
-    return Object.values(grouped)
-  }, [filteredAndSortedProducts, selectedCollection])
-
-  const handleClearFilters = () => {
-    setSearchQuery('')
-    setSelectedCollection('all')
-    setSelectedPriceRange([0, 1000])
-    setShowAvailableOnly(false)
-    setSortBy('featured')
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navigation isDarkContent={true} />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-gray-900 text-2xl">Loading products...</div>
+        </div>
+      </div>
+    )
   }
 
-  const activeFiltersCount = [
-    searchQuery,
-    selectedCollection !== 'all',
-    selectedPriceRange[0] !== 0 || selectedPriceRange[1] !== 1000,
-    showAvailableOnly,
-  ].filter(Boolean).length
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navigation isDarkContent={true} />
+        <div className="flex flex-col items-center justify-center min-h-screen px-4">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500/20 mb-6">
+              <svg
+                className="w-10 h-10 text-red-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Oops!</h3>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -226,7 +190,7 @@ export default function Shop() {
         <SustainabilityPromise />
 
         <div className="px-4 sm:px-6 lg:px-8 flex justify-center">
-          <div className="w-full max-w-[1200px]">
+          <div className="w-full max-w-[1400px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -235,189 +199,77 @@ export default function Shop() {
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center font-primary">
                 Shop All Products
               </h1>
-              <p className="text-xl text-gray-600 text-center mb-12">
+              <p className="text-xl text-gray-600 text-center mb-16">
                 Every purchase supports a charitable cause
               </p>
 
-              {/* Search and Filters */}
-              <div className="mb-[3rem] space-y-[1.5rem]">
-                {/* Search Bar */}
-                <div className="relative max-w-2xl mx-auto">
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
+              {/* Collection Rows - Each project gets one row with 3 products */}
+              <div className="space-y-24">
+                {/* Render projects in order from projects.ts */}
+                {projects.map((project) => {
+                  const collectionProducts = products.filter(
+                    (p) => p.collectionHandle === project.shopifyCollection.handle
+                  )
+
+                  if (collectionProducts.length === 0) return null
+
+                  return (
+                    <CollectionRow
+                      key={project.id}
+                      collectionName={project.name}
+                      collectionHandle={project.shopifyCollection.handle}
+                      collectionColor={project.theme.primaryColor}
+                      products={collectionProducts}
+                      allProducts={products}
+                    />
+                  )
+                })}
+
+                {/* Embroidered Logo Collection */}
+                {products.filter((p) => p.collectionHandle === 'perfect-world').length > 0 && (
+                  <CollectionRow
+                    collectionName="Embroidered Logo"
+                    collectionHandle="perfect-world"
+                    collectionColor="#000000"
+                    products={products.filter((p) => p.collectionHandle === 'perfect-world')}
+                    allProducts={products}
                   />
-                  <svg
-                    className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                )}
+
+                {/* Test Product at the bottom */}
+                {testProduct && (
+                  <motion.div
+                    className="space-y-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </div>
+                    <div>
+                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-primary">
+                        Test Product
+                      </h2>
+                      <div className="w-24 h-1 mt-4 rounded-full bg-gray-900" />
+                      <p className="text-sm text-gray-500 mt-2">
+                        For testing checkout and payment flow
+                      </p>
+                    </div>
 
-                {/* Filter Bar */}
-                <div className="flex flex-wrap gap-[1rem] items-center justify-between">
-                  {/* Collection Filter */}
-                  <select
-                    value={selectedCollection}
-                    onChange={(e) => setSelectedCollection(e.target.value)}
-                    className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
-                  >
-                    <option value="all">All Collections</option>
-                    {projects.map((project) => (
-                      <option key={project.id} value={project.shopifyCollection.handle}>
-                        {project.name}
-                      </option>
-                    ))}
-                    <option value="perfect-world">Embroidered Logo</option>
-                  </select>
-
-                  {/* Price Range */}
-                  <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl">
-                    <span className="text-gray-700 text-sm">Price:</span>
-                    <input
-                      type="number"
-                      min="0"
-                      max="1000"
-                      value={selectedPriceRange[0]}
-                      onChange={(e) =>
-                        setSelectedPriceRange([parseInt(e.target.value), selectedPriceRange[1]])
-                      }
-                      className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
-                    />
-                    <span className="text-gray-400">-</span>
-                    <input
-                      type="number"
-                      min="0"
-                      max="1000"
-                      value={selectedPriceRange[1]}
-                      onChange={(e) =>
-                        setSelectedPriceRange([selectedPriceRange[0], parseInt(e.target.value)])
-                      }
-                      className="w-20 px-2 py-1 bg-white border border-gray-200 text-gray-900 rounded text-sm focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Availability */}
-                  <label className="flex items-center gap-3 px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={showAvailableOnly}
-                      onChange={(e) => setShowAvailableOnly(e.target.checked)}
-                      className="w-5 h-5 rounded border-gray-300 text-black focus:ring-black"
-                    />
-                    <span className="text-gray-700 text-sm">In Stock Only</span>
-                  </label>
-
-                  {/* Sort */}
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as SortOption)}
-                    className="px-6 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-black/5 cursor-pointer"
-                  >
-                    <option value="featured">Sort: Featured</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="name-asc">Name: A-Z</option>
-                  </select>
-
-                  {/* Clear Filters */}
-                  {activeFiltersCount > 0 && (
-                    <GlassyButton
-                      label={`Clear All (${activeFiltersCount})`}
-                      onClick={handleClearFilters}
-                      variant="secondary"
-                      background="rgba(239, 68, 68, 0.2)"
-                      hoverBackground="rgba(239, 68, 68, 0.3)"
-                      textColor="rgb(252, 165, 165)"
-                    />
-                  )}
-                </div>
-
-                {/* Results Count */}
-                <div className="text-center text-gray-400">
-                  Showing {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'product' : 'products'}
-                </div>
-              </div>
-
-              {/* Error State */}
-              {error && (
-                <div className="text-center py-16">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500/20 mb-6">
-                    <svg
-                      className="w-10 h-10 text-red-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Oops!</h3>
-                  <p className="text-gray-400 mb-6">{error}</p>
-                  <GlassyButton
-                    label="Try Again"
-                    onClick={() => window.location.reload()}
-                    variant="light"
-                  />
-                </div>
-              )}
-
-              {/* Product Grid - Organized by Collection */}
-              {!error && (
-                <div className="space-y-[4rem]">
-                  {productsByCollection.map((collection) => (
-                    <div key={collection.collectionHandle}>
-                      {/* Collection Header - only show when viewing all collections */}
-                      {selectedCollection === 'all' && (
-                        <motion.h2
-                          className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 font-primary"
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                        >
-                          {collection.collectionName}
-                        </motion.h2>
-                      )}
-
-                      <ProductGrid
-                        products={collection.products}
-                        loading={loading}
-                        onQuickView={setQuickViewProduct}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      <ProductCardWithColors
+                        product={testProduct}
+                        siblings={[]}
                         isLightMode={true}
                       />
                     </div>
-                  ))}
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </div>
             </motion.div>
           </div>
         </div>
       </main>
 
       <Footer />
-
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        isOpen={!!quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-      />
     </div>
   )
 }

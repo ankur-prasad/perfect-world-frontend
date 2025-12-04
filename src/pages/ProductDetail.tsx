@@ -8,6 +8,50 @@ import { getProduct, getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
 import { sanitizeHtml } from '../utils/sanitize'
+import { extractBaseName, extractColorFromTitle } from '../utils/productGrouping'
+import { projects } from '../data/projects'
+
+// Color name to hex code mapping (same as ProductCardWithColors)
+const COLOR_MAP: Record<string, string> = {
+  'black': '#000000',
+  'white': '#FFFFFF',
+  'navy': '#001f3f',
+  'french navy': '#0F4C81',
+  'navy blue': '#000080',
+  'blue': '#0074D9',
+  'worker blue': '#5B9BD5',
+  'sky blue': '#87CEEB',
+  'light blue': '#ADD8E6',
+  'royal blue': '#4169E1',
+  'blue soul': '#5BA3D0',
+  'indian grey': '#9E9E9E',
+  'anthracite': '#3D3D3D',
+  'grey': '#808080',
+  'gray': '#808080',
+  'heather grey': '#A9A9A9',
+  'green': '#2ECC40',
+  'green bay': '#2ECC71',
+  'forest green': '#228B22',
+  'olive green': '#808000',
+  'kelly green': '#4CBB17',
+  'red': '#FF4136',
+  'fiesta': '#DD4B39',
+  'bright orange': '#FF6600',
+  'burgundy': '#800020',
+  'maroon': '#800000',
+  'pink': '#FF69B4',
+  'purple': '#B10DC9',
+  'orange': '#FF851B',
+  'yellow': '#FFDC00',
+  'brown': '#8B4513',
+  'beige': '#F5F5DC',
+  'khaki': '#C3B091',
+  'cream': '#FFFDD0',
+  'ivory': '#FFFFF0',
+  'charcoal': '#36454F',
+  'natural': '#F5F5DC',
+  'multi': 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A)',
+}
 
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>()
@@ -36,22 +80,46 @@ export default function ProductDetail() {
         if (fetchedProduct) {
           setProduct(fetchedProduct)
 
-          // Fetch siblings from the same collection
-          if (fetchedProduct.collections && fetchedProduct.collections.length > 0) {
-            const collectionHandle = fetchedProduct.collections[0].handle
-            const collection = await getCollectionProducts(collectionHandle)
+          // Determine the specific project handle for this product
+          // We prioritize specific project collections over generic ones like 'frontpage'
+          let projectHandle = ''
+          if (fetchedProduct.collections) {
+            // Try to find a collection that matches a known project slug
+            const projectHandles = projects.map(p => p.shopifyCollection.handle)
+            const matchingCollection = fetchedProduct.collections.find(c =>
+              projectHandles.includes(c.handle)
+            )
+
+            if (matchingCollection) {
+              projectHandle = matchingCollection.handle
+            } else if (fetchedProduct.collections.length > 0) {
+              // Fallback to first collection if no specific project match
+              projectHandle = fetchedProduct.collections[0].handle
+            }
+          }
+
+          // Fetch siblings from the same collection using shared utility
+          if (projectHandle) {
+            const collection = await getCollectionProducts(projectHandle)
 
             if (collection && collection.products) {
-              // Filter for products that share the same base name
-              // Assumption: Product names are like "Base Name Color"
-              // We'll try to find the longest common prefix
-              // Updated regex to handle multi-word colors like "Worker Blue", "Heather Grey", etc.
-              const baseName = fetchedProduct.title.replace(/ (Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold).*$/i, '').trim()
+              // Use shared utility to extract base name
+              const baseName = extractBaseName(fetchedProduct.title)
 
-              const relatedProducts = collection.products.filter(p =>
-                p.id !== fetchedProduct.id && // Exclude self (actually include self in list for selector, but handle logic carefully)
-                p.title.startsWith(baseName)
-              )
+              // Find all products with the same base name AND same project collection
+              const relatedProducts = collection.products.filter(p => {
+                // 1. Must not be the current product
+                if (p.id === fetchedProduct.id) return false
+
+                // 2. Must share the same base name
+                if (!p.title.startsWith(baseName)) return false
+
+                // 3. Must belong to the same project collection
+                // This prevents "Cool Down" (frontpage) mixing with "One World" (one-world)
+                // if they happen to share a collection or base name pattern
+                const pCollections = p.collections?.map(c => c.handle) || []
+                return pCollections.includes(projectHandle)
+              })
 
               // Include self in the list so we can map over all options
               const allSiblings = [...relatedProducts, fetchedProduct].sort((a, b) => a.title.localeCompare(b.title))
@@ -245,30 +313,58 @@ export default function ProductDetail() {
 
                 <div className="text-4xl font-bold text-white mb-8">{formattedPrice}</div>
 
-                {/* Color Selector (Sibling Products) */}
+                {/* Color Selector (Sibling Products) - Color Swatches */}
                 {siblings.length > 0 && (
                   <div className="mb-8">
                     <label className="block text-sm font-bold text-white mb-3">
                       Color
                     </label>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-4">
                       {siblings.map((sibling) => {
-                        // Extract color from title (assuming format "Name Color")
-                        // Or just use the full title if we can't parse it easily
-                        // Strategy: Remove the common base name from the sibling title
-                        const baseName = product.title.replace(/ (Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold).*$/i, '').trim()
-                        const colorName = sibling.title.replace(baseName, '').trim() || sibling.title
+                        // Use shared utility to extract color name
+                        const colorName = extractColorFromTitle(sibling.title) || sibling.title
+                        const colorKey = colorName.toLowerCase()
+                        const colorValue = COLOR_MAP[colorKey] || '#808080'
+                        const isCurrentProduct = sibling.handle === product.handle
 
                         return (
                           <Link
                             key={sibling.id}
                             to={`/product/${sibling.handle}`}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all ${sibling.handle === product.handle
-                              ? 'bg-white text-black'
-                              : 'bg-white/10 text-white hover:bg-white/20'
-                              }`}
+                            className="group relative"
+                            title={colorName}
                           >
-                            {colorName}
+                            {/* Color swatch circle - Enhanced Glassy Style */}
+                            <div className="relative">
+                              <div
+                                className={`w-14 h-14 rounded-full transition-all duration-300 ${isCurrentProduct
+                                  ? 'ring-2 ring-white/90 ring-offset-2 ring-offset-gray-900/60 shadow-xl scale-110'
+                                  : 'ring-1 ring-white/50 hover:ring-2 hover:ring-white/90 hover:scale-110 hover:shadow-xl'
+                                  }`}
+                                style={{
+                                  background: colorValue,
+                                  boxShadow: isCurrentProduct
+                                    ? '0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)'
+                                    : '0 4px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)',
+                                  backdropFilter: 'blur(8px)',
+                                }}
+                              >
+                                {/* Inner highlight for glass effect */}
+                                <div
+                                  className="absolute inset-0 rounded-full"
+                                  style={{
+                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 100%)',
+                                    pointerEvents: 'none',
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            {/* Tooltip with color name on hover */}
+                            <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
+                              <div className="px-3 py-1.5 bg-white/15 backdrop-blur-lg border border-white/30 text-white text-xs rounded-full whitespace-nowrap shadow-xl font-semibold">
+                                {colorName}
+                              </div>
+                            </div>
                           </Link>
                         )
                       })}
@@ -317,9 +413,9 @@ export default function ProductDetail() {
                                   }
                                 }
                               }}
-                              className={`px-6 py-3 rounded-full font-semibold transition-all ${isSelected
-                                ? 'bg-white text-black'
-                                : 'bg-white/10 text-white hover:bg-white/20'
+                              className={`px-6 py-3 rounded-full font-semibold transition-all backdrop-blur-md border ${isSelected
+                                ? 'bg-white/20 text-white border-white shadow-lg'
+                                : 'bg-white/10 text-white hover:bg-white/20 border-white/20 hover:border-white/40'
                                 }`}
                             >
                               {value}
@@ -331,20 +427,20 @@ export default function ProductDetail() {
                   )
                 })}
 
-                {/* Quantity Selector */}
+                {/* Quantity Selector - Glassy Style */}
                 <div className="mb-8">
                   <label className="block text-sm font-bold text-white mb-3">Quantity</label>
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
+                      className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all text-xl font-bold shadow-lg"
                     >
                       −
                     </button>
                     <span className="text-2xl font-bold text-white w-16 text-center">{quantity}</span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors text-xl font-bold"
+                      className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all text-xl font-bold shadow-lg"
                     >
                       +
                     </button>
@@ -390,7 +486,7 @@ export default function ProductDetail() {
 
                   <button
                     onClick={handleShare}
-                    className="w-full py-5 rounded-full font-bold text-xl bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center gap-3"
+                    className="w-full py-5 rounded-full font-bold text-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all flex items-center justify-center gap-3 shadow-lg"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path

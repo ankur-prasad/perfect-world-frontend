@@ -32,7 +32,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         quantity: item.quantity,
       }))
 
-      console.log('Line items for checkout:', lineItems)
+      console.log('Line items for checkout:', JSON.stringify(lineItems, null, 2))
 
       // Extract unique project/collection names from cart items
       const supportedProjects = [...new Set(
@@ -104,6 +104,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
+            {/* Spacer to clear header */}
+            <div className="h-20 flex-shrink-0" />
+
             {/* Header */}
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <div>
@@ -143,11 +146,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2 font-primary">Your cart is empty</h3>
                   <p className="text-gray-400 mb-8">Add some products to get started</p>
-                  <GlassyButton
-                    label="Continue Shopping"
-                    onClick={onClose}
-                    variant="light"
-                  />
+                  <div className="flex justify-center w-full">
+                    <GlassyButton
+                      label="Continue Shopping"
+                      onClick={onClose}
+                      variant="light"
+                    />
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -202,7 +207,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           </svg>
                         </button>
                         <p className="text-white font-bold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          €{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -232,7 +237,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 {/* Subtotal */}
                 <div className="flex items-center justify-between text-lg">
                   <span className="text-gray-300">Subtotal</span>
-                  <span className="text-2xl font-bold text-white">${cartTotal.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-white">€{cartTotal.toFixed(2)}</span>
                 </div>
 
                 {/* Charitable Impact Note */}
@@ -245,8 +250,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
                   className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${isCheckingOut
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                      : 'bg-white text-black hover:bg-gray-200'
+                    ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    : 'bg-white text-black hover:bg-gray-200'
                     }`}
                 >
                   {isCheckingOut ? (
@@ -275,14 +280,16 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 </button>
 
                 {/* Continue Shopping */}
-                <GlassyButton
-                  label="Continue Shopping"
-                  onClick={onClose}
-                  variant="primary"
-                  className="w-full"
-                  background="rgba(255, 255, 255, 0.1)"
-                  hoverBackground="rgba(255, 255, 255, 0.2)"
-                />
+                <div className="flex justify-center w-full">
+                  <GlassyButton
+                    label="Continue Shopping"
+                    onClick={onClose}
+                    variant="primary"
+                    className="w-auto min-w-[200px]"
+                    background="rgba(255, 255, 255, 0.1)"
+                    hoverBackground="rgba(255, 255, 255, 0.2)"
+                  />
+                </div>
               </div>
             )}
           </motion.div>

@@ -13,6 +13,7 @@ import { MeshGradient } from '@paper-design/shaders-react'
 import GlassyButton from '../components/ui/GlassyButton'
 import { useTransitionStore } from '../stores/transitionStore'
 import perfectWorldLogo from '../assets/logos/perfect-world-logo-white.png'
+import CollectionRow from '../components/Shop/CollectionRow'
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -64,15 +65,31 @@ export default function ProjectPage() {
   const prevProject = currentProjectIndex > 0 ? projects[currentProjectIndex - 1] : projects[projects.length - 1]
   const nextProject = currentProjectIndex < projects.length - 1 ? projects[currentProjectIndex + 1] : projects[0]
 
-  // Fetch products when switching to shop view
+  // Fetch products immediately so they are ready for the mission view
   useEffect(() => {
-    if (project && view === 'shop' && products.length === 0) {
+    if (project && products.length === 0) {
       const fetchProducts = async () => {
         setLoading(true)
         try {
           const collection = await getCollectionProducts(project.shopifyCollection.handle)
           if (collection && collection.products) {
-            setProducts(collection.products)
+            let filteredProducts = collection.products
+
+            // Special handling for 'frontpage' (Cool Down)
+            // Exclude products that belong to OTHER specific projects
+            if (project.shopifyCollection.handle === 'frontpage') {
+              const otherProjectHandles = projects
+                .map(p => p.shopifyCollection.handle)
+                .filter(h => h !== 'frontpage')
+
+              filteredProducts = filteredProducts.filter(p => {
+                const pCollections = p.collections?.map(c => c.handle) || []
+                const isInOtherProject = pCollections.some(c => otherProjectHandles.includes(c))
+                return !isInOtherProject
+              })
+            }
+
+            setProducts(filteredProducts)
           }
         } catch (error) {
           console.error('Failed to fetch products:', error)
@@ -82,7 +99,7 @@ export default function ProjectPage() {
       }
       fetchProducts()
     }
-  }, [project, view, products.length])
+  }, [project, products.length])
 
   // Custom colors based on project theme
   const gradientColors = project ? [
@@ -399,13 +416,36 @@ export default function ProjectPage() {
                 </div>
               </div>
 
-              {/* CTA */}
-              <div className="text-center py-16">
-                <GlassyButton
-                  label="Support This Cause - Shop Collection"
-                  onClick={() => setView('shop')}
-                  variant="light"
-                />
+              {/* Collection Preview */}
+              <div className="py-16">
+                <div className="text-center mb-12">
+                  <h3 className="text-3xl font-bold text-white mb-4">Support This Cause</h3>
+                  <p className="text-xl text-gray-300">
+                    100% of profits from the {project.name} collection go directly to {project.mission.partnerCharity.name}
+                  </p>
+                </div>
+
+                {products.length > 0 ? (
+                  <CollectionRow
+                    collectionName="" // Empty since we have a custom header above
+                    collectionHandle={project.shopifyCollection.handle}
+                    collectionColor={project.theme.primaryColor}
+                    products={products}
+                    allProducts={products}
+                  />
+                ) : (
+                  <div className="flex justify-center">
+                    {loading ? (
+                      <div className="text-white">Loading products...</div>
+                    ) : (
+                      <GlassyButton
+                        label="Shop Collection"
+                        onClick={() => setView('shop')}
+                        variant="light"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ) : (

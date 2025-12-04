@@ -81,6 +81,14 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
                 name
                 values
               }
+              collections(first: 5) {
+                edges {
+                  node {
+                    handle
+                    title
+                  }
+                }
+              }
               images(first: 5) {
                 edges {
                   node {
@@ -139,6 +147,7 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
         ...varEdge.node,
         price: varEdge.node.priceV2,
       })),
+      collections: edge.node.collections?.edges.map((colEdge) => colEdge.node) || [],
     })),
   }
 }
@@ -164,7 +173,7 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
           name
           values
         }
-        collections(first: 1) {
+        collections(first: 10) {
           edges {
             node {
               handle
@@ -224,6 +233,13 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
     })),
     collections: product.collections.edges.map((edge: GraphQLEdge<{ handle: string; title: string }>) => edge.node),
   }
+}
+
+// Helper to ensure GID format
+function formatGid(id: string | number): string {
+  const idStr = String(id)
+  if (idStr.startsWith('gid://')) return idStr
+  return `gid://shopify/ProductVariant/${idStr}`
 }
 
 // Create checkout using Cart API (2024-01+)
@@ -287,7 +303,7 @@ export async function createCheckout(
 
   const input: any = {
     lines: lineItems.map((item) => ({
-      merchandiseId: item.variantId,
+      merchandiseId: formatGid(item.variantId),
       quantity: item.quantity,
     })),
   }
@@ -303,10 +319,18 @@ export async function createCheckout(
     input.attributes = options.customAttributes
   }
 
+  console.log('Cart Create Input:', JSON.stringify(input, null, 2))
+
   const data = await shopifyFetch<any>(query, { input })
 
-  if (data.cartCreate.userErrors.length > 0) {
+  console.log('Cart Create Response:', JSON.stringify(data, null, 2))
+
+  if (data?.cartCreate?.userErrors?.length > 0) {
     throw new Error(data.cartCreate.userErrors[0].message)
+  }
+
+  if (!data?.cartCreate?.cart) {
+    throw new Error('Failed to create cart: Shopify returned no cart object. Check if Variant ID is valid and available in the Sales Channel.')
   }
 
   // Return in checkout-compatible format
