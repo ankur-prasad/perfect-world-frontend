@@ -19,3 +19,4 @@ final to dos
 - connect the frontend to headless
 - add the products to the shop
 - change the viewing of the products of tiles in shop
+- fix caharity urls

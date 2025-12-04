@@ -335,20 +335,21 @@ export default function ProjectPage() {
               </div>
 
               {/* Video Section */}
-              <div className="w-full mb-24 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="w-full mb-24 rounded-2xl overflow-hidden shadow-2xl aspect-video">
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
                   controls
-                  className="w-full h-auto"
+                  className="w-full h-full object-cover"
                   src={
                     project.slug === 'endangered-oceans' ? '/assets/videos/endanger oceans vid.mp4' :
                       project.slug === 'one-world' ? '/assets/videos/one world vid.mp4' :
                         project.slug === 'talk-about-it' ? '/assets/videos/talk about it vid.mp4' :
                           project.slug === 'cool-down' ? '/assets/videos/cool down vid.mp4' :
-                            ''
+                            project.slug === 'wild-at-heart' ? '/assets/videos/wild%20at%20heart.mp4' :
+                              ''
                   }
                 >
                   Your browser does not support the video tag.
