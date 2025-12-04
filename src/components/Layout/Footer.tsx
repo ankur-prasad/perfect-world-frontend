@@ -40,7 +40,7 @@ const Footer: FC<FooterProps> = ({
     { label: 'Shop', href: '/shop', external: false },
     { label: 'Transparency', href: '/transparency', external: false },
     { label: "Founder's Story", href: '/founders', external: false },
-    { label: 'Contact', href: 'https://www.perfectworld.global/pages/contact', external: true },
+    { label: 'Contact', href: 'https://shop.perfectworld.global/pages/contact', external: true },
   ],
   projectLinks = [
     { label: 'All Projects', href: '/projects', external: false },
@@ -208,7 +208,7 @@ const Footer: FC<FooterProps> = ({
               Support
             </h3>
             <a
-              href="https://www.perfectworld.global/policies/privacy-policy"
+              href="https://shop.perfectworld.global/policies/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
@@ -217,7 +217,7 @@ const Footer: FC<FooterProps> = ({
               Privacy Policy
             </a>
             <a
-              href="https://www.perfectworld.global/policies/refund-policy"
+              href="https://shop.perfectworld.global/policies/refund-policy"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
@@ -226,7 +226,7 @@ const Footer: FC<FooterProps> = ({
               Refund Policy
             </a>
             <a
-              href="https://www.perfectworld.global/policies/terms-of-service"
+              href="https://shop.perfectworld.global/policies/terms-of-service"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
@@ -235,7 +235,7 @@ const Footer: FC<FooterProps> = ({
               Terms of Service
             </a>
             <a
-              href="https://www.perfectworld.global/pages/legal-notice"
+              href="https://shop.perfectworld.global/pages/legal-notice"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
@@ -244,7 +244,7 @@ const Footer: FC<FooterProps> = ({
               Legal Notice
             </a>
             <a
-              href="https://www.perfectworld.global/policies/shipping-policy"
+              href="https://shop.perfectworld.global/policies/shipping-policy"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm cursor-pointer relative"

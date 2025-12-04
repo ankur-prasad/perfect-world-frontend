@@ -403,8 +403,8 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
 
         {/* External Links */}
         {[
-          { href: "https://www.perfectworld.global/pages/podcasts", label: "Podcasts" },
-          { href: "https://www.perfectworld.global/pages/contact", label: "Contact" },
+          { href: "https://shop.perfectworld.global/pages/podcasts", label: "Podcasts" },
+          { href: "https://shop.perfectworld.global/pages/contact", label: "Contact" },
         ].map((item, index) => (
           <motion.div
             key={item.href}
