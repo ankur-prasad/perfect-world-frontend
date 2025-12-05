@@ -34,15 +34,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
       console.log('Line items for checkout:', JSON.stringify(lineItems, null, 2))
 
-      // Extract unique project/collection names from cart items
-      const supportedProjects = [...new Set(
-        cart
-          .map(item => item.productId.split('/').pop()) // Extract product handle
-          .filter(Boolean)
-      )].join(', ')
-
-      // Create checkout using Shopify API - minimal approach to test
-      console.log('Creating checkout with minimal options...')
+      // Create checkout using Shopify API
+      console.log('Creating checkout...')
       const checkout = await createCheckout(lineItems)
 
       console.log('Checkout created:', checkout)

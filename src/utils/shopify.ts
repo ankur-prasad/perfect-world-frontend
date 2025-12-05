@@ -256,33 +256,6 @@ function formatGid(id: string | number): string {
   return `gid://shopify/ProductVariant/${idStr}`
 }
 
-// Direct checkout URL method (bypasses API entirely)
-// Uses Shopify's cart permalink feature
-function createDirectCheckoutUrl(lineItems: Array<{ variantId: string; quantity: number }>) {
-  console.log('🔗 Creating direct checkout URL as fallback...')
-
-  // Extract numeric variant IDs from GIDs
-  const cartItems = lineItems.map((item) => {
-    const variantId = item.variantId.replace('gid://shopify/ProductVariant/', '')
-    return `${variantId}:${item.quantity}`
-  }).join(',')
-
-  const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
-
-  // Use /cart/ITEMS to go to cart page
-  const checkoutUrl = `https://${domain}/cart/${cartItems}`
-
-  console.log('✅ Direct checkout URL created:', checkoutUrl)
-
-  // Return in same format as API methods
-  return {
-    id: 'direct-checkout',
-    webUrl: checkoutUrl,
-    lineItems: [],
-    subtotalPrice: { amount: '0', currencyCode: 'USD' },
-  }
-}
-
 // Create checkout using Cart API (2024-01+)
 export async function createCheckout(
   lineItems: Array<{ variantId: string; quantity: number }>,
