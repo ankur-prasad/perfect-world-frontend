@@ -41,25 +41,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           .filter(Boolean)
       )].join(', ')
 
-      // Create custom attributes for order tracking
-      const customAttributes = [
-        { key: 'Source', value: 'Perfect World Frontend' },
-        { key: 'Order Type', value: 'Charity Support' },
-      ]
-
-      // Add supported projects if available
-      if (supportedProjects) {
-        customAttributes.push({
-          key: 'Supported Projects',
-          value: supportedProjects
-        })
-      }
-
-      // Create checkout using Shopify API with custom attributes
-      const checkout = await createCheckout(lineItems, {
-        customAttributes,
-        note: 'Thank you for supporting our mission to make a difference!'
-      })
+      // Create checkout using Shopify API - minimal approach to test
+      console.log('Creating checkout with minimal options...')
+      const checkout = await createCheckout(lineItems)
 
       console.log('Checkout created:', checkout)
 

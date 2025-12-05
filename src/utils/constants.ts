@@ -64,7 +64,7 @@ export const PERFORMANCE = {
 export const SHOPIFY = {
   STOREFRONT_API_TOKEN: import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN || '',
   STORE_DOMAIN: import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || '',
-  STOREFRONT_API_VERSION: import.meta.env.VITE_SHOPIFY_API_VERSION || '2024-01',
+  STOREFRONT_API_VERSION: '2024-01', // Using 2024-01 which was working in commit ff26413
   CUSTOMER_ACCOUNT_API: {
     CLIENT_ID: import.meta.env.VITE_SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID || '',
     URL: import.meta.env.VITE_SHOPIFY_CUSTOMER_ACCOUNT_API_URL || 'https://shopify.com/authentication/86211101009',

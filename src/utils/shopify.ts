@@ -11,6 +11,10 @@ import type {
 } from '../types/shopify.types'
 
 const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
+console.log('🔧 Shopify Config:', {
+  apiVersion: SHOPIFY.STOREFRONT_API_VERSION,
+  domain: SHOPIFY.STORE_DOMAIN,
+})
 const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
 
 // Helper function to make Shopify API requests
@@ -129,7 +133,7 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
 
   const collection = data.collectionByHandle
 
-  return {
+  const collectionData = {
     id: collection.id,
     title: collection.title,
     description: collection.description,
@@ -150,6 +154,10 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
       collections: edge.node.collections?.edges.map((colEdge) => colEdge.node) || [],
     })),
   }
+
+  console.log(`Collection "${collection.title}" loaded with ${collectionData.products.length} product(s)`)
+
+  return collectionData
 }
 
 // Get single product by handle
@@ -218,7 +226,7 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
 
   const product = data.productByHandle
 
-  return {
+  const productData = {
     id: product.id,
     title: product.title,
     description: product.description,
@@ -233,6 +241,12 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
     })),
     collections: product.collections.edges.map((edge: GraphQLEdge<{ handle: string; title: string }>) => edge.node),
   }
+
+  console.log(`Product "${product.title}" loaded with ${productData.variants.length} variant(s):`,
+    productData.variants.map(v => ({ id: v.id, title: v.title, availableForSale: v.availableForSale }))
+  )
+
+  return productData
 }
 
 // Helper to ensure GID format
@@ -240,6 +254,33 @@ function formatGid(id: string | number): string {
   const idStr = String(id)
   if (idStr.startsWith('gid://')) return idStr
   return `gid://shopify/ProductVariant/${idStr}`
+}
+
+// Direct checkout URL method (bypasses API entirely)
+// Uses Shopify's cart permalink feature
+function createDirectCheckoutUrl(lineItems: Array<{ variantId: string; quantity: number }>) {
+  console.log('🔗 Creating direct checkout URL as fallback...')
+
+  // Extract numeric variant IDs from GIDs
+  const cartItems = lineItems.map((item) => {
+    const variantId = item.variantId.replace('gid://shopify/ProductVariant/', '')
+    return `${variantId}:${item.quantity}`
+  }).join(',')
+
+  const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
+
+  // Use /cart/ITEMS to go to cart page
+  const checkoutUrl = `https://${domain}/cart/${cartItems}`
+
+  console.log('✅ Direct checkout URL created:', checkoutUrl)
+
+  // Return in same format as API methods
+  return {
+    id: 'direct-checkout',
+    webUrl: checkoutUrl,
+    lineItems: [],
+    subtotalPrice: { amount: '0', currencyCode: 'USD' },
+  }
 }
 
 // Create checkout using Cart API (2024-01+)
@@ -257,7 +298,7 @@ export async function createCheckout(
         cart {
           id
           checkoutUrl
-          lines(first: 10) {
+          lines(first: 100) {
             edges {
               node {
                 id
@@ -330,7 +371,7 @@ export async function createCheckout(
   }
 
   if (!data?.cartCreate?.cart) {
-    throw new Error('Failed to create cart: Shopify returned no cart object. Check if Variant ID is valid and available in the Sales Channel.')
+    throw new Error('Failed to create cart: Shopify returned no cart object. This product may have restrictions or require a selling plan.')
   }
 
   // Return in checkout-compatible format

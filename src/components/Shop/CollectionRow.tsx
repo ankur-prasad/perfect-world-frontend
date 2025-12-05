@@ -18,11 +18,24 @@ export default function CollectionRow({
   allProducts,
 }: CollectionRowProps) {
   // Group products by type (tshirt, hoodie, tote)
-  const { tshirt, hoodie } = groupProductsByTypeForCollection(products)
+  const { tshirt, hoodie, tote } = groupProductsByTypeForCollection(products)
 
   // Find color siblings for each product type
   const tshirtSiblings = tshirt ? findColorSiblings(tshirt, allProducts) : []
   const hoodieSiblings = hoodie ? findColorSiblings(hoodie, allProducts) : []
+  const toteSiblings = tote ? findColorSiblings(tote, allProducts) : []
+
+  // Count how many product types we have
+  const productCount = [tshirt, hoodie, tote].filter(Boolean).length
+
+  // Determine grid columns based on product count
+  const gridCols = productCount === 3
+    ? 'grid-cols-1 md:grid-cols-3'
+    : productCount === 2
+    ? 'grid-cols-1 md:grid-cols-2'
+    : 'grid-cols-1'
+
+  const maxWidth = productCount === 3 ? 'max-w-6xl' : 'max-w-4xl'
 
   return (
     <div className="space-y-8">
@@ -43,9 +56,9 @@ export default function CollectionRow({
         />
       </motion.div>
 
-      {/* Product Grid - 2 columns centered (T-shirt and Hoodie) */}
+      {/* Product Grid - Dynamic columns (T-shirt, Hoodie, Tote) */}
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+        <div className={`grid ${gridCols} gap-8 ${maxWidth}`}>
           {tshirt && (
             <ProductCardWithColors
               product={tshirt}
@@ -57,6 +70,13 @@ export default function CollectionRow({
             <ProductCardWithColors
               product={hoodie}
               siblings={hoodieSiblings}
+              isLightMode={true}
+            />
+          )}
+          {tote && (
+            <ProductCardWithColors
+              product={tote}
+              siblings={toteSiblings}
               isLightMode={true}
             />
           )}
