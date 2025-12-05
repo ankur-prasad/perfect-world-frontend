@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { CartProvider } from './contexts/CartContext'
 import { NavigationProvider } from './contexts/NavigationContext'
 import Home from './pages/Home'
@@ -48,6 +49,7 @@ function App() {
           </Routes>
           <CookieConsent />
           <Analytics />
+          <SpeedInsights />
         </NavigationProvider>
       </CartProvider>
     </Router>
