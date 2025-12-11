@@ -35,10 +35,40 @@ export default function Carousel3D({
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
     const animationRef = useRef<number | undefined>(undefined)
     const lastTimeRef = useRef<number>(0)
+    const [responsiveSizes, setResponsiveSizes] = useState({ width: itemWidth, height: itemHeight, translateZ })
+    const [isTouching, setIsTouching] = useState(false)
 
-    // Auto-rotation when not hovered - improved with timestamp-based animation
+    // Responsive sizing based on window width
     useEffect(() => {
-        if (pauseOnHover && isHovered) {
+        const updateSizes = () => {
+            const isMobile = window.innerWidth < 640
+            const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024
+
+            if (isMobile) {
+                setResponsiveSizes({
+                    width: itemWidth * 0.65,
+                    height: itemHeight * 0.65,
+                    translateZ: translateZ * 0.6
+                })
+            } else if (isTablet) {
+                setResponsiveSizes({
+                    width: itemWidth * 0.8,
+                    height: itemHeight * 0.8,
+                    translateZ: translateZ * 0.8
+                })
+            } else {
+                setResponsiveSizes({ width: itemWidth, height: itemHeight, translateZ })
+            }
+        }
+
+        updateSizes()
+        window.addEventListener('resize', updateSizes)
+        return () => window.removeEventListener('resize', updateSizes)
+    }, [itemWidth, itemHeight, translateZ])
+
+    // Auto-rotation when not hovered or touching - improved with timestamp-based animation
+    useEffect(() => {
+        if ((pauseOnHover && isHovered) || isTouching) {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current)
                 animationRef.current = undefined
@@ -73,7 +103,7 @@ export default function Carousel3D({
                 animationRef.current = undefined
             }
         }
-    }, [isHovered, rotateSpeed, pauseOnHover])
+    }, [isHovered, isTouching, rotateSpeed, pauseOnHover])
 
     const handlePrevious = () => {
         if (isTransitioning) return
@@ -97,6 +127,14 @@ export default function Carousel3D({
         setIsHovered(true)
     }
 
+    const handleTouchStart = () => {
+        setIsTouching(true)
+    }
+
+    const handleTouchEnd = () => {
+        setIsTouching(false)
+    }
+
     return (
         <div
             ref={containerRef}
@@ -108,6 +146,8 @@ export default function Carousel3D({
             }}
             onMouseLeave={handleMouseLeave}
             onMouseEnter={handleMouseEnter}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
         >
             {/* Carousel wrapper with overflow hidden */}
             <div className="w-full h-full overflow-hidden absolute inset-0">
@@ -127,7 +167,7 @@ export default function Carousel3D({
                         const transform = `
             translate(-50%, -50%)
             rotateY(${angle}deg)
-            translateZ(${translateZ}px)
+            translateZ(${responsiveSizes.translateZ}px)
           `
 
                         return (
@@ -135,8 +175,8 @@ export default function Carousel3D({
                                 key={index}
                                 className="absolute"
                                 style={{
-                                    width: `${itemWidth}px`,
-                                    height: `${itemHeight}px`,
+                                    width: `${responsiveSizes.width}px`,
+                                    height: `${responsiveSizes.height}px`,
                                     top: '50%',
                                     left: '50%',
                                     transform,
@@ -179,21 +219,23 @@ export default function Carousel3D({
                 </div>
             </div>
 
-            {/* Arrow buttons - positioned outside carousel wrapper */}
-            <button
-                onClick={handlePrevious}
-                className="absolute left-8 top-1/2 -translate-y-1/2 z-20 bg-black/5 hover:bg-black/10 backdrop-blur-sm p-4 rounded-full border border-black/10 transition-all hover:scale-110"
-                aria-label="Previous"
-            >
-                <ChevronLeft className="w-6 h-6 text-black" />
-            </button>
-            <button
-                onClick={handleNext}
-                className="absolute right-8 top-1/2 -translate-y-1/2 z-20 bg-black/5 hover:bg-black/10 backdrop-blur-sm p-4 rounded-full border border-black/10 transition-all hover:scale-110"
-                aria-label="Next"
-            >
-                <ChevronRight className="w-6 h-6 text-black" />
-            </button>
+            {/* Arrow buttons - positioned below carousel */}
+            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex items-center gap-10">
+                <button
+                    onClick={handlePrevious}
+                    className="bg-black/5 hover:bg-black/10 backdrop-blur-sm p-8 rounded-full border border-black/10 transition-all hover:scale-110"
+                    aria-label="Previous"
+                >
+                    <ChevronLeft className="w-12 h-12 text-black" />
+                </button>
+                <button
+                    onClick={handleNext}
+                    className="bg-black/5 hover:bg-black/10 backdrop-blur-sm p-8 rounded-full border border-black/10 transition-all hover:scale-110"
+                    aria-label="Next"
+                >
+                    <ChevronRight className="w-12 h-12 text-black" />
+                </button>
+            </div>
         </div>
     )
 }

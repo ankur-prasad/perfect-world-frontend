@@ -7,7 +7,7 @@ import Satellite from './Satellite'
 import Stars from './Stars'
 import { projects } from '../../data/projects'
 import { SCENE, ANIMATION } from '../../utils/constants'
-import { throttle } from '../../utils/animations'
+import { throttle, isMobile } from '../../utils/animations'
 
 interface SceneProps {
   onSatelliteClick: (projectSlug: string, clickPosition: { x: number; y: number }) => void
@@ -53,21 +53,36 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
   const dragStartRef = useRef({ x: 0, rotation: 0 })
   const dragVelocityRef = useRef(0)
   const prevPointerRef = useRef({ x: 0, y: 0 })
+  const mobile = isMobile()
+  const globeScale = mobile ? 0.83125 : 1.1875
 
   useFrame((_, delta) => {
     if (!groupRef.current) return
+
+    // Store previous pointer for next frame (do this first)
+    const currentPointerX = pointer.x
+    const currentPointerY = pointer.y
 
     // --- Mouse-Controlled Rotation ---
     let targetRotationSpeed = 0
 
     if (isDragging) {
       // During drag: rotate based on mouse movement delta
-      const dragDelta = pointer.x - prevPointerRef.current.x
-      dragVelocityRef.current = dragDelta * 3.0 // Store velocity for momentum
-      groupRef.current.rotation.y += dragDelta * 3.0 // Direct control during drag
+      const dragDelta = currentPointerX - prevPointerRef.current.x
+
+      // Cap delta to prevent huge jumps on mobile
+      const cappedDelta = Math.max(-0.1, Math.min(0.1, dragDelta))
+
+      // Smoother drag with damping - increased sensitivity for mobile
+      const smoothDragDelta = cappedDelta * (mobile ? 3.5 : 2.5)
+      dragVelocityRef.current = smoothDragDelta // Store velocity for momentum
+      groupRef.current.rotation.y += smoothDragDelta // Direct control during drag
+
+      // Reset current speed to prevent interference
+      currentSpeedRef.current = 0
     } else if (isGlobeHovered) {
       // When hovering but not dragging: slower ambient rotation + momentum decay
-      targetRotationSpeed = -pointer.x * 0.09 // Much slower when hovered
+      targetRotationSpeed = -currentPointerX * 0.09 // Much slower when hovered
 
       // Add decaying momentum from previous drag
       dragVelocityRef.current *= 0.95 // Decay momentum
@@ -76,7 +91,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
       }
     } else {
       // Normal mode: rotate based on mouse position
-      targetRotationSpeed = -pointer.x * 0.3
+      targetRotationSpeed = -currentPointerX * 0.3
       dragVelocityRef.current = 0 // Reset momentum when not hovering
     }
 
@@ -86,17 +101,19 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
       groupRef.current.rotation.y += currentSpeedRef.current * delta
     }
 
-    // Store previous pointer for next frame
-    prevPointerRef.current.x = pointer.x
-    prevPointerRef.current.y = pointer.y
+    // Update previous pointer
+    prevPointerRef.current.x = currentPointerX
+    prevPointerRef.current.y = currentPointerY
 
-    // Parallax tilt
-    const parallaxMultiplier = isDragging ? 0.5 : 1.0 // Reduce parallax during drag
+    // Parallax tilt - completely disable on mobile, disable during dragging on desktop
+    const parallaxMultiplier = (isDragging || mobile) ? 0 : 1.0
     const targetTiltX = mousePosition.y * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
     const targetTiltZ = -mousePosition.x * ANIMATION.PARALLAX_STRENGTH * parallaxMultiplier
 
-    groupRef.current.rotation.x += (targetTiltX - groupRef.current.rotation.x) * 0.1
-    groupRef.current.rotation.z += (targetTiltZ - groupRef.current.rotation.z) * 0.1
+    // Smoother tilt interpolation
+    const tiltSmoothing = (isDragging || mobile) ? 0.02 : 0.1
+    groupRef.current.rotation.x += (targetTiltX - groupRef.current.rotation.x) * tiltSmoothing
+    groupRef.current.rotation.z += (targetTiltZ - groupRef.current.rotation.z) * tiltSmoothing
 
     // Scroll-based upward movement (Stage 1: 0-250px scroll)
     // 250px = 16.7% of 1500px hero height
@@ -130,7 +147,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
   }
 
   return (
-    <group ref={groupRef} position={[0, 0.6, 0]}>
+    <group ref={groupRef} position={[0, 0.6, 0]} scale={globeScale}>
       {/* Stars now rotate with the globe */}
       <Stars
         collectionsScrollProgress={collectionsScrollProgress}

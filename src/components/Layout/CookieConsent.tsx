@@ -70,18 +70,10 @@ export default function CookieConsent() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 100 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className="fixed bottom-8 left-8 right-8 z-50"
+                    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-4rem)] max-w-max"
                 >
-                    <div
-                        className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl w-full"
-                        style={{
-                            paddingLeft: '15vw',
-                            paddingTop: '12vh',
-                            paddingRight: '5vw',
-                            paddingBottom: '8vh'
-                        }}
-                    >
-                        <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
+                    <div className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl p-8 sm:p-10 md:p-12 lg:px-20 lg:py-16 xl:px-32 xl:py-20">
+                        <div className="flex flex-col gap-10 items-center">
                             {/* Content */}
                             <div className="flex-1">
                                 <h2 className="text-white text-2xl font-bold mb-4">Notice</h2>
@@ -104,9 +96,9 @@ export default function CookieConsent() {
                             </div>
 
                             {/* Controls */}
-                            <div className="flex flex-col gap-8 lg:min-w-[400px]">
+                            <div className="flex flex-col gap-8 w-full max-w-2xl">
                                 {/* Toggle Switches */}
-                                <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                                <div className="grid grid-cols-2 gap-x-8 gap-y-4 justify-items-center">
                                     {[
                                         { key: 'necessary' as const, label: 'Necessary' },
                                         { key: 'functionality' as const, label: 'Functionality' },
@@ -134,7 +126,7 @@ export default function CookieConsent() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="flex flex-wrap items-center gap-4">
+                                <div className="flex items-center justify-center gap-2 sm:gap-3 lg:gap-4">
                                     <GlassyButton
                                         onClick={() => setShowDetails(!showDetails)}
                                         label="Learn more"
@@ -144,27 +136,25 @@ export default function CookieConsent() {
                                         paddingY="10px"
                                         fontSize="14px"
                                     />
-                                    <div className="flex items-center gap-4 ml-auto">
-                                        <GlassyButton
-                                            onClick={handleRejectAll}
-                                            label="Reject all"
-                                            variant="secondary"
-                                            textColor="#ffffff"
-                                            paddingX="24px"
-                                            paddingY="10px"
-                                            fontSize="14px"
-                                        />
-                                        <GlassyButton
-                                            onClick={handleAcceptAll}
-                                            label="Accept all"
-                                            background="rgba(255, 255, 255, 0.9)"
-                                            hoverBackground="rgba(255, 255, 255, 1)"
-                                            textColor="#000000"
-                                            paddingX="32px"
-                                            paddingY="10px"
-                                            fontSize="14px"
-                                        />
-                                    </div>
+                                    <GlassyButton
+                                        onClick={handleRejectAll}
+                                        label="Reject all"
+                                        variant="secondary"
+                                        textColor="#ffffff"
+                                        paddingX="24px"
+                                        paddingY="10px"
+                                        fontSize="14px"
+                                    />
+                                    <GlassyButton
+                                        onClick={handleAcceptAll}
+                                        label="Accept all"
+                                        background="rgba(255, 255, 255, 0.9)"
+                                        hoverBackground="rgba(255, 255, 255, 1)"
+                                        textColor="#000000"
+                                        paddingX="32px"
+                                        paddingY="10px"
+                                        fontSize="14px"
+                                    />
                                 </div>
                             </div>
                         </div>

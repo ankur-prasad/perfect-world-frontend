@@ -84,7 +84,7 @@ export default function MainVideo() {
 
     return (
         <section
-            className="w-full h-screen relative overflow-hidden bg-black cursor-pointer group"
+            className="w-full h-screen relative bg-white md:bg-black cursor-pointer group flex items-center justify-center"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => isPlaying && setShowControls(false)}
         >
@@ -95,7 +95,7 @@ export default function MainVideo() {
 
             <video
                 ref={videoRef}
-                className="w-full h-full object-cover"
+                className="w-full h-auto md:w-full md:h-full md:object-cover"
                 muted
                 loop
                 playsInline

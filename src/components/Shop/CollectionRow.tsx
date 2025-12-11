@@ -13,6 +13,7 @@ interface CollectionRowProps {
 
 export default function CollectionRow({
   collectionName,
+  collectionHandle,
   collectionColor,
   products,
   allProducts,
@@ -38,7 +39,7 @@ export default function CollectionRow({
   const maxWidth = productCount === 3 ? 'max-w-6xl' : 'max-w-4xl'
 
   return (
-    <div className="space-y-8">
+    <div id={collectionHandle} className="space-y-8 border-t-2 border-gray-200 pt-12 first:border-t-0 first:pt-0 scroll-mt-32">
       {/* Collection Header */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}

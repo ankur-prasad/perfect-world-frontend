@@ -16,7 +16,7 @@ export default function SustainabilityPromise() {
                 </motion.h2>
 
                 <motion.p
-                    className="text-sm md:text-base font-bold tracking-[0.2em] text-gray-500 leading-relaxed"
+                    className="text-sm md:text-base font-normal tracking-[0.2em] text-gray-500 leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

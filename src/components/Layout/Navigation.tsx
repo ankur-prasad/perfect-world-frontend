@@ -199,28 +199,41 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     )
   }
 
-  const ShopButton = () => (
+  const ShopButton = ({ isMobile = false }: { isMobile?: boolean }) => (
     <GlassyButton
-      label="Shop"
       to="/shop"
       variant={isDarkContent ? 'secondary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
-    />
+      paddingX={isMobile ? "20px" : "32px"}
+      paddingY={isMobile ? "6px" : undefined}
+    >
+      <span className={isMobile ? "text-xs font-semibold" : "text-sm font-semibold"}>Shop</span>
+    </GlassyButton>
   )
 
-  const CartButton = () => (
+  const CartButton = ({ isMobile = false }: { isMobile?: boolean }) => (
     <div className="relative">
       <GlassyButton
-        onClick={() => setIsCartOpen(true)}
+        onClick={() => setIsCartOpen(!isCartOpen)}
         variant={isDarkContent ? 'primary' : 'light'}
         textColor={isDarkContent ? '#000000' : '#ffffff'}
+        paddingX={isMobile ? "20px" : "32px"}
+        paddingY={isMobile ? "6px" : undefined}
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-        </svg>
+        {isCartOpen ? (
+          // X icon when cart is open
+          <svg className={isMobile ? "w-4 h-4" : "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          // Cart icon when cart is closed
+          <svg className={isMobile ? "w-4 h-4" : "w-5 h-5"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        )}
       </GlassyButton>
-      {cartCount > 0 && (
-        <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center z-50">
+      {!isCartOpen && cartCount > 0 && (
+        <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center z-50">
           {cartCount}
         </span>
       )}
@@ -252,8 +265,8 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     return (
       <>
         <header className="fixed top-0 left-0 right-0 z-[60]">
-          <div className="h-20 px-6 flex items-center justify-between relative">
-
+          {/* Desktop Layout */}
+          <div className="hidden md:flex h-20 px-6 items-center justify-between relative">
             {/* Left: Menu */}
             <div className="flex-shrink-0 z-[60]">
               <MenuButton />
@@ -279,7 +292,31 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
               <ShopButton />
               <CartButton />
             </div>
+          </div>
 
+          {/* Mobile Layout - Same as Home Page */}
+          <div className="md:hidden h-20 px-3 relative">
+            <div className="absolute left-3 top-6 z-[60]">
+              {/* Left: Menu */}
+              <MenuButton />
+            </div>
+
+            {/* Center: Logo */}
+            <div className="absolute left-1/2 top-6 -translate-x-1/2 z-40">
+              <Link to="/">
+                <img
+                  src={isDarkContent ? logoBlack : logoWhite}
+                  alt="Perfect World"
+                  className="h-10 w-auto"
+                />
+              </Link>
+            </div>
+
+            {/* Right: Cart & Shop (stacked) */}
+            <div className="absolute right-3 top-6 flex flex-col items-end gap-1.5 z-50">
+              <CartButton isMobile={true} />
+              <ShopButton isMobile={true} />
+            </div>
           </div>
         </header>
         {/* Spacer to prevent content from going behind fixed header */}
@@ -322,22 +359,32 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <MenuButton />
       </motion.div>
 
-      {/* Cart and Shop - Top Right */}
+      {/* Cart and Shop - Top Right (Stack vertically on mobile with smaller buttons) */}
       <motion.div
         ref={shopRef}
-        className="fixed top-6 right-6 z-40 flex items-center gap-3"
+        className="fixed top-6 right-3 md:right-6 z-40 flex flex-col md:flex-row items-end md:items-center gap-1.5 md:gap-3"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <ShopButton />
-        <CartButton />
+        <div className="md:hidden">
+          <CartButton isMobile={true} />
+        </div>
+        <div className="md:hidden">
+          <ShopButton isMobile={true} />
+        </div>
+        <div className="hidden md:block">
+          <CartButton isMobile={false} />
+        </div>
+        <div className="hidden md:block">
+          <ShopButton isMobile={false} />
+        </div>
       </motion.div>
 
-      {/* Learn More - Middle Left */}
+      {/* Learn More - Middle Left (Hidden on mobile) */}
       <motion.div
         ref={aboutUsRef}
-        className="fixed top-1/2 z-40"
+        className="fixed top-1/2 z-40 hidden md:block"
         style={{ left: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -346,10 +393,10 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <LearnMoreButton />
       </motion.div>
 
-      {/* Make a Difference - Middle Right */}
+      {/* Make a Difference - Middle Right (Hidden on mobile) */}
       <motion.div
         ref={transparencyRef}
-        className="fixed top-1/2 z-40"
+        className="fixed top-1/2 z-40 hidden md:block"
         style={{ right: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}

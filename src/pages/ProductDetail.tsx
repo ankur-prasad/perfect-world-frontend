@@ -428,7 +428,7 @@ export default function ProductDetail() {
                                   }
                                 }
                               }}
-                              className={`px-6 py-3 rounded-full font-semibold transition-all backdrop-blur-md border ${isSelected
+                              className={`min-w-[80px] px-6 py-3 rounded-full font-semibold transition-all backdrop-blur-md border ${isSelected
                                 ? 'bg-white/20 text-white border-white shadow-lg'
                                 : 'bg-white/10 text-white hover:bg-white/20 border-white/20 hover:border-white/40'
                                 }`}

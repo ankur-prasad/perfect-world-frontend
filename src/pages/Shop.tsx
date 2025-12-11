@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useLocation } from 'react-router-dom'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import CollectionRow from '../components/Shop/CollectionRow'
@@ -10,6 +11,7 @@ import type { ShopifyProduct } from '../types/shopify.types'
 import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
 
 export default function Shop() {
+  const location = useLocation()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [testProduct, setTestProduct] = useState<ShopifyProduct | null>(null)
   const [loading, setLoading] = useState(true)
@@ -136,6 +138,19 @@ export default function Shop() {
     fetchAllProducts()
   }, [])
 
+  // Handle hash navigation to scroll to specific collection
+  useEffect(() => {
+    if (location.hash && !loading) {
+      const collectionHandle = location.hash.replace('#', '')
+      const element = document.getElementById(collectionHandle)
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+      }
+    }
+  }, [location.hash, loading])
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
@@ -189,22 +204,22 @@ export default function Shop() {
       <main className="pt-40 md:pt-48 pb-32">
         <SustainabilityPromise />
 
-        <div className="px-4 sm:px-6 lg:px-8 flex justify-center">
+        <div className="px-6 sm:px-8 lg:px-12 flex justify-center">
           <div className="w-full max-w-[1400px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center font-primary">
-                Shop All Products
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-12 text-center font-primary">
+                Shop Our Products
               </h1>
-              <p className="text-xl text-gray-600 text-center mb-16">
+              <p className="text-l text-gray-600 text-center mb-16">
                 Every purchase supports a charitable cause
               </p>
 
               {/* Collection Rows - Each project gets one row with 3 products */}
-              <div className="space-y-24">
+              <div className="space-y-32">
                 {/* Render projects in order from projects.ts */}
                 {projects.map((project) => {
                   const collectionProducts = products.filter(

@@ -1,7 +1,8 @@
 import type { ShopifyProduct } from '../types/shopify.types'
 
 // Color regex pattern matching ProductDetail.tsx
-const COLOR_REGEX = / (Blue Soul|Bright Orange|Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Indian Grey|Sky Blue|French Navy|Green Bay|Fiesta|Anthracite|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold).*$/i
+// Updated to handle tote bag color formats like "Blue Soul" at the end
+const COLOR_REGEX = / (Blue Soul|Bright Orange|Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Indian Grey|Sky Blue|French Navy|Green Bay|Fiesta|Anthracite|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold)$/i
 
 /**
  * Extract product type from title
@@ -46,21 +47,48 @@ export function extractBaseName(title: string): string {
  */
 export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyProduct[]): ShopifyProduct[] {
   const baseName = extractBaseName(product.title)
+  const productColor = extractColorFromTitle(product.title)
 
   // Find all products with the same base name (case-insensitive) AND same product type
   const productType = extractProductType(product.title)
 
-  const siblings = allProducts.filter(p =>
-    p.title.toLowerCase().startsWith(baseName.toLowerCase()) &&
-    p.collectionHandle === product.collectionHandle &&
-    extractProductType(p.title) === productType
-  )
+  // First, find all products with same base name and type
+  const candidates = allProducts.filter(p => {
+    const siblingBaseName = extractBaseName(p.title)
+
+    if (siblingBaseName.toLowerCase() !== baseName.toLowerCase()) return false
+    if (p.collectionHandle !== product.collectionHandle) return false
+    if (extractProductType(p.title) !== productType) return false
+
+    return true
+  })
+
+  // Group by color and take one representative per color
+  const colorGroups = new Map<string, ShopifyProduct>()
+
+  candidates.forEach(p => {
+    const color = extractColorFromTitle(p.title).toLowerCase()
+    // Only add if we haven't seen this color yet, or if this is the current product
+    if (!colorGroups.has(color) || p.id === product.id) {
+      colorGroups.set(color, p)
+    }
+  })
+
+  const siblings = Array.from(colorGroups.values())
 
   console.log(`Finding siblings for "${product.title}"`, {
     baseName,
-    foundSiblings: siblings.map(s => s.title),
+    productColor,
+    candidates: candidates.length,
+    uniqueColors: colorGroups.size,
+    foundSiblings: siblings.map(s => ({ title: s.title, color: extractColorFromTitle(s.title) })),
     totalProducts: allProducts.length
   })
+
+  // For products with only one unique color, don't show color selector
+  if (siblings.length <= 1) {
+    return []
+  }
 
   // Sort by title for consistent order
   return siblings.sort((a, b) => a.title.localeCompare(b.title))

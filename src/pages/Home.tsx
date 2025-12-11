@@ -47,8 +47,8 @@ export default function Home() {
           setShowHeroText(progress < 0.15)
 
           // Calculate star trail progress during transition section
-          // Start trails when buttons begin moving inward (at 250px scroll)
-          const transitionStart = 250
+          // Start trails when buttons begin moving inward (at 100px scroll)
+          const transitionStart = 100
           // End transition slightly before the physical section ends to ensure full white background
           const transitionEnd = (heroHeight + transitionHeight) - 100
 
@@ -150,13 +150,13 @@ export default function Home() {
       {/* Tagline - Right above arrow - Fixed position so it's on top of everything */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-40 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          className="fixed bottom-35 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
         >
-          <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+          <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light whitespace-nowrap" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
             Together. Not Alone.
           </p>
         </motion.div>
@@ -165,14 +165,14 @@ export default function Home() {
       {/* Subtitle - Between tagline and scroll indicator */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-28 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          className="fixed bottom-22 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none px-2 md:px-4 w-[95%] md:max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <p className="text-white/80 text-sm tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            More than a slogan, it's a Promise for Change and Improvement.
+          <p className="text-white/80 text-xs md:text-sm tracking-wide md:tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+            More than a slogan, it's a Promise for <br className="md:hidden" />Change and Improvement.
           </p>
         </motion.div>
       )}
@@ -180,7 +180,7 @@ export default function Home() {
       {/* Scroll Indicator */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          className="fixed bottom-7 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
           initial={{ opacity: 1 }}
           animate={{ y: [0, 10, 0], opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -211,7 +211,7 @@ export default function Home() {
 
 
       {/* Collections Section with 3D Carousel */}
-      <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '8rem' }}>
+      <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '12rem', paddingBottom: '8rem' }}>
         <div className="w-full relative z-10 flex flex-col items-center">
           <motion.h2
             className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
@@ -239,7 +239,6 @@ export default function Home() {
                 'Cool Down',
                 'Wild at Heart',
                 'Embroidered',
-                'Tote Bag Collection',
               ]}
             >
               {[
@@ -260,7 +259,7 @@ export default function Home() {
                 },
                 {
                   name: 'Plant-For-The-Planet',
-                  collectionHandle: 'cool-down',
+                  collectionHandle: 'frontpage',
                   image: '/assets/images/hoodie cool down.png',
                 },
                 {
@@ -270,25 +269,15 @@ export default function Home() {
                 },
                 {
                   name: 'Embroidered',
-                  collectionHandle: 'embroidered-logo',
+                  collectionHandle: 'perfect-world',
                   image: '/assets/images/embriodered hoodie.png',
-                },
-                {
-                  name: 'Tote Bag Collection',
-                  collectionHandle: 'tote-bags',
-                  image: '/assets/images/tote-bag-placeholder.png',
                 },
               ].map((project) => (
                 <div
                   key={project.collectionHandle}
                   onClick={() => {
-                    // Only filter by collection if it has products loaded
-                    if (['endangered-oceans', 'one-world', 'talk-about-it'].includes(project.collectionHandle)) {
-                      navigate(`/shop?collection=${project.collectionHandle}`)
-                    } else {
-                      // Navigate to shop without filter for collections not yet in Shopify
-                      navigate('/shop')
-                    }
+                    // Navigate to the specific collection on the shop page
+                    navigate(`/shop#${project.collectionHandle}`)
                   }}
                   className="w-full h-full cursor-pointer overflow-hidden transition-transform hover:scale-110"
                   style={{ borderRadius: '12px' }}
