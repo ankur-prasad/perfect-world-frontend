@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useFBO } from '@react-three/drei'
 import * as THREE from 'three'
@@ -12,7 +12,7 @@ interface GlobeProps {
   isDragging?: boolean
 }
 
-export default function Globe({ onHoverChange, onDragStart, onDragEnd, isDragging = false }: GlobeProps) {
+export default function Globe({ onHoverChange, onDragStart, onDragEnd }: GlobeProps) {
   const mobile = isMobile()
   const segments = mobile ? SCENE.GLOBE_MOBILE_SEGMENTS : SCENE.GLOBE_SEGMENTS
   const meshRef = useRef<THREE.Mesh>(null)
