@@ -14,7 +14,7 @@ const componentTypes = [
 export default function ComponentPalette() {
   const { addElement, isPreviewMode } = useEditor()
 
-  const handleAddComponent = (type: EditorElement['type'], label: string, defaultContent: string) => {
+  const handleAddComponent = (type: EditorElement['type'], defaultContent: string) => {
     const newElement: EditorElement = {
       id: `element-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type,
@@ -43,7 +43,7 @@ export default function ComponentPalette() {
             key={type}
             variant="outline"
             className="w-full justify-start gap-2 h-auto py-3"
-            onClick={() => handleAddComponent(type, label, defaultContent)}
+            onClick={() => handleAddComponent(type, defaultContent)}
           >
             <Icon className="w-5 h-5" />
             <span>{label}</span>

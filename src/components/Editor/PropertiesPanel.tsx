@@ -1,6 +1,6 @@
 import { X } from 'lucide-react'
 import { Button } from '../ui/button'
-import { useEditor, type EditorElement } from '../../contexts/EditorContext'
+import { useEditor } from '../../contexts/EditorContext'
 
 export default function PropertiesPanel() {
   const { selectedElement, updateElement, deleteElement, selectElement, isPreviewMode } = useEditor()
