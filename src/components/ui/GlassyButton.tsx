@@ -159,6 +159,7 @@ export default function GlassyButton({
     height: '100%',
     minHeight: '48px',
     padding: `${paddingY} ${paddingX}`,
+    margin: 0,
     borderRadius: `${borderRadius}px`,
     backgroundImage: `linear-gradient(${angle}deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%)`,
     backgroundColor: hovered ? style.hoverBg : style.bg,

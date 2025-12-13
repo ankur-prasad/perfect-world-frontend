@@ -244,7 +244,7 @@ export default function FAQ() {
                 <div className="w-full px-4 max-w-[800px]">
                     <motion.h2
                         className="text-5xl md:text-6xl font-bold mb-12 text-center"
-                        style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
+                        style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '24px', paddingBottom: '24px' }}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

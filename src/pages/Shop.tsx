@@ -211,7 +211,7 @@ export default function Shop() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-12 text-center font-primary">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-12 text-center font-primary" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                 Shop Our Products
               </h1>
               <p className="text-l text-gray-600 text-center mb-16">

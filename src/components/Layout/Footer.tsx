@@ -269,11 +269,13 @@ const Footer: FC<FooterProps> = ({
                 required
                 aria-label="Email for newsletter"
                 className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-xs placeholder-gray-400 focus:outline-none focus:border-white/40"
+                style={{ paddingLeft: '8px', paddingRight: '8px' }}
               />
               <Button
                 type="submit"
                 disabled={isSubmitting || subscriptionStatus !== 'idle'}
                 className="w-full px-8 py-3 rounded-full bg-white text-black text-xs font-semibold hover:bg-gray-200 transition-colors"
+                style={{ marginTop: '10px', marginBottom: '10px' }}
               >
                 {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </Button>

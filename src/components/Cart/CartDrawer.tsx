@@ -85,7 +85,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <div className="h-20 flex-shrink-0" />
 
             {/* Header */}
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-white/10 flex items-center justify-between" style={{ marginLeft: '22px', marginRight: '22px' }}>
               <div>
                 <h2 className="text-2xl font-bold text-white font-primary">Your Cart</h2>
                 <p className="text-sm text-gray-400">
@@ -114,7 +114,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2 font-primary">Your cart is empty</h3>
-                  <p className="text-gray-400 mb-8">Add some products to get started</p>
+                  <p className="text-gray-400 mb-8" style={{ marginTop: '10px', marginBottom: '10px' }}>Add some products to get started</p>
                   <div className="flex justify-center w-full">
                     <GlassyButton
                       label="Continue Shopping"

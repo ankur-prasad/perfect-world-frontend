@@ -237,7 +237,7 @@ export default function ProductDetail() {
         <div className="flex justify-center">
           <div className="w-full max-w-[1200px]">
             {/* Breadcrumb */}
-            <nav className="mb-8 flex items-center gap-2 text-sm text-gray-400">
+            <nav className="mb-8 flex items-center gap-2 text-sm text-gray-400" style={{ paddingTop: '15px', paddingBottom: '15px', paddingLeft: '31px', paddingRight: '31px' }}>
               <Link to="/" className="hover:text-white transition-colors">
                 Home
               </Link>
@@ -268,7 +268,7 @@ export default function ProductDetail() {
                 transition={{ duration: 0.6 }}
               >
                 {/* Main Image */}
-                <div className="relative aspect-square rounded-3xl overflow-hidden bg-white/5 mb-4">
+                <div className="relative aspect-square rounded-3xl overflow-hidden bg-white/5 mb-4" style={{ marginLeft: '31px', marginRight: '31px' }}>
                   <img
                     src={currentImage?.url || '/placeholder-product.jpg'}
                     alt={currentImage?.altText || product.title}
@@ -285,7 +285,7 @@ export default function ProductDetail() {
 
                 {/* Thumbnail Gallery */}
                 {product.images.length > 1 && (
-                  <div className="grid grid-cols-5 gap-3">
+                  <div className="grid grid-cols-5 gap-3" style={{ rowGap: '12px', marginLeft: '36px', marginRight: '36px', paddingTop: '19px', paddingBottom: '19px' }}>
                     {product.images.map((image, index) => (
                       <button
                         key={index}
@@ -315,12 +315,12 @@ export default function ProductDetail() {
               >
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{product.title}</h1>
 
-                <div className="text-4xl font-bold text-white mb-8">{formattedPrice}</div>
+                <div className="text-4xl font-bold text-white mb-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>{formattedPrice}</div>
 
                 {/* Color Selector (Sibling Products) - Color Swatches */}
                 {siblings.length > 0 && (
                   <div className="mb-8">
-                    <label className="block text-sm font-bold text-white mb-3">
+                    <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>
                       Color
                     </label>
                     <div className="flex flex-wrap gap-4">
@@ -382,7 +382,7 @@ export default function ProductDetail() {
 
                   return (
                     <div key={option.id} className="mb-8">
-                      <label className="block text-sm font-bold text-white mb-3">
+                      <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>
                         {option.name}
                       </label>
                       <div className="flex flex-wrap gap-3">
@@ -444,7 +444,7 @@ export default function ProductDetail() {
 
                 {/* Quantity Selector - Glassy Style */}
                 <div className="mb-8">
-                  <label className="block text-sm font-bold text-white mb-3">Quantity</label>
+                  <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>Quantity</label>
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -471,6 +471,7 @@ export default function ProductDetail() {
                       ? 'bg-white text-black hover:bg-gray-200'
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       }`}
+                    style={{ paddingTop: '15px', paddingBottom: '15px', marginTop: '15px', marginBottom: '15px', marginLeft: '0px', marginRight: '0px' }}
                   >
                     {isAdding ? (
                       <span className="flex items-center justify-center gap-3">
@@ -502,6 +503,7 @@ export default function ProductDetail() {
                   <button
                     onClick={handleShare}
                     className="w-full py-5 rounded-full font-bold text-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all flex items-center justify-center gap-3 shadow-lg"
+                    style={{ paddingTop: '15px', paddingBottom: '15px', marginTop: '0px', marginBottom: '0px' }}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -519,6 +521,7 @@ export default function ProductDetail() {
                 {product.description && (
                   <div
                     className="text-gray-300 text-lg leading-relaxed mb-8"
+                    style={{ paddingTop: '20px', paddingBottom: '20px', paddingLeft: '6px', paddingRight: '6px' }}
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
                   />
                 )}

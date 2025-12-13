@@ -39,10 +39,10 @@ export default function ImpactSlides() {
                                     <div className="w-12 h-px bg-black" />
                                 </div>
 
-                                <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase leading-[0.9]" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+                                <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase leading-[0.9]" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '15px', paddingBottom: '15px', marginLeft: '20px', marginRight: '20px', paddingLeft: '0px', paddingRight: '0px' }}>
                                     {slide.title}
                                 </h2>
-                                <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-xl">
+                                <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-xl" style={{ paddingTop: '0px', paddingBottom: '0px', marginLeft: '20px', marginRight: '20px' }}>
                                     {slide.content}
                                 </p>
                             </motion.div>
@@ -60,6 +60,7 @@ export default function ImpactSlides() {
                                         src={slide.image}
                                         alt={slide.title}
                                         className="w-full h-full object-cover"
+                                        style={{ marginLeft: '0px', marginRight: '0px', paddingLeft: '0px', paddingRight: '0px' }}
                                     />
                                     {/* Subtle overlay for depth */}
                                     <div className="absolute inset-0 bg-black/5 pointer-events-none" />

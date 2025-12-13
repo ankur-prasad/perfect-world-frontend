@@ -348,7 +348,7 @@ export default function ProjectPage() {
           {view === 'mission' ? (
             <div className="space-y-32">
               <div className="text-center mb-24 py-12">
-                <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">{project.tagline}</h2>
+                <h2 className="text-4xl md:text-5xl font-bold text-black mb-4" style={{ marginTop: '15px', marginBottom: '15px', paddingTop: '15px', paddingBottom: '15px' }}>{project.tagline}</h2>
               </div>
 
               {/* Video Section */}
@@ -375,30 +375,31 @@ export default function ProjectPage() {
 
               {/* Problem */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-8">The Problem</h3>
-                <p className="text-black text-xl leading-relaxed">{project.mission.problem}</p>
+                <h3 className="text-4xl font-bold text-black mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>The Problem</h3>
+                <p className="text-black text-xl leading-relaxed" style={{ paddingTop: '5px', paddingBottom: '5px' }}>{project.mission.problem}</p>
               </div>
 
               {/* Solution */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-8">Our Solution</h3>
-                <p className="text-black text-xl leading-relaxed">{project.mission.solution}</p>
+                <h3 className="text-4xl font-bold text-black mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>Our Solution</h3>
+                <p className="text-black text-xl leading-relaxed" style={{ paddingTop: '5px', paddingBottom: '5px' }}>{project.mission.solution}</p>
               </div>
 
               {/* Partner Charity */}
               <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-12">Our Partner</h3>
+                <h3 className="text-4xl font-bold text-black mb-12" style={{ paddingTop: '5px', paddingBottom: '5px' }}>Our Partner</h3>
                 <div className="flex flex-col md:flex-row items-center gap-12">
                   <img
                     src={project.mission.partnerCharity.logo}
                     alt={project.mission.partnerCharity.name}
                     className="h-40 w-auto object-contain bg-white/5 rounded-xl p-8"
+                    style={{ width: '384px' }}
                   />
                   <div className="flex-1 text-center md:text-left">
-                    <h4 className="text-3xl font-semibold text-black mb-6">
+                    <h4 className="text-3xl font-semibold text-black mb-6" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                       {project.mission.partnerCharity.name}
                     </h4>
-                    <p className="text-black text-xl leading-relaxed mb-8">
+                    <p className="text-black text-xl leading-relaxed mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                       {project.mission.partnerCharity.description}
                     </p>
                     <a
@@ -406,6 +407,7 @@ export default function ProjectPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-500 transition-colors font-semibold text-lg"
+                      style={{ marginTop: '10px', marginBottom: '10px', paddingTop: '5px', paddingBottom: '5px' }}
                     >
                       Visit Website
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -419,8 +421,8 @@ export default function ProjectPage() {
               {/* Collection Preview */}
               <div className="py-16">
                 <div className="text-center mb-12">
-                  <h3 className="text-3xl font-bold text-white mb-4">Support This Cause</h3>
-                  <p className="text-xl text-gray-300">
+                  <h3 className="text-3xl font-bold text-white mb-4" style={{ paddingTop: '5px', paddingBottom: '5px', marginTop: '10px', marginBottom: '10px' }}>Support This Cause</h3>
+                  <p className="text-xl text-gray-300" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                     100% of profits from the {project.name} collection go directly to {project.mission.partnerCharity.name}
                   </p>
                 </div>

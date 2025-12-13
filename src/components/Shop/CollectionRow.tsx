@@ -47,7 +47,7 @@ export default function CollectionRow({
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-primary">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-primary" style={{ marginTop: '25px', marginBottom: '25px', paddingTop: '0px', paddingBottom: '0px' }}>
           {collectionName}
         </h2>
         {/* Color accent bar */}

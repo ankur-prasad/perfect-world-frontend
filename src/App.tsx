@@ -18,6 +18,7 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import Founders from './pages/Founders'
+import VisualEditor from './pages/VisualEditor'
 
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
@@ -46,6 +47,7 @@ function App() {
             <Route path="/info/together-not-alone" element={<InfoTogether />} />
             <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />
             <Route path="/demo" element={<ComponentDemo />} />
+            <Route path="/editor" element={<VisualEditor />} />
           </Routes>
           <CookieConsent />
           <Analytics />

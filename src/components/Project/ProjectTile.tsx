@@ -161,7 +161,7 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
                     <div ref={textRef} className="max-w-4xl">
                         <h2
                             className="text-5xl md:text-7xl font-bold text-black mb-8 drop-shadow-lg"
-                            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
+                            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '14px', paddingBottom: '14px' }}
                         >
                             {project.name}
                         </h2>

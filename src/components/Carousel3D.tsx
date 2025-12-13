@@ -119,13 +119,10 @@ export default function Carousel3D({
         setTimeout(() => setIsTransitioning(false), 600)
     }
 
-    const handleMouseLeave = () => {
-        setIsHovered(false)
-    }
-
-    const handleMouseEnter = () => {
-        setIsHovered(true)
-    }
+    // Update isHovered based on hoveredIndex instead of container hover
+    useEffect(() => {
+        setIsHovered(hoveredIndex !== null)
+    }, [hoveredIndex])
 
     const handleTouchStart = () => {
         setIsTouching(true)
@@ -144,8 +141,6 @@ export default function Carousel3D({
                 zIndex: 0,
                 pointerEvents: 'auto',
             }}
-            onMouseLeave={handleMouseLeave}
-            onMouseEnter={handleMouseEnter}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
@@ -186,18 +181,22 @@ export default function Carousel3D({
                                     backfaceVisibility: showBackface ? 'visible' : 'hidden',
                                     borderRadius: `${borderRadius}px`,
                                     willChange: 'transform',
+                                    pointerEvents: 'none',
                                 }}
-                                onMouseEnter={() => setHoveredIndex(index)}
-                                onMouseLeave={() => setHoveredIndex(null)}
                             >
-                                <div style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    imageRendering: 'auto',
-                                    transform: 'translateZ(0)',
-                                    WebkitTransform: 'translateZ(0)',
-                                    position: 'relative',
-                                }}>
+                                <div 
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        imageRendering: 'auto',
+                                        transform: 'translateZ(0)',
+                                        WebkitTransform: 'translateZ(0)',
+                                        position: 'relative',
+                                        pointerEvents: 'auto',
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(index)}
+                                    onMouseLeave={() => setHoveredIndex(null)}
+                                >
                                     {child}
                                     {/* Label overlay on hover - bottom third only */}
                                     {labels[index] && hoveredIndex === index && (
