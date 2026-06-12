@@ -30,12 +30,8 @@ export default function Checkout() {
                 quantity: item.quantity,
             }))
 
-            console.log('Creating checkout with line items:', lineItems)
-
             // Create Shopify checkout
             const checkout = await createCheckout(lineItems)
-
-            console.log('Checkout created:', checkout)
 
             // Redirect to Shopify's hosted checkout page
             if (checkout.webUrl) {

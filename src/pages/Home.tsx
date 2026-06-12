@@ -223,7 +223,7 @@ export default function Home() {
             Our Collections
           </motion.h2>
 
-          <div className="w-full max-w-5xl" style={{ height: '600px' }}>
+          <div className="w-full max-w-5xl h-[460px] md:h-[600px]">
             <Carousel3D
               rotateSpeed={25}
               pauseOnHover={true}
@@ -245,55 +245,71 @@ export default function Home() {
                 {
                   name: 'SECORE International',
                   collectionHandle: 'endangered-oceans',
-                  image: '/assets/images/endangered oceans back.png',
+                  image: '/assets/images/endangered-oceans-back.webp',
                 },
                 {
                   name: 'Care in Action',
                   collectionHandle: 'one-world',
-                  image: '/assets/images/hoodie back one world.png',
+                  image: '/assets/images/hoodie-back-one-world.webp',
                 },
                 {
                   name: 'Talk About It',
                   collectionHandle: 'talk-about-it',
-                  image: '/assets/images/talk about it back.png',
+                  image: '/assets/images/talk-about-it-back.webp',
                 },
                 {
                   name: 'Plant-For-The-Planet',
                   collectionHandle: 'frontpage',
-                  image: '/assets/images/hoodie cool down.png',
+                  image: '/assets/images/hoodie-cool-down.webp',
                 },
                 {
                   name: 'Wild at Heart',
                   collectionHandle: 'wild-at-heart',
-                  image: '/assets/images/wild at heart back.png',
+                  image: '/assets/images/wild-at-heart-back.webp',
                 },
                 {
                   name: 'Embroidered',
                   collectionHandle: 'perfect-world',
-                  image: '/assets/images/embriodered hoodie.png',
+                  image: '/assets/images/embriodered-hoodie.webp',
                 },
-              ].map((project) => (
+              ].map((project, index) => (
                 <div
                   key={project.collectionHandle}
                   onClick={() => {
                     // Navigate to the specific collection on the shop page
                     navigate(`/shop#${project.collectionHandle}`)
                   }}
-                  className="w-full h-full cursor-pointer overflow-hidden transition-transform hover:scale-110"
-                  style={{ borderRadius: '12px' }}
+                  className="relative w-full h-full cursor-pointer group"
                 >
-                  <img
-                    src={project.image}
-                    alt={project.name}
-                    className="w-full h-full object-contain"
+                  {/* Card backdrop */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-gray-50 to-gray-200/80 border border-gray-200/70 shadow-2xl" />
+
+                  {/* Ground shadow under the floating shirt */}
+                  <div
+                    className="absolute left-1/2 bottom-[7%] w-3/5 h-[6%] rounded-[100%] bg-black/40 blur-md"
                     style={{
-                      imageRendering: 'auto',
-                      WebkitBackfaceVisibility: 'hidden',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
-                      WebkitTransform: 'translateZ(0)',
+                      animation: 'shadow-pulse 5s ease-in-out infinite',
+                      animationDelay: `${index * 0.6}s`,
                     }}
                   />
+
+                  {/* Floating shirt */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      animation: 'shirt-float 5s ease-in-out infinite',
+                      animationDelay: `${index * 0.6}s`,
+                    }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain p-5 pb-8 transition-transform duration-300 group-hover:scale-105"
+                      style={{ filter: 'drop-shadow(0 16px 22px rgba(0,0,0,0.28))' }}
+                    />
+                  </div>
                 </div>
               ))}
             </Carousel3D>

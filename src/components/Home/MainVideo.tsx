@@ -13,8 +13,7 @@ export default function MainVideo() {
 
         const attemptPlay = () => {
             video.play()
-                .catch(error => {
-                    console.log("Autoplay prevented:", error)
+                .catch(() => {
                     setIsPlaying(false)
                 })
         }
@@ -44,27 +43,14 @@ export default function MainVideo() {
     const togglePlay = (e: React.MouseEvent) => {
         e.stopPropagation() // Prevent double triggering if clicking overlay
         const video = videoRef.current
-        if (!video) {
-            console.error("Video ref is null")
-            return
-        }
-
-        console.log("Toggle play clicked. Current state:", video.paused ? "paused" : "playing")
+        if (!video) return
 
         if (video.paused) {
-            const playPromise = video.play()
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log("Video started playing")
-                    })
-                    .catch(error => {
-                        console.error("Play failed:", error)
-                    })
-            }
+            video.play()?.catch(() => {
+                setIsPlaying(false)
+            })
         } else {
             video.pause()
-            console.log("Video paused")
         }
         setShowControls(true)
     }

@@ -19,6 +19,7 @@ import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import Founders from './pages/Founders'
 import VisualEditor from './pages/VisualEditor'
+import NotFound from './pages/NotFound'
 
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
@@ -46,8 +47,10 @@ function App() {
             <Route path="/info/all-profits-donated" element={<InfoAllProfits />} />
             <Route path="/info/together-not-alone" element={<InfoTogether />} />
             <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />
-            <Route path="/demo" element={<ComponentDemo />} />
-            <Route path="/editor" element={<VisualEditor />} />
+            {/* Dev-only tooling pages, excluded from production */}
+            {import.meta.env.DEV && <Route path="/demo" element={<ComponentDemo />} />}
+            {import.meta.env.DEV && <Route path="/editor" element={<VisualEditor />} />}
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <CookieConsent />
           <Analytics />

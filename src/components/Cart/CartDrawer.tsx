@@ -9,6 +9,9 @@ interface CartDrawerProps {
   onClose: () => void
 }
 
+const formatPrice = (amount: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(amount)
+
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cart, cartCount, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
@@ -24,21 +27,14 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     setCheckoutError(null)
 
     try {
-      console.log('Cart items:', cart)
-
       // Convert cart items to Shopify checkout format
       const lineItems = cart.map((item) => ({
         variantId: item.variantId,
         quantity: item.quantity,
       }))
 
-      console.log('Line items for checkout:', JSON.stringify(lineItems, null, 2))
-
       // Create checkout using Shopify API
-      console.log('Creating checkout...')
       const checkout = await createCheckout(lineItems)
-
-      console.log('Checkout created:', checkout)
 
       if (checkout && checkout.webUrl) {
         // Redirect to Shopify checkout
@@ -85,7 +81,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <div className="h-20 flex-shrink-0" />
 
             {/* Header */}
-            <div className="p-6 border-b border-white/10 flex items-center justify-between" style={{ marginLeft: '22px', marginRight: '22px' }}>
+            <div className="p-6 mx-5 border-b border-white/10 flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-white font-primary">Your Cart</h2>
                 <p className="text-sm text-gray-400">
@@ -114,7 +110,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2 font-primary">Your cart is empty</h3>
-                  <p className="text-gray-400 mb-8" style={{ marginTop: '10px', marginBottom: '10px' }}>Add some products to get started</p>
+                  <p className="text-gray-400 my-2.5">Add some products to get started</p>
                   <div className="flex justify-center w-full">
                     <GlassyButton
                       label="Continue Shopping"
@@ -143,17 +139,19 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         )}
 
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <button
                             onClick={() => updateQuantity(item.variantId, Math.max(0, item.quantity - 1))}
-                            className="w-7 h-7 flex items-center justify-center rounded bg-white/10 text-white hover:bg-white/20 transition-colors"
+                            aria-label="Decrease quantity"
+                            className="w-11 h-11 flex items-center justify-center rounded-lg bg-white/10 text-white text-lg hover:bg-white/20 active:bg-white/25 transition-colors"
                           >
                             −
                           </button>
                           <span className="text-white font-medium w-8 text-center">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                            className="w-7 h-7 flex items-center justify-center rounded bg-white/10 text-white hover:bg-white/20 transition-colors"
+                            aria-label="Increase quantity"
+                            className="w-11 h-11 flex items-center justify-center rounded-lg bg-white/10 text-white text-lg hover:bg-white/20 active:bg-white/25 transition-colors"
                           >
                             +
                           </button>
@@ -164,7 +162,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       <div className="flex flex-col items-end justify-between">
                         <button
                           onClick={() => removeFromCart(item.variantId)}
-                          className="text-gray-400 hover:text-red-400 transition-colors"
+                          aria-label={`Remove ${item.title} from cart`}
+                          className="p-2 -m-2 text-gray-400 hover:text-red-400 transition-colors"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path
@@ -176,7 +175,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           </svg>
                         </button>
                         <p className="text-white font-bold">
-                          €{(item.price * item.quantity).toFixed(2)}
+                          {formatPrice(item.price * item.quantity)}
                         </p>
                       </div>
                     </div>
@@ -206,13 +205,26 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 {/* Subtotal */}
                 <div className="flex items-center justify-between text-lg">
                   <span className="text-gray-300">Subtotal</span>
-                  <span className="text-2xl font-bold text-white">€{cartTotal.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-white">{formatPrice(cartTotal)}</span>
                 </div>
 
                 {/* Charitable Impact Note */}
                 <p className="text-sm text-gray-400 text-center">
                   100% of profits support charitable causes
                 </p>
+
+                {/* Trust signals */}
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  <span>Secure checkout powered by Shopify · All major payment methods</span>
+                </div>
 
                 {/* Checkout Button */}
                 <button

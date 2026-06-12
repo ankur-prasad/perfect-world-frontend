@@ -4,16 +4,14 @@ import { useLocation } from 'react-router-dom'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import CollectionRow from '../components/Shop/CollectionRow'
-import ProductCardWithColors from '../components/Product/ProductCardWithColors'
 import { projects } from '../data/projects'
-import { getCollectionProducts, getProduct } from '../utils/shopify'
+import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
 
 export default function Shop() {
   const location = useLocation()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
-  const [testProduct, setTestProduct] = useState<ShopifyProduct | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -25,23 +23,6 @@ export default function Shop() {
 
       try {
         const allProducts: ShopifyProduct[] = []
-
-
-        // 0. Fetch Test Product (tote bag for testing checkout flow) - Store separately
-        try {
-          const fetchedTestProduct = await getProduct('test')
-          if (fetchedTestProduct) {
-            // Store test product separately, not in main products array
-            setTestProduct({
-              ...fetchedTestProduct,
-              collectionHandle: 'test',
-              collectionName: 'Test Product',
-              collectionColor: '#000000',
-            })
-          }
-        } catch (err) {
-          console.warn('Failed to fetch test product:', err)
-        }
 
         // 1. Fetch products from each project collection
         await Promise.all([
@@ -64,21 +45,12 @@ export default function Shop() {
           // Fetch Organic Tote Bags collection and distribute to matching projects
           (async () => {
             try {
-              // Try different possible collection handles for tote bags
+              // The tote collection handle varies between store setups; query candidates in parallel
               const possibleHandles = ['organic-tote-bags', 'tote-bags', 'organic-totes', 'totes']
-              let toteCollection = null
-
-              for (const handle of possibleHandles) {
-                try {
-                  toteCollection = await getCollectionProducts(handle)
-                  if (toteCollection && toteCollection.products && toteCollection.products.length > 0) {
-                    console.log(`Found tote bags in collection '${handle}':`, toteCollection.products.map(p => p.title))
-                    break
-                  }
-                } catch {
-                  continue
-                }
-              }
+              const candidates = await Promise.all(
+                possibleHandles.map((handle) => getCollectionProducts(handle).catch(() => null))
+              )
+              const toteCollection = candidates.find((c) => c && c.products && c.products.length > 0)
 
               if (toteCollection && toteCollection.products) {
                 // Distribute totes to matching projects
@@ -96,15 +68,11 @@ export default function Shop() {
                       collectionName: matchingProject.name,
                       collectionColor: matchingProject.theme.primaryColor,
                     })
-                  } else {
-                    console.warn(`No matching project found for tote: ${tote.title}`)
                   }
                 })
-              } else {
-                console.warn('Could not find tote bags collection with any known handle')
               }
             } catch (err) {
-              console.warn('Failed to fetch Tote Bags:', err)
+              console.error('Failed to fetch tote bags:', err)
             }
           })(),
           // Fetch Embroidered Logo collection
@@ -155,9 +123,33 @@ export default function Shop() {
     return (
       <div className="min-h-screen bg-white">
         <Navigation isDarkContent={true} />
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-gray-900 text-2xl">Loading products...</div>
-        </div>
+        <main className="pt-24 md:pt-48 pb-32 px-6 sm:px-8 lg:px-12">
+          <div className="max-w-[1400px] mx-auto">
+            {/* Heading skeletons */}
+            <div className="h-10 md:h-14 w-64 md:w-96 bg-gray-200 rounded-xl mx-auto animate-pulse" />
+            <div className="h-4 w-72 bg-gray-100 rounded-full mx-auto mt-6 animate-pulse" />
+
+            {/* Collection row skeletons */}
+            <div className="mt-16 space-y-20">
+              {[0, 1].map((row) => (
+                <div key={row}>
+                  <div className="h-7 w-52 bg-gray-200 rounded-lg animate-pulse" />
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 md:gap-8 mt-8 max-w-6xl mx-auto">
+                    {[0, 1, 2].map((card) => (
+                      <div key={card} className={`rounded-2xl border border-gray-100 overflow-hidden ${card === 2 ? 'hidden md:block' : ''}`}>
+                        <div className="aspect-[4/5] bg-gray-100 animate-pulse" />
+                        <div className="p-3 md:p-5 space-y-3">
+                          <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse" />
+                          <div className="h-4 w-1/3 bg-gray-100 rounded animate-pulse" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
       </div>
     )
   }
@@ -201,7 +193,7 @@ export default function Shop() {
     <div className="min-h-screen bg-white">
       <Navigation isDarkContent={true} />
 
-      <main className="pt-40 md:pt-48 pb-32">
+      <main className="pt-24 md:pt-48 pb-32">
         <SustainabilityPromise />
 
         <div className="px-6 sm:px-8 lg:px-12 flex justify-center">
@@ -211,15 +203,15 @@ export default function Shop() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-12 text-center font-primary" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6 text-center font-primary py-2.5">
                 Shop Our Products
               </h1>
-              <p className="text-l text-gray-600 text-center mb-16">
+              <p className="text-base md:text-lg text-gray-600 text-center mb-10 md:mb-16">
                 Every purchase supports a charitable cause
               </p>
 
               {/* Collection Rows - Each project gets one row with 3 products */}
-              <div className="space-y-32">
+              <div className="space-y-16 md:space-y-24">
                 {/* Render projects in order from projects.ts */}
                 {projects.map((project) => {
                   const collectionProducts = products.filter(
@@ -251,33 +243,6 @@ export default function Shop() {
                   />
                 )}
 
-                {/* Test Product at the bottom */}
-                {testProduct && (
-                  <motion.div
-                    className="space-y-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    <div>
-                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-primary">
-                        Test Product
-                      </h2>
-                      <div className="w-24 h-1 mt-4 rounded-full bg-gray-900" />
-                      <p className="text-sm text-gray-500 mt-2">
-                        For testing checkout and payment flow
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      <ProductCardWithColors
-                        product={testProduct}
-                        siblings={[]}
-                        isLightMode={true}
-                      />
-                    </div>
-                  </motion.div>
-                )}
               </div>
             </motion.div>
           </div>

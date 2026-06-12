@@ -11,20 +11,11 @@ import type {
 } from '../types/shopify.types'
 
 const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
-console.log('🔧 Shopify Config:', {
-  apiVersion: SHOPIFY.STOREFRONT_API_VERSION,
-  domain: SHOPIFY.STORE_DOMAIN,
-})
 const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
 
 // Helper function to make Shopify API requests
 async function shopifyFetch<T>(query: string, variables: Record<string, string | number | boolean | object> = {}): Promise<T> {
   try {
-    console.log('Shopify Fetch:', {
-      url: STOREFRONT_API_URL,
-      tokenPresent: !!SHOPIFY.STOREFRONT_API_TOKEN,
-      tokenLength: SHOPIFY.STOREFRONT_API_TOKEN?.length
-    })
     const response = await fetch(STOREFRONT_API_URL, {
       method: 'POST',
       headers: {
@@ -48,8 +39,6 @@ async function shopifyFetch<T>(query: string, variables: Record<string, string |
     return json.data
   } catch (error) {
     console.error('Shopify API error details:', error)
-    console.log('Store Domain:', SHOPIFY.STORE_DOMAIN)
-    console.log('Token present:', !!SHOPIFY.STOREFRONT_API_TOKEN)
     throw error
   }
 }
@@ -155,8 +144,6 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
     })),
   }
 
-  console.log(`Collection "${collection.title}" loaded with ${collectionData.products.length} product(s)`)
-
   return collectionData
 }
 
@@ -241,10 +228,6 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
     })),
     collections: product.collections.edges.map((edge: GraphQLEdge<{ handle: string; title: string }>) => edge.node),
   }
-
-  console.log(`Product "${product.title}" loaded with ${productData.variants.length} variant(s):`,
-    productData.variants.map(v => ({ id: v.id, title: v.title, availableForSale: v.availableForSale }))
-  )
 
   return productData
 }
@@ -333,11 +316,7 @@ export async function createCheckout(
     input.attributes = options.customAttributes
   }
 
-  console.log('Cart Create Input:', JSON.stringify(input, null, 2))
-
   const data = await shopifyFetch<any>(query, { input })
-
-  console.log('Cart Create Response:', JSON.stringify(data, null, 2))
 
   if (data?.cartCreate?.userErrors?.length > 0) {
     throw new Error(data.cartCreate.userErrors[0].message)
