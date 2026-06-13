@@ -139,7 +139,7 @@ export default function ProjectPage() {
           <img
             src={project.mission.partnerCharity.logo}
             alt={`${project.name} logo`}
-            className="h-32 w-auto object-contain drop-shadow-2xl"
+            className="h-auto max-h-24 md:max-h-32 w-auto max-w-[80vw] object-contain drop-shadow-2xl"
           />
         </div>
 
@@ -374,29 +374,28 @@ export default function ProjectPage() {
               </div>
 
               {/* Problem */}
-              <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>The Problem</h3>
-                <p className="text-black text-xl leading-relaxed" style={{ paddingTop: '5px', paddingBottom: '5px' }}>{project.mission.problem}</p>
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1">The Problem</h3>
+                <p className="text-black text-base md:text-xl leading-relaxed py-1">{project.mission.problem}</p>
               </div>
 
               {/* Solution */}
-              <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>Our Solution</h3>
-                <p className="text-black text-xl leading-relaxed" style={{ paddingTop: '5px', paddingBottom: '5px' }}>{project.mission.solution}</p>
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1">Our Solution</h3>
+                <p className="text-black text-base md:text-xl leading-relaxed py-1">{project.mission.solution}</p>
               </div>
 
               {/* Partner Charity */}
-              <div className="bg-white/5 rounded-2xl p-16 border border-white/10 min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-4xl font-bold text-black mb-12" style={{ paddingTop: '5px', paddingBottom: '5px' }}>Our Partner</h3>
-                <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12 py-1">Our Partner</h3>
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
                   <img
                     src={project.mission.partnerCharity.logo}
                     alt={project.mission.partnerCharity.name}
-                    className="h-40 w-auto object-contain bg-white/5 rounded-xl p-8"
-                    style={{ width: '384px' }}
+                    className="h-auto max-h-40 w-full max-w-[320px] md:max-w-[384px] object-contain bg-white/5 rounded-xl p-6 md:p-8"
                   />
                   <div className="flex-1 text-center md:text-left">
-                    <h4 className="text-3xl font-semibold text-black mb-6" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
+                    <h4 className="text-2xl md:text-3xl font-semibold text-black mb-4 md:mb-6 py-1">
                       {project.mission.partnerCharity.name}
                     </h4>
                     <p className="text-black text-xl leading-relaxed mb-8" style={{ paddingTop: '5px', paddingBottom: '5px' }}>

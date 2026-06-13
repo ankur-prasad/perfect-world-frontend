@@ -8,8 +8,10 @@ import { projects } from '../data/projects'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function Shop() {
+  usePageTitle('Shop')
   const location = useLocation()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(true)

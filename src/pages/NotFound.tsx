@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function NotFound() {
+  usePageTitle('Page not found')
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navigation isDarkContent={true} />

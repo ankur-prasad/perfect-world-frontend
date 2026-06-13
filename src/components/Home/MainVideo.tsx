@@ -70,7 +70,7 @@ export default function MainVideo() {
 
     return (
         <section
-            className="w-full h-screen relative bg-white md:bg-black cursor-pointer group flex items-center justify-center"
+            className="w-full h-auto md:h-screen relative bg-black cursor-pointer group flex items-center justify-center"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => isPlaying && setShowControls(false)}
         >

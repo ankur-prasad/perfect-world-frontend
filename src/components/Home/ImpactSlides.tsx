@@ -22,8 +22,8 @@ export default function ImpactSlides() {
     return (
         <section className="bg-white text-black relative z-10">
             {slides.map((slide, index) => (
-                <div key={index} className="min-h-screen flex items-center justify-center relative overflow-hidden py-20">
-                    <div className="w-full max-w-[1200px] px-12 md:px-24 lg:px-32">
+                <div key={index} className="md:min-h-screen flex items-center justify-center relative overflow-hidden py-14 md:py-20">
+                    <div className="w-full max-w-[1200px] px-6 md:px-24 lg:px-32">
                         <div className={`flex flex-col md:flex-row items-center gap-12 lg:gap-32 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''
                             }`}>
                             {/* Text Column */}
@@ -39,10 +39,10 @@ export default function ImpactSlides() {
                                     <div className="w-12 h-px bg-black" />
                                 </div>
 
-                                <h2 className="text-5xl md:text-7xl font-bold tracking-tight uppercase leading-[0.9]" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '15px', paddingBottom: '15px', marginLeft: '20px', marginRight: '20px', paddingLeft: '0px', paddingRight: '0px' }}>
+                                <h2 className="text-4xl md:text-7xl font-bold tracking-tight uppercase leading-[0.95] py-3 md:mx-5" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
                                     {slide.title}
                                 </h2>
-                                <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-xl" style={{ paddingTop: '0px', paddingBottom: '0px', marginLeft: '20px', marginRight: '20px' }}>
+                                <p className="text-lg md:text-2xl text-gray-600 leading-relaxed max-w-xl md:mx-5">
                                     {slide.content}
                                 </p>
                             </motion.div>
@@ -59,8 +59,9 @@ export default function ImpactSlides() {
                                     <img
                                         src={slide.image}
                                         alt={slide.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover"
-                                        style={{ marginLeft: '0px', marginRight: '0px', paddingLeft: '0px', paddingRight: '0px' }}
                                     />
                                     {/* Subtle overlay for depth */}
                                     <div className="absolute inset-0 bg-black/5 pointer-events-none" />

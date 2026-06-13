@@ -19,7 +19,7 @@ export default function OrderSuccess() {
         <div className="min-h-screen bg-white text-black">
             <Navigation isDarkContent={true} />
 
-            <div className="pt-32 pb-20 px-4 flex justify-center">
+            <div className="pt-12 md:pt-32 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-2xl text-center">
                     {/* Success Icon */}
                     <div className="mb-8 flex justify-center">

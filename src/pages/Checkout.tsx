@@ -6,6 +6,9 @@ import { createCheckout } from '../utils/shopify'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
 
+const formatPrice = (amount: number) =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(amount)
+
 export default function Checkout() {
     const { cart, cartTotal } = useCart()
     const navigate = useNavigate()
@@ -58,7 +61,7 @@ export default function Checkout() {
         <div className="min-h-screen bg-white text-black">
             <Navigation isDarkContent={true} />
 
-            <div className="pt-32 pb-20 px-4 flex justify-center">
+            <div className="pt-10 md:pt-32 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-[800px]">
                     <h1 className="text-4xl md:text-5xl font-bold mb-12 font-primary">Checkout</h1>
 
@@ -82,7 +85,7 @@ export default function Checkout() {
                                         <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
+                                        <p className="font-bold">{formatPrice(item.price * item.quantity)}</p>
                                     </div>
                                 </div>
                             ))}
@@ -91,7 +94,7 @@ export default function Checkout() {
                         <div className="space-y-2 pt-4 border-t-2 border-gray-200">
                             <div className="flex justify-between text-gray-600">
                                 <span>Subtotal</span>
-                                <span>${cartTotal.toFixed(2)}</span>
+                                <span>{formatPrice(cartTotal)}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Shipping</span>
@@ -99,7 +102,7 @@ export default function Checkout() {
                             </div>
                             <div className="flex justify-between text-xl font-bold pt-2">
                                 <span>Total</span>
-                                <span>${cartTotal.toFixed(2)}</span>
+                                <span>{formatPrice(cartTotal)}</span>
                             </div>
                         </div>
                     </div>

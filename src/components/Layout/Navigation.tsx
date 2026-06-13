@@ -342,7 +342,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
             ref={logoRef}
             src={isDarkContent ? logoBlack : logoWhite}
             alt="Perfect World"
-            className="h-20 w-auto transition-all duration-300"
+            className="h-14 md:h-20 w-auto transition-all duration-300"
           />
         </Link>
       </motion.div>

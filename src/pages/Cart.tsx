@@ -1,21 +1,26 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useCart } from '../contexts/CartContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
 import GlassyButton from '../components/ui/GlassyButton'
 
 export default function Cart() {
+    usePageTitle('Your Cart')
     const { cart, removeFromCart, updateQuantity, cartTotal } = useCart()
+
+    const formatPrice = (amount: number) =>
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(amount)
     const navigate = useNavigate()
 
     return (
         <div className="min-h-screen bg-white text-black">
             <Navigation isDarkContent={true} />
 
-            <div className="pt-32 pb-20 px-4 flex justify-center">
+            <div className="pt-10 md:pt-32 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-[1200px]">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-12 font-primary">Your Cart</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold mb-8 md:mb-12 font-primary">Your Cart</h1>
 
                     {cart.length === 0 ? (
                         <div className="text-center py-20">
@@ -72,7 +77,7 @@ export default function Cart() {
                                                     </button>
                                                 </div>
                                                 <p className="font-bold text-lg">
-                                                    ${(item.price * item.quantity).toFixed(2)}
+                                                    {formatPrice(item.price * item.quantity)}
                                                 </p>
                                             </div>
                                         </div>
@@ -87,7 +92,7 @@ export default function Cart() {
                                     <div className="space-y-4 mb-8">
                                         <div className="flex justify-between text-gray-600">
                                             <span>Subtotal</span>
-                                            <span>${cartTotal.toFixed(2)}</span>
+                                            <span>{formatPrice(cartTotal)}</span>
                                         </div>
                                         <div className="flex justify-between text-gray-600">
                                             <span>Shipping</span>
@@ -96,7 +101,7 @@ export default function Cart() {
                                         <div className="h-px bg-gray-200 my-4" />
                                         <div className="flex justify-between text-xl font-bold">
                                             <span>Total</span>
-                                            <span>${cartTotal.toFixed(2)}</span>
+                                            <span>{formatPrice(cartTotal)}</span>
                                         </div>
                                     </div>
 

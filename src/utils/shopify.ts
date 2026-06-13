@@ -13,6 +13,29 @@ import type {
 const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
 const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
 
+// In-memory cache so navigating between pages doesn't refetch the catalog.
+// Failures are never cached; entries expire after CACHE_TTL.
+const CACHE_TTL = 5 * 60 * 1000
+const apiCache = new Map<string, { data: unknown; expires: number; pending?: Promise<unknown> }>()
+
+async function withCache<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  const hit = apiCache.get(key)
+  if (hit) {
+    if (hit.pending) return hit.pending as Promise<T>
+    if (hit.expires > Date.now()) return hit.data as T
+  }
+  const pending = fn()
+  apiCache.set(key, { data: undefined, expires: 0, pending })
+  try {
+    const data = await pending
+    apiCache.set(key, { data, expires: Date.now() + CACHE_TTL })
+    return data
+  } catch (error) {
+    apiCache.delete(key)
+    throw error
+  }
+}
+
 // Helper function to make Shopify API requests
 async function shopifyFetch<T>(query: string, variables: Record<string, string | number | boolean | object> = {}): Promise<T> {
   try {
@@ -45,6 +68,10 @@ async function shopifyFetch<T>(query: string, variables: Record<string, string |
 
 // Get products by collection handle
 export async function getCollectionProducts(handle: string): Promise<ShopifyCollection> {
+  return withCache(`collection:${handle}`, () => fetchCollectionProducts(handle))
+}
+
+async function fetchCollectionProducts(handle: string): Promise<ShopifyCollection> {
   const query = `
     query getCollectionProducts($handle: String!) {
       collectionByHandle(handle: $handle) {
@@ -149,6 +176,10 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
 
 // Get single product by handle
 export async function getProduct(handle: string): Promise<ShopifyProduct> {
+  return withCache(`product:${handle}`, () => fetchProduct(handle))
+}
+
+async function fetchProduct(handle: string): Promise<ShopifyProduct> {
   const query = `
     query getProduct($handle: String!) {
       productByHandle(handle: $handle) {

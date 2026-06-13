@@ -7,6 +7,7 @@ import ProductCard from '../components/Product/ProductCard'
 import { getProduct, getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 import { sanitizeHtml } from '../utils/sanitize'
 import { extractBaseName, extractColorFromTitle, extractProductType } from '../utils/productGrouping'
 import { projects } from '../data/projects'
@@ -68,6 +69,8 @@ export default function ProductDetail() {
   const [isAdding, setIsAdding] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
   const [relatedProducts, setRelatedProducts] = useState<ShopifyProduct[]>([])
+
+  usePageTitle(product?.title)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -317,7 +320,15 @@ export default function ProductDetail() {
               >
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{product.title}</h1>
 
-                <div className="text-4xl font-bold text-white mb-8 py-5">{formattedPrice}</div>
+                <div className="flex flex-wrap items-center gap-4 mb-8 py-5">
+                  <span className="text-4xl font-bold text-white">{formattedPrice}</span>
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-400/15 border border-emerald-300/30 text-emerald-300 text-xs font-semibold uppercase tracking-wide">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    100% of profits donated
+                  </span>
+                </div>
 
                 {/* Color Selector (Sibling Products) - Color Swatches */}
                 {siblings.length > 0 && (
