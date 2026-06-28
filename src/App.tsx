@@ -26,6 +26,14 @@ const Checkout = lazy(() => import('./pages/Checkout'))
 const OrderSuccess = lazy(() => import('./pages/OrderSuccess'))
 const Founders = lazy(() => import('./pages/Founders'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const LegalNotice = lazy(() => import('./pages/LegalNotice'))
+const ShippingPolicy = lazy(() => import('./pages/ShippingPolicy'))
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Podcasts = lazy(() => import('./pages/Podcasts'))
 const ComponentDemo = lazy(() => import('./pages/ComponentDemo'))
 const VisualEditor = lazy(() => import('./pages/VisualEditor'))
 
@@ -60,6 +68,14 @@ function App() {
               <Route path="/info/all-profits-donated" element={<InfoAllProfits />} />
               <Route path="/info/together-not-alone" element={<InfoTogether />} />
               <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/legal-notice" element={<LegalNotice />} />
+              <Route path="/shipping-policy" element={<ShippingPolicy />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/podcasts" element={<Podcasts />} />
               {/* Dev-only tooling pages, excluded from production */}
               {import.meta.env.DEV && <Route path="/demo" element={<ComponentDemo />} />}
               {import.meta.env.DEV && <Route path="/editor" element={<VisualEditor />} />}

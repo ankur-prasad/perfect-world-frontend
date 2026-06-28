@@ -7,7 +7,7 @@ export default function AboutUs() {
     <div className="min-h-screen bg-white text-black">
       <Navigation isDarkContent={true} />
 
-      <main className="pt-10 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
+      <main className="pt-10 md:pt-48 pb-32 px-6 sm:px-8 lg:px-12">
         <div className="flex justify-center">
           <div className="w-full max-w-[900px]">
 

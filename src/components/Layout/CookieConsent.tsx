@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import GlassyButton from '../ui/GlassyButton'
 
 interface CookiePreferences {
@@ -79,14 +80,14 @@ export default function CookieConsent() {
                                 <h2 className="text-white text-2xl font-bold mb-4">Notice</h2>
                                 <p className="text-gray-300 text-base leading-relaxed mb-6 max-w-4xl">
                                     We (www.perfectworld.global) and selected third parties (12) collect personal information as specified in the{' '}
-                                    <a href="https://shop.perfectworld.global/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
+                                    <Link to="/privacy-policy" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
                                         privacy policy
-                                    </a>{' '}
+                                    </Link>{' '}
                                     and use cookies or similar technologies for technical purposes and, with your consent, for{' '}
                                     <strong>functionality, experience, measurement and "marketing (personalized ads)"</strong> as specified in the{' '}
-                                    <a href="https://shop.perfectworld.global/policies/cookie-policy" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
+                                    <Link to="/cookie-policy" className="text-white hover:text-gray-300 underline decoration-white/30 underline-offset-4 transition-colors">
                                         cookie policy
-                                    </a>
+                                    </Link>
                                     .
                                 </p>
                                 <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-400">

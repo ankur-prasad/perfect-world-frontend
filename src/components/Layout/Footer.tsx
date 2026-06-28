@@ -40,10 +40,9 @@ const Footer: FC<FooterProps> = ({
     { label: 'Shop', href: '/shop', external: false },
     { label: 'Transparency', href: '/transparency', external: false },
     { label: "Founder's Story", href: '/founders', external: false },
-    { label: 'Contact', href: 'https://shop.perfectworld.global/pages/contact', external: true },
+    { label: 'Contact', href: '/contact', external: false },
   ],
   projectLinks = [
-    { label: 'All Projects', href: '/projects', external: false },
     { label: 'Wild at Heart', href: '/shop?collection=wild-at-heart', external: false },
     { label: 'Endangered Oceans', href: '/shop?collection=endangered-oceans', external: false },
     { label: 'One World', href: '/shop?collection=one-world', external: false },
@@ -174,9 +173,13 @@ const Footer: FC<FooterProps> = ({
 
           {/* Our Projects */}
           <div className="flex flex-col gap-3">
-            <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
-              Our Projects
-            </h3>
+            <Link
+              to="/projects"
+              className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2 hover:text-white transition-colors cursor-pointer relative"
+              style={{ zIndex: 20 }}
+            >
+              All Projects
+            </Link>
             {projectLinks.map((link) => (
               <div key={link.label}>
                 {link.external ? (
@@ -207,51 +210,41 @@ const Footer: FC<FooterProps> = ({
             <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
               Support
             </h3>
-            <a
-              href="https://shop.perfectworld.global/policies/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/privacy-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
               Privacy Policy
-            </a>
-            <a
-              href="https://shop.perfectworld.global/policies/refund-policy"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              to="/refund-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
               Refund Policy
-            </a>
-            <a
-              href="https://shop.perfectworld.global/policies/terms-of-service"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              to="/terms-of-service"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
               Terms of Service
-            </a>
-            <a
-              href="https://shop.perfectworld.global/pages/legal-notice"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              to="/legal-notice"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
               Legal Notice
-            </a>
-            <a
-              href="https://shop.perfectworld.global/policies/shipping-policy"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              to="/shipping-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
               Shipping Policy
-            </a>
+            </Link>
           </div>
 
           {/* Newsletter & Social */}

@@ -448,25 +448,24 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
           </motion.div>
         ))}
 
-        {/* External Links */}
+        {/* More Links */}
         {[
-          { href: "https://shop.perfectworld.global/pages/podcasts", label: "Podcasts" },
-          { href: "https://shop.perfectworld.global/pages/contact", label: "Contact" },
+          { to: "/podcasts", label: "Podcasts" },
+          { to: "/contact", label: "Contact" },
         ].map((item, index) => (
           <motion.div
-            key={item.href}
+            key={item.to}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }}
             transition={{ delay: 0.5 + index * 0.1 }}
           >
-            <a
-              href={item.href}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to={item.to}
+              onClick={toggleMenu}
               className="text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition-colors"
             >
               {item.label}
-            </a>
+            </Link>
           </motion.div>
         ))}
       </nav>

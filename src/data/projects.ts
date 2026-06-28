@@ -1,4 +1,5 @@
 import type { Project } from '../types/project.types'
+import perfectWorldLogo from '../assets/logos/perfect-world-logo-black.png'
 import secoreLogo from '../assets/logos/secore-logo.png'
 import careInActionLogo from '../assets/logos/care-in-action-logo.png'
 import mhiLogo from '../assets/logos/mhi-logo.png'
@@ -6,6 +7,39 @@ import plantForThePlanetLogo from '../assets/logos/plant-for-the-planet-logo.png
 import elephantsForAfricaLogo from '../assets/logos/elephants-for-africa-logo.png'
 
 export const projects: Project[] = [
+  {
+    id: '6',
+    slug: 'new-project',
+    name: 'New Project',
+    tagline: 'Coming soon',
+    location: {
+      lat: 0,
+      lon: 0,
+      label: 'TBA',
+    },
+    mission: {
+      heroImage: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2560&auto=format&fit=crop',
+      problem:
+        'Details coming soon.',
+      solution:
+        'We are excited to announce a new collaboration. Stay tuned for more information.',
+      impact: ['Coming soon'],
+      partnerCharity: {
+        name: 'Partner Charity',
+        description: 'Details coming soon.',
+        website: 'https://perfect-world.org',
+        logo: perfectWorldLogo,
+      },
+    },
+    shopifyCollection: {
+      handle: 'frontpage',
+      title: 'New Project',
+    },
+    theme: {
+      primaryColor: '#5D4037',
+      secondaryColor: '#3E2723',
+    },
+  },
   {
     id: '5',
     slug: 'wild-at-heart',
