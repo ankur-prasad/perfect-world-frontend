@@ -14,7 +14,7 @@ export default function LegalPageLayout({ title, subtitle, children }: LegalPage
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Navigation />
 
-      <main className="pt-40 md:pt-48 pb-32" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+      <main className="pt-8 md:pt-12 pb-20 md:pb-24" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
         <div className="container mx-auto max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

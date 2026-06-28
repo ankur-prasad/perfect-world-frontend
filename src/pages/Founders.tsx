@@ -7,7 +7,7 @@ const Founders = () => {
         <div className="min-h-screen bg-white text-black">
             <Navigation isDarkContent={true} />
 
-            <main className="pt-10 md:pt-48 pb-32 px-6 sm:px-8 lg:px-12">
+            <main className="pt-8 md:pt-12 pb-20 md:pb-24 px-6 sm:px-8 lg:px-12">
                 <div className="flex justify-center">
                     <div className="w-full max-w-[900px]">
                         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-8 md:mb-16 text-center font-primary">From Pain to Purpose</h1>

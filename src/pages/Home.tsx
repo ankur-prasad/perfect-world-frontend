@@ -73,8 +73,8 @@ export default function Home() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setIsScrolled(window.scrollY > 100)
-          const heroHeight = window.innerHeight * (isMobile ? 0.8 : 1.5) // Shortened for mobile
-          const transitionHeight = window.innerHeight * (isMobile ? 0.4 : 0.75) // Shortened for mobile
+          const heroHeight = window.innerHeight * (isMobile ? 0.6 : 1.125) // Shortened for mobile
+          const transitionHeight = window.innerHeight * (isMobile ? 0.3 : 0.5625) // Shortened for mobile
 
           // Calculate scroll progress through the hero section (0 to 1)
           const progress = Math.min(window.scrollY / heroHeight, 1)
@@ -180,14 +180,14 @@ export default function Home() {
       <MonochromeOverlay reduced={globeHover} opacity={1 - (bgLightness / 100)} />
 
       {/* Extended Hero Section with 3D Globe and Stars - 1.5 screens tall */}
-      <section ref={heroRef} className="relative -z-10" style={{ height: isMobile ? '80vh' : '150vh' }}>
+      <section ref={heroRef} className="relative -z-10" style={{ height: isMobile ? '60vh' : '112.5vh' }}>
         {/* Empty section for scroll height */}
       </section>
 
       {/* Tagline - Right above arrow - Fixed position so it's on top of everything */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-35 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
+          className="fixed bottom-39 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
@@ -202,7 +202,7 @@ export default function Home() {
       {/* Subtitle - Between tagline and scroll indicator */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-22 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none px-2 md:px-4 w-[95%] md:max-w-2xl"
+          className="fixed bottom-27 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none px-2 md:px-4 w-[95%] md:max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
@@ -258,17 +258,17 @@ export default function Home() {
       )}
 
       {/* Transition section for star trails - 0.75 screens tall */}
-      <section className="relative -z-10" style={{ height: isMobile ? '40vh' : '75vh' }}>
+      <section className="relative -z-10" style={{ height: isMobile ? '30vh' : '56.25vh' }}>
         {/* Stars with trails are visible here via the fixed 3D scene */}
       </section>
 
 
 
       {/* Collections Section with 3D Carousel */}
-      <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '12rem', paddingBottom: '8rem' }}>
+      <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '7rem', paddingBottom: '5rem' }}>
         <div className="w-full relative z-10 flex flex-col items-center">
           <motion.h2
-            className={`title-handwritten text-center mb-20 ${textColor}`}
+            className={`title-handwritten text-center mb-12 ${textColor}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

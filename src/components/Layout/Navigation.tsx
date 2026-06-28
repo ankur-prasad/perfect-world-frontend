@@ -95,6 +95,9 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       // Stage 2: Move buttons INWARD toward logo (5-10% scroll)
       const stage2EndValue = `+=${scrollHeight * 0.1}` // Another 5%
 
+      // Final resting offsets are tuned per-button so the centered logo keeps
+      // equal breathing room on both sides. "Shop the Difference" is a much wider
+      // pill than "Projects", so it needs a larger offset or it overlaps the logo.
       gsap.to(aboutUsRef.current, {
         scrollTrigger: {
           trigger: 'body',
@@ -102,7 +105,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
           end: stage2EndValue,
           scrub: 1,
         },
-        left: 'calc(50vw - 220px)',
+        left: 'calc(50vw - 205px)',
         ease: 'power2.out',
       })
 
@@ -113,7 +116,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
           end: stage2EndValue,
           scrub: 1,
         },
-        right: 'calc(50vw - 220px)',
+        right: 'calc(50vw - 290px)',
         ease: 'power2.out',
       })
 

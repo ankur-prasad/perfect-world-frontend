@@ -7,7 +7,7 @@ export default function InfoFashionTool() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Navigation />
 
-      <main className="pt-10 md:pt-48 pb-32 px-6 md:px-8">
+      <main className="pt-8 md:pt-12 pb-20 md:pb-24 px-6 md:px-8">
         <div className="container mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -241,7 +241,7 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Navigation isDarkContent={false} />
 
-      <main className="pt-8 md:pt-48 pb-44 md:pb-32 px-4 sm:px-6 lg:px-8">
+      <main className="pt-8 md:pt-12 pb-20 md:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="w-full max-w-[1200px]">
             {/* Breadcrumb */}

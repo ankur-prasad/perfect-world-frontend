@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 
 export default function SustainabilityPromise() {
     return (
-        <section className="flex items-center justify-center py-10 md:py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <section className="flex items-center justify-center py-5 md:py-7 px-4 sm:px-6 lg:px-8 bg-white">
             <div className="max-w-2xl mx-auto text-center">
                 <motion.h2
-                    className="text-2xl md:text-3xl lg:text-4xl font-medium text-gray-900 uppercase leading-tight mb-4 md:mb-6 py-2.5"
+                    className="text-2xl md:text-3xl lg:text-4xl font-medium text-gray-900 uppercase leading-tight mb-2 md:mb-3 py-1"
                     style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

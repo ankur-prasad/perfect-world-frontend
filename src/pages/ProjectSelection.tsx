@@ -8,7 +8,7 @@ export default function ProjectSelection() {
         <div className="min-h-screen bg-black text-white">
             <Navigation isDarkContent={false} />
 
-            <div className="pt-24 md:pt-44 pb-20 px-4 flex justify-center">
+            <div className="pt-8 md:pt-12 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-[1200px]">
                     <h1 className="title-handwritten text-center py-6">Our Projects</h1>
 

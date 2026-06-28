@@ -130,7 +130,7 @@ export default function Shop() {
     return (
       <div className="min-h-screen bg-white">
         <Navigation isDarkContent={true} />
-        <main className="pt-24 md:pt-48 pb-32 px-6 sm:px-8 lg:px-12">
+        <main className="pt-6 md:pt-10 pb-20 md:pb-24 px-6 sm:px-8 lg:px-12">
           <div className="max-w-[1400px] mx-auto">
             {/* Heading skeletons */}
             <div className="h-10 md:h-14 w-64 md:w-96 bg-gray-200 rounded-xl mx-auto animate-pulse" />
@@ -200,7 +200,7 @@ export default function Shop() {
     <div className="min-h-screen bg-white">
       <Navigation isDarkContent={true} />
 
-      <main className="pt-24 md:pt-48 pb-32">
+      <main className="pt-3 md:pt-4 pb-16 md:pb-20">
         <SustainabilityPromise />
 
         <div className="px-6 sm:px-8 lg:px-12 flex justify-center">
@@ -210,15 +210,15 @@ export default function Shop() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6 text-center font-primary py-2.5">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 text-center font-primary py-1">
                 Shop Our Products
               </h1>
-              <p className="text-base md:text-lg text-gray-600 text-center mb-10 md:mb-16">
+              <p className="text-base md:text-lg text-gray-600 text-center mb-6 md:mb-8">
                 Every purchase supports a charitable cause
               </p>
 
               {/* Collection Rows - Each project gets one row with 3 products */}
-              <div className="space-y-16 md:space-y-24">
+              <div className="space-y-12 md:space-y-16">
                 {/* Render projects in order from projects.ts */}
                 {projects.map((project) => {
                   const collectionProducts = products.filter(

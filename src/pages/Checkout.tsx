@@ -69,7 +69,7 @@ export default function Checkout() {
         <div className="min-h-screen bg-white text-black">
             <Navigation isDarkContent={true} />
 
-            <div className="pt-10 md:pt-32 pb-20 px-4 flex justify-center">
+            <div className="pt-8 md:pt-12 pb-20 px-4 flex justify-center">
                 <div className="w-full max-w-[800px]">
                     <h1 className="text-4xl md:text-5xl font-bold mb-12 font-primary">Checkout</h1>
 
