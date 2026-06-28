@@ -11,20 +11,34 @@ import type {
 } from '../types/shopify.types'
 
 const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
-console.log('🔧 Shopify Config:', {
-  apiVersion: SHOPIFY.STOREFRONT_API_VERSION,
-  domain: SHOPIFY.STORE_DOMAIN,
-})
 const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
+
+// In-memory cache so navigating between pages doesn't refetch the catalog.
+// Failures are never cached; entries expire after CACHE_TTL.
+const CACHE_TTL = 5 * 60 * 1000
+const apiCache = new Map<string, { data: unknown; expires: number; pending?: Promise<unknown> }>()
+
+async function withCache<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  const hit = apiCache.get(key)
+  if (hit) {
+    if (hit.pending) return hit.pending as Promise<T>
+    if (hit.expires > Date.now()) return hit.data as T
+  }
+  const pending = fn()
+  apiCache.set(key, { data: undefined, expires: 0, pending })
+  try {
+    const data = await pending
+    apiCache.set(key, { data, expires: Date.now() + CACHE_TTL })
+    return data
+  } catch (error) {
+    apiCache.delete(key)
+    throw error
+  }
+}
 
 // Helper function to make Shopify API requests
 async function shopifyFetch<T>(query: string, variables: Record<string, string | number | boolean | object> = {}): Promise<T> {
   try {
-    console.log('Shopify Fetch:', {
-      url: STOREFRONT_API_URL,
-      tokenPresent: !!SHOPIFY.STOREFRONT_API_TOKEN,
-      tokenLength: SHOPIFY.STOREFRONT_API_TOKEN?.length
-    })
     const response = await fetch(STOREFRONT_API_URL, {
       method: 'POST',
       headers: {
@@ -48,14 +62,16 @@ async function shopifyFetch<T>(query: string, variables: Record<string, string |
     return json.data
   } catch (error) {
     console.error('Shopify API error details:', error)
-    console.log('Store Domain:', SHOPIFY.STORE_DOMAIN)
-    console.log('Token present:', !!SHOPIFY.STOREFRONT_API_TOKEN)
     throw error
   }
 }
 
 // Get products by collection handle
 export async function getCollectionProducts(handle: string): Promise<ShopifyCollection> {
+  return withCache(`collection:${handle}`, () => fetchCollectionProducts(handle))
+}
+
+async function fetchCollectionProducts(handle: string): Promise<ShopifyCollection> {
   const query = `
     query getCollectionProducts($handle: String!) {
       collectionByHandle(handle: $handle) {
@@ -155,13 +171,15 @@ export async function getCollectionProducts(handle: string): Promise<ShopifyColl
     })),
   }
 
-  console.log(`Collection "${collection.title}" loaded with ${collectionData.products.length} product(s)`)
-
   return collectionData
 }
 
 // Get single product by handle
 export async function getProduct(handle: string): Promise<ShopifyProduct> {
+  return withCache(`product:${handle}`, () => fetchProduct(handle))
+}
+
+async function fetchProduct(handle: string): Promise<ShopifyProduct> {
   const query = `
     query getProduct($handle: String!) {
       productByHandle(handle: $handle) {
@@ -241,10 +259,6 @@ export async function getProduct(handle: string): Promise<ShopifyProduct> {
     })),
     collections: product.collections.edges.map((edge: GraphQLEdge<{ handle: string; title: string }>) => edge.node),
   }
-
-  console.log(`Product "${product.title}" loaded with ${productData.variants.length} variant(s):`,
-    productData.variants.map(v => ({ id: v.id, title: v.title, availableForSale: v.availableForSale }))
-  )
 
   return productData
 }
@@ -333,11 +347,7 @@ export async function createCheckout(
     input.attributes = options.customAttributes
   }
 
-  console.log('Cart Create Input:', JSON.stringify(input, null, 2))
-
   const data = await shopifyFetch<any>(query, { input })
-
-  console.log('Cart Create Response:', JSON.stringify(data, null, 2))
 
   if (data?.cartCreate?.userErrors?.length > 0) {
     throw new Error(data.cartCreate.userErrors[0].message)

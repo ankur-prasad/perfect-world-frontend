@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
@@ -60,6 +60,7 @@ export default function ProductCardWithColors({
   siblings,
 }: ProductCardWithColorsProps) {
   const { addToCart } = useCart()
+  const navigate = useNavigate()
   const [hoveredProduct, setHoveredProduct] = useState<ShopifyProduct | null>(null)
   const [isHoveringCard, setIsHoveringCard] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
@@ -138,7 +139,7 @@ export default function ProductCardWithColors({
       {/* Product Image with AnimatePresence for smooth transitions */}
       <div
         className="block cursor-pointer"
-        onClick={() => window.location.href = `/product/${displayProduct?.handle || product.handle}`}
+        onClick={() => navigate(`/product/${displayProduct?.handle || product.handle}`)}
       >
         <div className="relative aspect-[4/5] overflow-hidden bg-white">
           <AnimatePresence mode="wait">
@@ -146,7 +147,9 @@ export default function ProductCardWithColors({
               key={displayProduct?.id || product.id}
               src={displayImage}
               alt={displayProduct?.images[0]?.altText || displayProduct?.title || product.title}
-              className="w-full h-full object-contain p-4"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-contain p-2 md:p-4"
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -156,7 +159,7 @@ export default function ProductCardWithColors({
 
           {/* Product Type Badge - Glassy Style */}
           {typeBadge && (
-            <div className="absolute top-4 left-4 pointer-events-none">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 pointer-events-none">
               <GlassyButton
                 variant="light"
                 fontSize="11px"
@@ -184,10 +187,10 @@ export default function ProductCardWithColors({
           {/* Color Selector Overlay - Visible on card hover - Glassy Style */}
           {siblings.length > 0 && (
             <div
-              className={`absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 ${isHoveringCard ? 'opacity-100' : 'opacity-0'
+              className={`hidden md:block absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 ${isHoveringCard ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
             >
-              <div className="flex flex-wrap gap-10 justify-center">
+              <div className="flex flex-wrap gap-3 justify-center">
                 {siblings.map((sibling) => {
                   const colorName = extractColorFromTitle(sibling.title)
                   const colorKey = colorName.toLowerCase()
@@ -255,21 +258,43 @@ export default function ProductCardWithColors({
       </div>
 
       {/* Product Info */}
-      <div className="p-6">
+      <div className="p-3 md:p-5">
         <Link to={`/product/${product.handle}`}>
-          <h3 className="text-lg font-bold mb-2 line-clamp-2 transition-colors font-primary text-gray-900 group-hover:text-blue-600">
+          <h3 className="text-sm md:text-lg font-bold mb-1 line-clamp-2 transition-colors font-primary text-gray-900 group-hover:text-blue-600">
             {baseName}
           </h3>
         </Link>
 
-        <div className="flex items-center justify-between mt-4">
-          <span className="text-xl font-bold text-gray-900">
+        {/* Static color dots - always visible, no hover needed */}
+        {siblings.length > 1 && (
+          <div className="flex items-center gap-1.5 mt-1.5">
+            {siblings.slice(0, 5).map((sibling) => {
+              const colorKey = extractColorFromTitle(sibling.title).toLowerCase()
+              return (
+                <span
+                  key={sibling.id}
+                  className={`w-3 h-3 rounded-full ring-1 ring-gray-300 ${sibling.id === product.id ? 'ring-2 ring-gray-900' : ''}`}
+                  style={{ background: COLOR_MAP[colorKey] || '#808080' }}
+                />
+              )
+            })}
+            {siblings.length > 5 && (
+              <span className="text-[10px] text-gray-500">+{siblings.length - 5}</span>
+            )}
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center justify-between gap-2 mt-3 md:mt-4">
+          <span className="text-base md:text-xl font-bold text-gray-900">
             {formattedPrice}
           </span>
 
           <GlassyButton
             onClick={handleAddToCart}
             variant="dark"
+            fontSize="13px"
+            paddingX="16px"
+            paddingY="8px"
             background={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
             hoverBackground={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
             textColor={!isAvailable || isAdding ? 'rgb(156, 163, 175)' : undefined}
@@ -302,12 +327,6 @@ export default function ProductCardWithColors({
           </GlassyButton>
         </div>
 
-        {/* Color indicator text */}
-        {siblings.length > 0 && (
-          <p className="text-xs text-gray-500 mt-3 text-center">
-            {siblings.length} color{siblings.length !== 1 ? 's' : ''} available • Hover to preview
-          </p>
-        )}
       </div>
     </motion.div>
   )

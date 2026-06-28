@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
@@ -19,8 +19,7 @@ interface NavigationProps {
 
 export default function Navigation({ isDarkContent = false, enableScrollAnimations = false }: NavigationProps) {
   const { isMenuOpen, toggleMenu } = useNavigation()
-  const { cartCount } = useCart()
-  const [isCartOpen, setIsCartOpen] = useState(false)
+  const { cartCount, isCartOpen, openCart, closeCart } = useCart()
   const aboutUsRef = useRef<HTMLDivElement>(null)
   const shopRef = useRef<HTMLDivElement>(null)
   const transparencyRef = useRef<HTMLDivElement>(null)
@@ -214,7 +213,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   const CartButton = ({ isMobile = false }: { isMobile?: boolean }) => (
     <div className="relative">
       <GlassyButton
-        onClick={() => setIsCartOpen(!isCartOpen)}
+        onClick={() => (isCartOpen ? closeCart() : openCart())}
         variant={isDarkContent ? 'primary' : 'light'}
         textColor={isDarkContent ? '#000000' : '#ffffff'}
         paddingX={isMobile ? "20px" : "32px"}
@@ -323,7 +322,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <div className="h-20" aria-hidden="true" />
 
         <MenuOverlay isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-        <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+        <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
       </>
     )
   }
@@ -343,7 +342,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
             ref={logoRef}
             src={isDarkContent ? logoBlack : logoWhite}
             alt="Perfect World"
-            className="h-20 w-auto transition-all duration-300"
+            className="h-14 md:h-20 w-auto transition-all duration-300"
           />
         </Link>
       </motion.div>
@@ -406,7 +405,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       </motion.div>
 
       <MenuOverlay isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
     </>
   )
 }
@@ -415,7 +414,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMenu: () => void }) {
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex flex-col overflow-y-auto"
       initial={{ opacity: 0, pointerEvents: 'none' }}
       animate={{
         opacity: isMenuOpen ? 1 : 0,
@@ -423,7 +422,8 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
       }}
       transition={{ duration: 0.4 }}
     >
-      <nav className="flex flex-col items-center gap-8">
+      {/* m-auto centers when content fits and allows scrolling when it doesn't */}
+      <nav className="flex flex-col items-center gap-5 md:gap-8 m-auto py-24">
         {[
           { to: "/", label: "Home" },
           { to: "/projects", label: "Projects" },
@@ -441,7 +441,7 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
             <Link
               to={item.to}
               onClick={toggleMenu}
-              className="text-4xl font-bold text-white hover:text-gray-300 transition-colors"
+              className="text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition-colors"
             >
               {item.label}
             </Link>
@@ -462,7 +462,7 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
             <Link
               to={item.to}
               onClick={toggleMenu}
-              className="text-4xl font-bold text-white hover:text-gray-300 transition-colors"
+              className="text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition-colors"
             >
               {item.label}
             </Link>

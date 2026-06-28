@@ -47,7 +47,6 @@ export function extractBaseName(title: string): string {
  */
 export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyProduct[]): ShopifyProduct[] {
   const baseName = extractBaseName(product.title)
-  const productColor = extractColorFromTitle(product.title)
 
   // Find all products with the same base name (case-insensitive) AND same product type
   const productType = extractProductType(product.title)
@@ -75,15 +74,6 @@ export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyP
   })
 
   const siblings = Array.from(colorGroups.values())
-
-  console.log(`Finding siblings for "${product.title}"`, {
-    baseName,
-    productColor,
-    candidates: candidates.length,
-    uniqueColors: colorGroups.size,
-    foundSiblings: siblings.map(s => ({ title: s.title, color: extractColorFromTitle(s.title) })),
-    totalProducts: allProducts.length
-  })
 
   // For products with only one unique color, don't show color selector
   if (siblings.length <= 1) {

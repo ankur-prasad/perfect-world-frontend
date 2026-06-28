@@ -19,10 +19,11 @@ export default defineConfig({
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-three': ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
-          'vendor-ui': ['framer-motion', 'lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-slot'],
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return
+          if (/[\\/](three|@react-three)[\\/]/.test(id)) return 'vendor-three'
+          if (/[\\/](react|react-dom|react-router-dom|scheduler)[\\/]/.test(id)) return 'vendor-react'
+          if (/[\\/](framer-motion|motion|lucide-react|@radix-ui)[\\/]/.test(id)) return 'vendor-ui'
         },
       },
     },

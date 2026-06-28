@@ -1,11 +1,13 @@
-import { useEffect, Suspense, useRef, useState } from 'react'
+import { useEffect, Suspense, useRef, useState, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navigation from '../components/Layout/Navigation'
 import Footer from '../components/Layout/Footer'
-import Scene from '../components/3D/Scene'
+
+// Lazy: keeps three.js out of the Home chunk so the page shell paints first
+const Scene = lazy(() => import('../components/3D/Scene'))
 import MonochromeOverlay from '../components/ui/MonochromeOverlay'
 import Carousel3D from '../components/Carousel3D'
 import { useNavigation } from '../contexts/NavigationContext'
@@ -13,12 +15,14 @@ import ImpactSlides from '../components/Home/ImpactSlides'
 import FAQ from '../components/Home/FAQ'
 import MainVideo from '../components/Home/MainVideo'
 import { useTransitionStore } from '../stores/transitionStore'
+import { usePageTitle } from '../hooks/usePageTitle'
 import { projects } from '../data/projects'
 
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+  usePageTitle()
   const navigate = useNavigate()
   const location = useLocation()
   const { setIsScrolled } = useNavigation()
@@ -177,16 +181,33 @@ export default function Home() {
         </motion.div>
       )}
 
+      {/* Hero CTA - the direct path to buying */}
+      {showHeroText && (
+        <motion.div
+          className="fixed bottom-9 left-1/2 -translate-x-1/2 z-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1, delay: 1.2 }}
+        >
+          <button
+            onClick={() => navigate('/shop')}
+            className="whitespace-nowrap px-8 md:px-10 py-3 md:py-3.5 bg-white text-black rounded-full font-semibold text-sm md:text-lg shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:bg-gray-200 hover:scale-105 active:scale-95 transition-all"
+          >
+            Shop the Collections
+          </button>
+        </motion.div>
+      )}
+
       {/* Scroll Indicator */}
       {showHeroText && (
         <motion.div
-          className="fixed bottom-7 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          className="fixed bottom-1 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center"
           initial={{ opacity: 1 }}
-          animate={{ y: [0, 10, 0], opacity: 1 }}
+          animate={{ y: [0, 8, 0], opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <span className="text-white/80 text-sm tracking-widest uppercase font-light">Scroll to learn more</span>
           <svg
             className="w-6 h-6 text-white opacity-50"
             fill="none"
@@ -223,7 +244,7 @@ export default function Home() {
             Our Collections
           </motion.h2>
 
-          <div className="w-full max-w-5xl" style={{ height: '600px' }}>
+          <div className="w-full max-w-5xl h-[460px] md:h-[600px]">
             <Carousel3D
               rotateSpeed={25}
               pauseOnHover={true}
@@ -245,55 +266,71 @@ export default function Home() {
                 {
                   name: 'SECORE International',
                   collectionHandle: 'endangered-oceans',
-                  image: '/assets/images/endangered oceans back.png',
+                  image: '/assets/images/endangered-oceans-back.webp',
                 },
                 {
                   name: 'Care in Action',
                   collectionHandle: 'one-world',
-                  image: '/assets/images/hoodie back one world.png',
+                  image: '/assets/images/hoodie-back-one-world.webp',
                 },
                 {
                   name: 'Talk About It',
                   collectionHandle: 'talk-about-it',
-                  image: '/assets/images/talk about it back.png',
+                  image: '/assets/images/talk-about-it-back.webp',
                 },
                 {
                   name: 'Plant-For-The-Planet',
                   collectionHandle: 'frontpage',
-                  image: '/assets/images/hoodie cool down.png',
+                  image: '/assets/images/hoodie-cool-down.webp',
                 },
                 {
                   name: 'Wild at Heart',
                   collectionHandle: 'wild-at-heart',
-                  image: '/assets/images/wild at heart back.png',
+                  image: '/assets/images/wild-at-heart-back.webp',
                 },
                 {
                   name: 'Embroidered',
                   collectionHandle: 'perfect-world',
-                  image: '/assets/images/embriodered hoodie.png',
+                  image: '/assets/images/embriodered-hoodie.webp',
                 },
-              ].map((project) => (
+              ].map((project, index) => (
                 <div
                   key={project.collectionHandle}
                   onClick={() => {
                     // Navigate to the specific collection on the shop page
                     navigate(`/shop#${project.collectionHandle}`)
                   }}
-                  className="w-full h-full cursor-pointer overflow-hidden transition-transform hover:scale-110"
-                  style={{ borderRadius: '12px' }}
+                  className="relative w-full h-full cursor-pointer group"
                 >
-                  <img
-                    src={project.image}
-                    alt={project.name}
-                    className="w-full h-full object-contain"
+                  {/* Card backdrop */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-gray-50 to-gray-200/80 border border-gray-200/70 shadow-2xl" />
+
+                  {/* Ground shadow under the floating shirt */}
+                  <div
+                    className="absolute left-1/2 bottom-[7%] w-3/5 h-[6%] rounded-[100%] bg-black/40 blur-md"
                     style={{
-                      imageRendering: 'auto',
-                      WebkitBackfaceVisibility: 'hidden',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
-                      WebkitTransform: 'translateZ(0)',
+                      animation: 'shadow-pulse 5s ease-in-out infinite',
+                      animationDelay: `${index * 0.6}s`,
                     }}
                   />
+
+                  {/* Floating shirt */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      animation: 'shirt-float 5s ease-in-out infinite',
+                      animationDelay: `${index * 0.6}s`,
+                    }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain p-5 pb-8 transition-transform duration-300 group-hover:scale-105"
+                      style={{ filter: 'drop-shadow(0 16px 22px rgba(0,0,0,0.28))' }}
+                    />
+                  </div>
                 </div>
               ))}
             </Carousel3D>
