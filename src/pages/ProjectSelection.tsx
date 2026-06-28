@@ -14,7 +14,7 @@ export default function ProjectSelection() {
 
                     {/* Introduction Text */}
                     <div className="text-center" style={{ marginBottom: '30px' }}>
-                        <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '10px', paddingBottom: '10px' }}>Charities and Causes we support</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive', paddingTop: '10px', paddingBottom: '10px', lineHeight: '50px', fontSize: '35px' }}>Charities and Causes we support</h2>
                         <p className="text-lg md:text-xl leading-relaxed font-secondary">
                             Together with our partner charities, Perfect World invites you to be a part of a movement that
                             transcends borders, bringing joy and support to those who need it the most. Explore our

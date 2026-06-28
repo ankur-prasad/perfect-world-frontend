@@ -19,6 +19,14 @@ import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
 import Founders from './pages/Founders'
 import VisualEditor from './pages/VisualEditor'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import RefundPolicy from './pages/RefundPolicy'
+import TermsOfService from './pages/TermsOfService'
+import LegalNotice from './pages/LegalNotice'
+import ShippingPolicy from './pages/ShippingPolicy'
+import CookiePolicy from './pages/CookiePolicy'
+import Contact from './pages/Contact'
+import Podcasts from './pages/Podcasts'
 
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
@@ -48,6 +56,14 @@ function App() {
             <Route path="/info/fashion-as-a-tool" element={<InfoFashionTool />} />
             <Route path="/demo" element={<ComponentDemo />} />
             <Route path="/editor" element={<VisualEditor />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/legal-notice" element={<LegalNotice />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/podcasts" element={<Podcasts />} />
           </Routes>
           <CookieConsent />
           <Analytics />
