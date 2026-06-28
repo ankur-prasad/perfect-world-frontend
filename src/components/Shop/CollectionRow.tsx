@@ -29,12 +29,12 @@ export default function CollectionRow({
   // Count how many product types we have
   const productCount = [tshirt, hoodie, tote].filter(Boolean).length
 
-  // Determine grid columns based on product count
+  // Determine grid columns based on product count (2-up on mobile to fill the screen)
   const gridCols = productCount === 3
-    ? 'grid-cols-1 md:grid-cols-3'
+    ? 'grid-cols-2 md:grid-cols-3'
     : productCount === 2
-    ? 'grid-cols-1 md:grid-cols-2'
-    : 'grid-cols-1'
+    ? 'grid-cols-2'
+    : 'grid-cols-2 md:grid-cols-1'
 
   const maxWidth = productCount === 3 ? 'max-w-6xl' : 'max-w-4xl'
 
@@ -47,7 +47,7 @@ export default function CollectionRow({
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-primary" style={{ marginTop: '25px', marginBottom: '25px', paddingTop: '0px', paddingBottom: '0px' }}>
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 font-primary my-4 md:my-6">
           {collectionName}
         </h2>
         {/* Color accent bar */}
@@ -59,7 +59,7 @@ export default function CollectionRow({
 
       {/* Product Grid - Dynamic columns (T-shirt, Hoodie, Tote) */}
       <div className="flex justify-center">
-        <div className={`grid ${gridCols} gap-8 ${maxWidth}`}>
+        <div className={`grid ${gridCols} gap-3 sm:gap-5 md:gap-8 ${maxWidth} w-full`}>
           {tshirt && (
             <ProductCardWithColors
               product={tshirt}

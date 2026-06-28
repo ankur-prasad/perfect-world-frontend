@@ -19,6 +19,9 @@ interface CartContextType {
   clearCart: () => void
   cartCount: number
   cartTotal: number
+  isCartOpen: boolean
+  openCart: () => void
+  closeCart: () => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -48,6 +51,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cartItems])
 
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
   const addToCart = (item: CartItem) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((i) => i.variantId === item.variantId)
@@ -60,6 +65,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prevItems, item]
     })
+    // Open the drawer so the shopper sees the item land and can keep browsing or check out
+    setIsCartOpen(true)
   }
 
   const removeFromCart = (variantId: string) => {
@@ -99,6 +106,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         cartCount,
         cartTotal,
+        isCartOpen,
+        openCart: () => setIsCartOpen(true),
+        closeCart: () => setIsCartOpen(false),
       }}
     >
       {children}

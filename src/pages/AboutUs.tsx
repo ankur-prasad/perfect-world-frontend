@@ -7,11 +7,11 @@ export default function AboutUs() {
     <div className="min-h-screen bg-white text-black">
       <Navigation isDarkContent={true} />
 
-      <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
+      <main className="pt-10 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="w-full max-w-[900px]">
 
-            <div className="text-center mb-20">
+            <div className="text-center mb-10 md:mb-16">
               <h1 className="text-5xl font-bold tracking-tight mb-4 font-primary">About Us</h1>
             </div>
 

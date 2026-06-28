@@ -7,6 +7,7 @@ import ProductCard from '../components/Product/ProductCard'
 import { getProduct, getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 import { sanitizeHtml } from '../utils/sanitize'
 import { extractBaseName, extractColorFromTitle, extractProductType } from '../utils/productGrouping'
 import { projects } from '../data/projects'
@@ -66,7 +67,10 @@ export default function ProductDetail() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
   const [relatedProducts, setRelatedProducts] = useState<ShopifyProduct[]>([])
+
+  usePageTitle(product?.title)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -222,10 +226,11 @@ export default function ProductDetail() {
         title: product.title,
         text: product.description?.substring(0, 100) || '',
         url: window.location.href,
-      })
+      }).catch(() => {})
     } else {
       navigator.clipboard.writeText(window.location.href)
-      alert('Link copied to clipboard!')
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
     }
   }
 
@@ -233,11 +238,11 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Navigation isDarkContent={false} />
 
-      <main className="pt-40 md:pt-48 pb-32 px-4 sm:px-6 lg:px-8">
+      <main className="pt-8 md:pt-48 pb-44 md:pb-32 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="w-full max-w-[1200px]">
             {/* Breadcrumb */}
-            <nav className="mb-8 flex items-center gap-2 text-sm text-gray-400" style={{ paddingTop: '15px', paddingBottom: '15px', paddingLeft: '31px', paddingRight: '31px' }}>
+            <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm text-gray-400 py-4 pl-2 pr-24 md:px-8">
               <Link to="/" className="hover:text-white transition-colors">
                 Home
               </Link>
@@ -268,7 +273,7 @@ export default function ProductDetail() {
                 transition={{ duration: 0.6 }}
               >
                 {/* Main Image */}
-                <div className="relative aspect-square rounded-3xl overflow-hidden bg-white/5 mb-4" style={{ marginLeft: '31px', marginRight: '31px' }}>
+                <div className="relative aspect-square rounded-3xl overflow-hidden bg-white/5 mb-4 md:mx-8">
                   <img
                     src={currentImage?.url || '/placeholder-product.jpg'}
                     alt={currentImage?.altText || product.title}
@@ -285,7 +290,7 @@ export default function ProductDetail() {
 
                 {/* Thumbnail Gallery */}
                 {product.images.length > 1 && (
-                  <div className="grid grid-cols-5 gap-3" style={{ rowGap: '12px', marginLeft: '36px', marginRight: '36px', paddingTop: '19px', paddingBottom: '19px' }}>
+                  <div className="grid grid-cols-5 gap-3 py-5 md:mx-9">
                     {product.images.map((image, index) => (
                       <button
                         key={index}
@@ -315,13 +320,26 @@ export default function ProductDetail() {
               >
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{product.title}</h1>
 
-                <div className="text-4xl font-bold text-white mb-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>{formattedPrice}</div>
+                <div className="flex flex-wrap items-center gap-4 mb-8 py-5">
+                  <span className="text-4xl font-bold text-white">{formattedPrice}</span>
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-400/15 border border-emerald-300/30 text-emerald-300 text-xs font-semibold uppercase tracking-wide">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    100% of profits donated
+                  </span>
+                </div>
 
                 {/* Color Selector (Sibling Products) - Color Swatches */}
                 {siblings.length > 0 && (
                   <div className="mb-8">
-                    <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>
+                    <label className="block text-2xl font-bold text-white py-2.5">
                       Color
+                      {extractColorFromTitle(product.title) && (
+                        <span className="ml-3 text-base font-normal text-gray-300 capitalize">
+                          {extractColorFromTitle(product.title).toLowerCase()}
+                        </span>
+                      )}
                     </label>
                     <div className="flex flex-wrap gap-4">
                       {siblings.map((sibling) => {
@@ -382,7 +400,7 @@ export default function ProductDetail() {
 
                   return (
                     <div key={option.id} className="mb-8">
-                      <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>
+                      <label className="block text-2xl font-bold text-white py-2.5">
                         {option.name}
                       </label>
                       <div className="flex flex-wrap gap-3">
@@ -444,17 +462,19 @@ export default function ProductDetail() {
 
                 {/* Quantity Selector - Glassy Style */}
                 <div className="mb-8">
-                  <label className="block text-sm font-bold text-white mb-3" style={{ fontSize: '24px', marginTop: '0px', marginBottom: '0px', paddingTop: '11px', paddingBottom: '11px' }}>Quantity</label>
+                  <label className="block text-2xl font-bold text-white py-2.5">Quantity</label>
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      aria-label="Decrease quantity"
                       className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all text-xl font-bold shadow-lg"
                     >
                       −
                     </button>
                     <span className="text-2xl font-bold text-white w-16 text-center">{quantity}</span>
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
+                      onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                      aria-label="Increase quantity"
                       className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all text-xl font-bold shadow-lg"
                     >
                       +
@@ -467,11 +487,10 @@ export default function ProductDetail() {
                   <button
                     onClick={handleAddToCart}
                     disabled={!isAvailable || isAdding}
-                    className={`w-full py-5 rounded-full font-bold text-xl transition-all ${isAvailable && !isAdding
+                    className={`w-full py-4 my-4 rounded-full font-bold text-xl transition-all ${isAvailable && !isAdding
                       ? 'bg-white text-black hover:bg-gray-200'
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       }`}
-                    style={{ paddingTop: '15px', paddingBottom: '15px', marginTop: '15px', marginBottom: '15px', marginLeft: '0px', marginRight: '0px' }}
                   >
                     {isAdding ? (
                       <span className="flex items-center justify-center gap-3">
@@ -502,26 +521,35 @@ export default function ProductDetail() {
 
                   <button
                     onClick={handleShare}
-                    className="w-full py-5 rounded-full font-bold text-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all flex items-center justify-center gap-3 shadow-lg"
-                    style={{ paddingTop: '15px', paddingBottom: '15px', marginTop: '0px', marginBottom: '0px' }}
+                    className="w-full py-4 rounded-full font-bold text-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all flex items-center justify-center gap-3 shadow-lg"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                      />
-                    </svg>
-                    Share Product
+                    {linkCopied ? (
+                      <>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Link Copied!
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                          />
+                        </svg>
+                        Share Product
+                      </>
+                    )}
                   </button>
                 </div>
 
                 {/* Description - Moved here */}
                 {product.description && (
                   <div
-                    className="text-gray-300 text-lg leading-relaxed mb-8"
-                    style={{ paddingTop: '20px', paddingBottom: '20px', paddingLeft: '6px', paddingRight: '6px' }}
+                    className="text-gray-300 text-lg leading-relaxed mb-8 py-5 px-1.5"
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
                   />
                 )}
@@ -547,7 +575,7 @@ export default function ProductDetail() {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <h2 className="text-3xl font-bold text-white mb-8">You May Also Like</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                   {relatedProducts.map((relatedProduct) => (
                     <ProductCard
                       key={relatedProduct.id}
@@ -561,6 +589,31 @@ export default function ProductDetail() {
           </div>
         </div>
       </main>
+
+      {/* Sticky mobile buy bar - keeps price + CTA reachable without scrolling back up */}
+      <div
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-gray-900/95 backdrop-blur-lg border-t border-white/10 px-4 pt-3"
+        style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col min-w-0 shrink-0">
+            <span className="text-white font-bold text-lg leading-tight">{formattedPrice}</span>
+            {selectedVariant.title !== 'Default Title' && (
+              <span className="text-gray-400 text-xs truncate max-w-[120px]">{selectedVariant.title}</span>
+            )}
+          </div>
+          <button
+            onClick={handleAddToCart}
+            disabled={!isAvailable || isAdding}
+            className={`flex-1 min-h-[48px] py-3 rounded-full font-bold text-base transition-all ${isAvailable && !isAdding
+              ? 'bg-white text-black active:scale-[0.98]'
+              : 'bg-gray-700 text-gray-500'
+              }`}
+          >
+            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : 'Add to Cart'}
+          </button>
+        </div>
+      </div>
 
       <Footer />
     </div>
