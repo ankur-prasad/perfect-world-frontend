@@ -201,6 +201,9 @@ export default function ProductDetail() {
 
   const isAvailable = selectedVariant.availableForSale
   const currentImage = product.images[selectedImageIndex]
+  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || 
+                            product.title.toLowerCase().includes('rich in life') ||
+                            product.collections?.some((c: any) => c.handle === 'rich-in-life')
 
   const handleAddToCart = async () => {
     if (!isAvailable) return
@@ -277,10 +280,10 @@ export default function ProductDetail() {
                   <img
                     src={currentImage?.url || '/placeholder-product.jpg'}
                     alt={currentImage?.altText || product.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.18] cursor-zoom-in"
                   />
                   {!isAvailable && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
                       <span className="px-8 py-4 bg-red-500 text-white text-2xl font-bold rounded-full">
                         Sold Out
                       </span>
@@ -456,6 +459,11 @@ export default function ProductDetail() {
                           )
                         })}
                       </div>
+                      {option.name.toLowerCase() === 'size' && product.title.toLowerCase().includes('oversized') && (
+                        <p className="mt-3 text-sm text-gray-400 leading-relaxed font-medium">
+                          Note: This style is designed to be oversized (loose and roomy). If you prefer a closer fit, consider sizing down.
+                        </p>
+                      )}
                     </div>
                   )
                 })}
@@ -515,7 +523,7 @@ export default function ProductDetail() {
                     ) : !isAvailable ? (
                       'Sold Out'
                     ) : (
-                      'Add to Cart'
+                      isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
                     )}
                   </button>
 
@@ -610,7 +618,7 @@ export default function ProductDetail() {
               : 'bg-gray-700 text-gray-500'
               }`}
           >
-            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : 'Add to Cart'}
+            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : (isPreOrderProduct ? 'Pre-order' : 'Add to Cart')}
           </button>
         </div>
       </div>

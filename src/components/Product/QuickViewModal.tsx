@@ -33,6 +33,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
   const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = selectedVariant.availableForSale
+  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   const handleAddToCart = async () => {
     if (!isAvailable) return
@@ -95,10 +96,10 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                 <img
                   src={mainImage}
                   alt={product.images[0]?.altText || product.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.18] cursor-zoom-in"
                 />
                 {!isAvailable && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
                     <span className="px-6 py-3 bg-red-500 text-white text-lg font-bold rounded-full">
                       Sold Out
                     </span>
@@ -200,7 +201,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                     ) : !isAvailable ? (
                       'Sold Out'
                     ) : (
-                      'Add to Cart'
+                      isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
                     )}
                   </GlassyButton>
 

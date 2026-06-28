@@ -96,7 +96,12 @@ export default function Shop() {
           })(),
         ])
 
-        setProducts(allProducts)
+        // Deduplicate products by product ID to prevent duplicates (e.g. double-added tote bags)
+        const uniqueProducts = allProducts.filter((product, index, self) =>
+          self.findIndex((p) => p.id === product.id) === index
+        )
+
+        setProducts(uniqueProducts)
       } catch (err) {
         console.error('Failed to fetch products:', err)
         setError('Failed to load products. Please try again later.')

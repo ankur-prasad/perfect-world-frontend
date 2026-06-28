@@ -8,6 +8,7 @@ import { NavigationProvider } from './contexts/NavigationContext'
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
 import ScrollToTop from './components/Layout/ScrollToTop'
+import DiscountPopup from './components/ui/DiscountPopup'
 
 // Route-level code splitting: each page loads on demand so the initial
 // bundle stays small (three.js in particular only loads with Home's scene)
@@ -15,8 +16,8 @@ const Home = lazy(() => import('./pages/Home'))
 const ProjectPage = lazy(() => import('./pages/ProjectPage'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
-const Transparency = lazy(() => import('./pages/Transparency'))
 const Shop = lazy(() => import('./pages/Shop'))
+const RichInLifePreOrder = lazy(() => import('./pages/RichInLifePreOrder'))
 const InfoAllProfits = lazy(() => import('./pages/InfoAllProfits'))
 const InfoTogether = lazy(() => import('./pages/InfoTogether'))
 const InfoFashionTool = lazy(() => import('./pages/InfoFashionTool'))
@@ -59,9 +60,10 @@ function App() {
               <Route path="/project/:slug" element={<ProjectPage />} />
               <Route path="/product/:handle" element={<ProductDetail />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/transparency" element={<Transparency />} />
+              <Route path="/transparency" element={<AboutUs />} />
               <Route path="/founders" element={<Founders />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/rich-in-life" element={<RichInLifePreOrder />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-success" element={<OrderSuccess />} />
@@ -83,6 +85,7 @@ function App() {
             </Routes>
           </Suspense>
           <CookieConsent />
+          <DiscountPopup />
           <Analytics />
           <SpeedInsights />
         </NavigationProvider>

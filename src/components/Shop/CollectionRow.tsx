@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import ProductCardWithColors from '../Product/ProductCardWithColors'
-import { groupProductsByTypeForCollection, findColorSiblings } from '../../utils/productGrouping'
+import { extractBaseName, extractColorFromTitle, extractProductType } from '../../utils/productGrouping'
 
 interface CollectionRowProps {
   collectionName: string
@@ -16,30 +16,66 @@ export default function CollectionRow({
   collectionHandle,
   collectionColor,
   products,
-  allProducts,
 }: CollectionRowProps) {
-  // Group products by type (tshirt, hoodie, tote)
-  const { tshirt, hoodie, tote } = groupProductsByTypeForCollection(products)
+  // Group products by unique base name
+  const baseNameGroups = new Map<string, ShopifyProduct[]>()
 
-  // Find color siblings for each product type
-  const tshirtSiblings = tshirt ? findColorSiblings(tshirt, allProducts) : []
-  const hoodieSiblings = hoodie ? findColorSiblings(hoodie, allProducts) : []
-  const toteSiblings = tote ? findColorSiblings(tote, allProducts) : []
+  products.forEach(product => {
+    const baseName = extractBaseName(product.title).toLowerCase()
+    if (!baseNameGroups.has(baseName)) {
+      baseNameGroups.set(baseName, [])
+    }
+    baseNameGroups.get(baseName)!.push(product)
+  })
 
-  // Count how many product types we have
-  const productCount = [tshirt, hoodie, tote].filter(Boolean).length
+  // Define product type sorting order
+  const TYPE_ORDER: Record<string, number> = {
+    'tshirt': 1,
+    'hoodie': 2,
+    'oversized': 3,
+    'tote': 3,
+    'other': 4
+  }
 
-  // Determine grid columns based on product count (2-up on mobile to fill the screen)
-  const gridCols = productCount === 3
+  const itemsToRender = Array.from(baseNameGroups.entries()).map(([_, groupProducts]) => {
+    // Deduplicate groupProducts by product ID
+    const uniqueGroupProducts = groupProducts.filter((product, index, self) =>
+      self.findIndex((p) => p.id === product.id) === index
+    )
+
+    // Determine representative product (default to Black, then first available)
+    const preferredColor = 'black'
+    let representative = uniqueGroupProducts.find(p => extractColorFromTitle(p.title).toLowerCase() === preferredColor)
+    if (!representative) {
+      representative = uniqueGroupProducts[0]
+    }
+
+    return {
+      product: representative,
+      siblings: uniqueGroupProducts
+    }
+  }).sort((a, b) => {
+    const typeA = extractProductType(a.product.title)
+    const typeB = extractProductType(b.product.title)
+    return (TYPE_ORDER[typeA] || 99) - (TYPE_ORDER[typeB] || 99)
+  })
+
+  // Count how many cards we will render
+  const productCount = itemsToRender.length
+
+  // Determine grid columns based on product count
+  const gridCols = productCount >= 4
+    ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+    : productCount === 3
     ? 'grid-cols-2 md:grid-cols-3'
     : productCount === 2
     ? 'grid-cols-2'
     : 'grid-cols-2 md:grid-cols-1'
 
-  const maxWidth = productCount === 3 ? 'max-w-6xl' : 'max-w-4xl'
+  const maxWidth = productCount >= 3 ? 'max-w-6xl' : 'max-w-4xl'
 
   return (
-    <div id={collectionHandle} className="space-y-8 border-t-2 border-gray-200 pt-12 first:border-t-0 first:pt-0 scroll-mt-32">
+    <div id={collectionHandle} className="space-y-8 scroll-mt-32">
       {/* Collection Header */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -57,30 +93,17 @@ export default function CollectionRow({
         />
       </motion.div>
 
-      {/* Product Grid - Dynamic columns (T-shirt, Hoodie, Tote) */}
+      {/* Product Grid */}
       <div className="flex justify-center">
         <div className={`grid ${gridCols} gap-3 sm:gap-5 md:gap-8 ${maxWidth} w-full`}>
-          {tshirt && (
+          {itemsToRender.map(({ product, siblings }) => (
             <ProductCardWithColors
-              product={tshirt}
-              siblings={tshirtSiblings}
+              key={product.id}
+              product={product}
+              siblings={siblings}
               isLightMode={true}
             />
-          )}
-          {hoodie && (
-            <ProductCardWithColors
-              product={hoodie}
-              siblings={hoodieSiblings}
-              isLightMode={true}
-            />
-          )}
-          {tote && (
-            <ProductCardWithColors
-              product={tote}
-              siblings={toteSiblings}
-              isLightMode={true}
-            />
-          )}
+          ))}
         </div>
       </div>
     </div>

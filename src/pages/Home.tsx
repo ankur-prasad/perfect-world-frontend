@@ -32,6 +32,39 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [collectionsScrollProgress, setCollectionsScrollProgress] = useState(0)
   const [globeHover, setGlobeHover] = useState(false)
+  const [richInLifeImage, setRichInLifeImage] = useState<string>('')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768)
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    import('../utils/shopify').then(({ getCollectionProducts }) => {
+      getCollectionProducts('rich-in-life')
+        .then((col) => {
+          if (col && col.products && col.products.length > 0) {
+            const redBrownTee = col.products.find(p => p.handle === 'rich-in-life-organic-t-shirt-red-brown')
+            if (redBrownTee && redBrownTee.images && redBrownTee.images.length > 1) {
+              setRichInLifeImage(redBrownTee.images[1].url)
+            } else {
+              const product = col.products[0]
+              if (product && product.images && product.images.length > 0) {
+                setRichInLifeImage(product.images[0].url)
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn('Failed to load Rich in Life image from Shopify:', err)
+        })
+    })
+  }, [])
 
   useEffect(() => {
     let ticking = false
@@ -40,8 +73,8 @@ export default function Home() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setIsScrolled(window.scrollY > 100)
-          const heroHeight = window.innerHeight * 1.5 // Reduced from 300vh to 150vh
-          const transitionHeight = window.innerHeight * 0.75 // Reduced from 150vh to 75vh
+          const heroHeight = window.innerHeight * (isMobile ? 0.8 : 1.5) // Shortened for mobile
+          const transitionHeight = window.innerHeight * (isMobile ? 0.4 : 0.75) // Shortened for mobile
 
           // Calculate scroll progress through the hero section (0 to 1)
           const progress = Math.min(window.scrollY / heroHeight, 1)
@@ -73,7 +106,7 @@ export default function Home() {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [setIsScrolled])
+  }, [setIsScrolled, isMobile])
 
   useEffect(() => {
     if (location.hash === '#faq') {
@@ -147,7 +180,7 @@ export default function Home() {
       <MonochromeOverlay reduced={globeHover} opacity={1 - (bgLightness / 100)} />
 
       {/* Extended Hero Section with 3D Globe and Stars - 1.5 screens tall */}
-      <section ref={heroRef} className="relative -z-10" style={{ height: '150vh' }}>
+      <section ref={heroRef} className="relative -z-10" style={{ height: isMobile ? '80vh' : '150vh' }}>
         {/* Empty section for scroll height */}
       </section>
 
@@ -161,7 +194,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.8 }}
         >
           <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light whitespace-nowrap" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            Together. Not Alone.
+            Together. Not alone.
           </p>
         </motion.div>
       )}
@@ -175,8 +208,8 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <p className="text-white/80 text-xs md:text-sm tracking-wide md:tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            More than a slogan, it's a Promise for <br className="md:hidden" />Change and Improvement.
+          <p className="text-white/80 text-lg md:text-2xl tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+            Shop Hope !
           </p>
         </motion.div>
       )}
@@ -225,7 +258,7 @@ export default function Home() {
       )}
 
       {/* Transition section for star trails - 0.75 screens tall */}
-      <section className="relative -z-10" style={{ height: '75vh' }}>
+      <section className="relative -z-10" style={{ height: isMobile ? '40vh' : '75vh' }}>
         {/* Stars with trails are visible here via the fixed 3D scene */}
       </section>
 
@@ -235,8 +268,7 @@ export default function Home() {
       <section ref={collectionsRef} className="relative bg-transparent z-10" style={{ minHeight: '100vh', paddingTop: '12rem', paddingBottom: '8rem' }}>
         <div className="w-full relative z-10 flex flex-col items-center">
           <motion.h2
-            className={`text-5xl md:text-6xl font-bold text-center mb-20 ${textColor}`}
-            style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}
+            className={`title-handwritten text-center mb-20 ${textColor}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -259,6 +291,7 @@ export default function Home() {
                 'Talk About It',
                 'Cool Down',
                 'Wild at Heart',
+                'Rich in Life',
                 'Embroidered',
               ]}
             >
@@ -287,6 +320,11 @@ export default function Home() {
                   name: 'Wild at Heart',
                   collectionHandle: 'wild-at-heart',
                   image: '/assets/images/wild-at-heart-back.webp',
+                },
+                {
+                  name: 'Mission Positivity',
+                  collectionHandle: 'rich-in-life',
+                  image: richInLifeImage || '/assets/images/tote-bag-placeholder.png',
                 },
                 {
                   name: 'Embroidered',

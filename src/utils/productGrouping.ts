@@ -4,16 +4,43 @@ import type { ShopifyProduct } from '../types/shopify.types'
 // Updated to handle tote bag color formats like "Blue Soul" at the end
 const COLOR_REGEX = / (Blue Soul|Bright Orange|Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Indian Grey|Sky Blue|French Navy|Green Bay|Fiesta|Anthracite|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold)$/i
 
+const KNOWN_COLORS = [
+  'blue soul', 'bright orange', 'worker blue', 'heather grey', 'dark blue',
+  'light blue', 'royal blue', 'navy blue', 'midnight blue', 'forest green',
+  'kelly green', 'olive green', 'dark green', 'light green', 'heather red',
+  'dark red', 'light red', 'burgundy', 'maroon', 'indian grey', 'sky blue',
+  'french navy', 'green bay', 'fiesta', 'anthracite', 'black', 'white',
+  'blue', 'red', 'green', 'yellow', 'pink', 'purple', 'orange', 'grey',
+  'gray', 'navy', 'teal', 'beige', 'brown', 'multi', 'natural', 'khaki',
+  'charcoal', 'cream', 'ivory', 'silver', 'gold', 'mocha', 'red brown', 'red-brown'
+]
+
+/**
+ * Extract collection key from title
+ */
+export function getCollectionKey(title: string): string {
+  const lower = title.toLowerCase()
+  if (lower.includes('rich in life')) return 'RICH IN LIFE'
+  if (lower.includes('wild at heart')) return 'WILD AT HEART'
+  if (lower.includes('endangered oceans')) return 'ENDANGERED OCEANS'
+  if (lower.includes('one world')) return 'ONE WORLD'
+  if (lower.includes('cool down')) return 'COOL DOWN'
+  if (lower.includes('talk about it')) return 'TALK ABOUT IT'
+  if (lower.includes('embroidered logo')) return 'Embroidered Logo'
+  return ''
+}
+
 /**
  * Extract product type from title
- * Detects Hoodies and Totes explicitly, assumes rest are T-shirts if they have a color
+ * Detects Hoodies, Totes, and Oversized explicitly, assumes rest are T-shirts if they have a color
  */
-export function extractProductType(title: string): 'tshirt' | 'hoodie' | 'tote' | 'other' {
+export function extractProductType(title: string): 'tshirt' | 'hoodie' | 'tote' | 'oversized' | 'other' {
   const lowerTitle = title.toLowerCase()
 
   // Explicit type detection
   if (lowerTitle.includes('hoodie')) return 'hoodie'
   if (lowerTitle.includes('tote')) return 'tote'
+  if (lowerTitle.includes('oversized') || lowerTitle.includes('oversize')) return 'oversized'
   if (lowerTitle.includes('t-shirt') || lowerTitle.includes('tshirt')) return 'tshirt'
 
   // If it has a color in the title but no explicit type, assume it's a t-shirt
@@ -28,10 +55,25 @@ export function extractProductType(title: string): 'tshirt' | 'hoodie' | 'tote' 
  * Extract color from product title
  */
 export function extractColorFromTitle(title: string): string {
+  const lower = title.toLowerCase()
+
+  // 1. Try regex match at the end
   const match = title.match(COLOR_REGEX)
   if (match && match[1]) {
-    return match[1].trim()
+    const matchedColor = match[1].trim()
+    return matchedColor.charAt(0).toUpperCase() + matchedColor.slice(1)
   }
+
+  // 2. Fallback: Scan title for any color name in our KNOWN_COLORS list
+  for (const colorKey of KNOWN_COLORS) {
+    if (lower.includes(colorKey)) {
+      return colorKey
+        .split(/[ -]/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    }
+  }
+
   return ''
 }
 
@@ -39,6 +81,24 @@ export function extractColorFromTitle(title: string): string {
  * Extract base product name without color
  */
 export function extractBaseName(title: string): string {
+  const lower = title.toLowerCase()
+  const collectionKey = getCollectionKey(title)
+
+  if (collectionKey) {
+    // Rich in Life Oversized Shirt is treated separately
+    if (collectionKey === 'RICH IN LIFE' && (lower.includes('oversized') || lower.includes('oversize'))) {
+      return 'RICH IN LIFE Organic Oversized Shirt'
+    }
+
+    if (lower.includes('hoodie')) {
+      return `${collectionKey} Organic Hoodie`
+    }
+    if (lower.includes('tote')) {
+      return `${collectionKey} Organic Tote Bag`
+    }
+    return `${collectionKey} Organic T-Shirt`
+  }
+
   return title.replace(COLOR_REGEX, '').trim()
 }
 
@@ -95,7 +155,7 @@ export function groupProductsByTypeForCollection(products: ShopifyProduct[]): {
 } {
   const tshirts = products.filter(p => extractProductType(p.title) === 'tshirt')
   const hoodies = products.filter(p => extractProductType(p.title) === 'hoodie')
-  const totes = products.filter(p => extractProductType(p.title) === 'tote')
+  const totes = products.filter(p => extractProductType(p.title) === 'tote' || extractProductType(p.title) === 'oversized')
 
   // Preferred colors for specific products (case-insensitive)
   const PREFERRED_COLORS: Record<string, string> = {

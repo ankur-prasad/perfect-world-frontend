@@ -38,7 +38,15 @@ export default function Checkout() {
 
             // Redirect to Shopify's hosted checkout page
             if (checkout.webUrl) {
-                window.location.href = checkout.webUrl
+                const hasRichInLifeProduct = cart.some((item) =>
+                    item.title.toLowerCase().includes('rich in life')
+                )
+                let redirectUrl = checkout.webUrl
+                if (hasRichInLifeProduct) {
+                    const separator = redirectUrl.includes('?') ? '&' : '?'
+                    redirectUrl = `${redirectUrl}${separator}discount=RICH10`
+                }
+                window.location.href = redirectUrl
             } else {
                 throw new Error('No checkout URL received from Shopify')
             }

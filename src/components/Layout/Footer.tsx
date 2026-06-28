@@ -38,7 +38,8 @@ const Footer: FC<FooterProps> = ({
   usefulLinks = [
     { label: 'About Us', href: '/about', external: false },
     { label: 'Shop', href: '/shop', external: false },
-    { label: 'Transparency', href: '/transparency', external: false },
+    { label: 'Transparency', href: '/about#transparency', external: false },
+    { label: 'FAQ', href: '/#faq', external: false },
     { label: "Founder's Story", href: '/founders', external: false },
     { label: 'Contact', href: '/contact', external: false },
   ],

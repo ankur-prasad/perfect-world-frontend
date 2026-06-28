@@ -187,3 +187,18 @@ a:focus-visible {
   0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.35; }
   50% { transform: translateX(-50%) scaleX(0.85); opacity: 0.22; }
 }
+
+.title-handwritten {
+  font-family: "Shadows Into Light", "Indie Flower", cursive !important;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  font-size: 2.25rem;
+}
+@media (min-width: 768px) {
+  .title-handwritten {
+    font-size: 4.5rem;
+  }
+}
+

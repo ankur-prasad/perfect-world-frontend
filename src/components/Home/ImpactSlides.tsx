@@ -39,7 +39,7 @@ export default function ImpactSlides() {
                                     <div className="w-12 h-px bg-black" />
                                 </div>
 
-                                <h2 className="text-4xl md:text-7xl font-bold tracking-tight uppercase leading-[0.95] py-3 md:mx-5" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+                                <h2 className="title-handwritten py-3 md:mx-5">
                                     {slide.title}
                                 </h2>
                                 <p className="text-lg md:text-2xl text-gray-600 leading-relaxed max-w-xl md:mx-5">

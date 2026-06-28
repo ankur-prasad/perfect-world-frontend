@@ -21,8 +21,11 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price)
 
-  const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
+  const hasMultipleImages = (product.images?.length || 0) > 1
+  const imageIndex = hasMultipleImages ? 1 : 0
+  const mainImage = product.images[imageIndex]?.url || product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
+  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -154,7 +157,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
             ) : !isAvailable ? (
               'Sold Out'
             ) : (
-              'Add to Cart'
+              isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
             )}
           </GlassyButton>
         </div>

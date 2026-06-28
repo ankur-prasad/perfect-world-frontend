@@ -1,6 +1,6 @@
 import type { ShopifyProduct } from '../../types/shopify.types'
 import ProductCardWithColors from './ProductCardWithColors'
-import { groupProductsByTypeForCollection, findColorSiblings } from '../../utils/productGrouping'
+import { extractBaseName, extractColorFromTitle, extractProductType } from '../../utils/productGrouping'
 
 interface ProductGridProps {
   products: ShopifyProduct[]
@@ -36,7 +36,7 @@ export default function ProductGrid({ products, loading, onQuickView, isLightMod
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707.293l-2.414-2.414A1 1 0 006.586 13H4"
             />
           </svg>
         </div>
@@ -50,20 +50,48 @@ export default function ProductGrid({ products, loading, onQuickView, isLightMod
     )
   }
 
-  // Group products by type (tshirt, hoodie, tote)
-  const { tshirt, hoodie, tote } = groupProductsByTypeForCollection(products)
+  // Group products by unique base name
+  const baseNameGroups = new Map<string, ShopifyProduct[]>()
 
-  // Find color siblings for each product type
-  const tshirtSiblings = tshirt ? findColorSiblings(tshirt, products) : []
-  const hoodieSiblings = hoodie ? findColorSiblings(hoodie, products) : []
-  const toteSiblings = tote ? findColorSiblings(tote, products) : []
+  products.forEach(product => {
+    const baseName = extractBaseName(product.title).toLowerCase()
+    if (!baseNameGroups.has(baseName)) {
+      baseNameGroups.set(baseName, [])
+    }
+    baseNameGroups.get(baseName)!.push(product)
+  })
 
-  // Create an array of items to render
-  const itemsToRender = [
-    { product: tshirt, siblings: tshirtSiblings },
-    { product: hoodie, siblings: hoodieSiblings },
-    { product: tote, siblings: toteSiblings }
-  ].filter(item => item.product !== null) as { product: ShopifyProduct, siblings: ShopifyProduct[] }[]
+  // Define product type sorting order
+  const TYPE_ORDER: Record<string, number> = {
+    'tshirt': 1,
+    'hoodie': 2,
+    'oversized': 3,
+    'tote': 3,
+    'other': 4
+  }
+
+  const itemsToRender = Array.from(baseNameGroups.entries()).map(([_, groupProducts]) => {
+    // Deduplicate groupProducts by product ID
+    const uniqueGroupProducts = groupProducts.filter((product, index, self) =>
+      self.findIndex((p) => p.id === product.id) === index
+    )
+
+    // Determine representative product (default to Black, then first available)
+    const preferredColor = 'black'
+    let representative = uniqueGroupProducts.find(p => extractColorFromTitle(p.title).toLowerCase() === preferredColor)
+    if (!representative) {
+      representative = uniqueGroupProducts[0]
+    }
+
+    return {
+      product: representative,
+      siblings: uniqueGroupProducts
+    }
+  }).sort((a, b) => {
+    const typeA = extractProductType(a.product.title)
+    const typeB = extractProductType(b.product.title)
+    return (TYPE_ORDER[typeA] || 99) - (TYPE_ORDER[typeB] || 99)
+  })
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">

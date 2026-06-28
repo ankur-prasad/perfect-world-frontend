@@ -1,43 +1,43 @@
 import type { Project } from '../types/project.types'
-import perfectWorldLogo from '../assets/logos/perfect-world-logo-black.png'
 import secoreLogo from '../assets/logos/secore-logo.png'
 import careInActionLogo from '../assets/logos/care-in-action-logo.png'
 import mhiLogo from '../assets/logos/mhi-logo.png'
 import plantForThePlanetLogo from '../assets/logos/plant-for-the-planet-logo.png'
 import elephantsForAfricaLogo from '../assets/logos/elephants-for-africa-logo.png'
+import missionPositivityLogo from '../assets/logos/mission-positivity-logo.png'
 
 export const projects: Project[] = [
   {
     id: '6',
-    slug: 'new-project',
-    name: 'New Project',
-    tagline: 'Coming soon',
+    slug: 'rich-in-life',
+    name: 'Rich in Life',
+    tagline: 'Rethinking what wealth truly means.',
     location: {
-      lat: 0,
-      lon: 0,
-      label: 'TBA',
+      lat: 5.632,
+      lon: -72.43,
+      label: 'Paya, Colombia',
     },
     mission: {
-      heroImage: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2560&auto=format&fit=crop',
+      heroImage: '/assets/images/rich-in-life-hero.png',
       problem:
-        'Details coming soon.',
+        'In the remote rural communities of Milagros, La Unión, and other campos in Paya, Colombia, material wealth is scarce. Schools often lack basic learning materials, access to healthcare is limited, and teachers work under challenging conditions to provide education for children growing up far from urban resources.\n\nYet despite these challenges, the people living here possess something many of us have forgotten: strong communities, a close connection to nature, and a remarkable ability to make the most of what they have.\n\nThe question is not only what these communities lack, but also what they can teach us about a different kind of wealth.',
       solution:
-        'We are excited to announce a new collaboration. Stay tuned for more information.',
-      impact: ['Coming soon'],
+        'Together with Mission Positivity, we created the Rich in Life collection to support children, teachers, and families in the rural communities of Paya, Colombia.\n\nEvery shirt helps fund educational projects, school materials, community programs, health initiatives, and opportunities that would otherwise remain out of reach. Every purchase creates direct impact where it is needed most.\n\nIt is an invitation to rethink what wealth truly means. Rich in Life reminds us that fulfillment is often found in connection, purpose, and community rather than material possessions.\n\n100% of profits from this collection support Mission Positivity’s work on the ground.',
+      impact: ['Speech therapy funding', 'School materials & resources', 'Volunteer program support', 'Environmental education'],
       partnerCharity: {
-        name: 'Partner Charity',
-        description: 'Details coming soon.',
-        website: 'https://perfect-world.org',
-        logo: perfectWorldLogo,
+        name: 'Mission Positivity e.V.',
+        description: 'Mission Positivity is a German non-profit organization driven by a simple belief: positive change becomes possible when people come together and take action. The organization works to expand educational opportunities for children and young people, support communities facing social and economic challenges, and help create pathways toward a more self-determined and sustainable future.\n\nSince 2023, Mission Positivity has been working closely with schools, teachers, children, and families in the remote rural communities of Paya, Colombia. Through educational support, school materials, health initiatives, volunteer programs, and long-term local partnerships, the organization helps create opportunities where access to resources is limited.\n\nIn 2025, the team returned to Milagros and La Unión to continue their projects and film a documentary exploring life in these remote communities. At its heart lies a simple but question: What does it really mean to be rich?\n\nThe Rich in Life collection was born from the answers they found.',
+        website: 'https://missionpositivity.org/',
+        logo: missionPositivityLogo,
       },
     },
     shopifyCollection: {
-      handle: 'frontpage',
-      title: 'New Project',
+      handle: 'rich-in-life',
+      title: 'Rich in Life',
     },
     theme: {
-      primaryColor: '#5D4037',
-      secondaryColor: '#3E2723',
+      primaryColor: '#D4A373',
+      secondaryColor: '#A98467',
     },
   },
   {

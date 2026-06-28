@@ -55,7 +55,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
           end: endValue,
           scrub: 1,
         },
-        top: '1.5rem',
+        top: '3.75rem', // Adjusted for announcement bar height (24px + 36px = 60px / 3.75rem)
         transform: 'translateY(0)', // Remove vertical centering
         ease: 'power2.out',
       })
@@ -98,22 +98,22 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       gsap.to(aboutUsRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: endValue,
+          start: 'top top',
           end: stage2EndValue,
           scrub: 1,
         },
-        left: 'calc(50vw - 300px)',
+        left: 'calc(50vw - 220px)',
         ease: 'power2.out',
       })
 
       gsap.to(transparencyRef.current, {
         scrollTrigger: {
           trigger: 'body',
-          start: endValue,
+          start: 'top top',
           end: stage2EndValue,
           scrub: 1,
         },
-        right: 'calc(50vw - 300px)',
+        right: 'calc(50vw - 220px)',
         ease: 'power2.out',
       })
 
@@ -241,7 +241,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
   const LearnMoreButton = () => (
     <GlassyButton
-      label="Learn More"
+      label="Projects"
       to="/projects"
       variant={isDarkContent ? 'secondary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
@@ -251,7 +251,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
   const MakeDifferenceButton = () => (
     <GlassyButton
-      label="Make a Difference"
+      label="Shop the Difference"
       to="/shop"
       variant={isDarkContent ? 'primary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
@@ -263,7 +263,18 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   if (!enableScrollAnimations) {
     return (
       <>
-        <header className="fixed top-0 left-0 right-0 z-[60]">
+        <header className={`fixed top-0 left-0 right-0 z-[60] transition-colors duration-300 ${
+          isDarkContent
+            ? 'bg-white/80 backdrop-blur-md border-b border-gray-100'
+            : 'bg-black/80 backdrop-blur-md border-b border-white/10'
+        }`}>
+          {/* Announcement Bar */}
+          <div className="h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center border-b border-white/5">
+            <span>Early-bird: 10% off every pre-order with code <strong className="font-bold underline decoration-dotted">RICH10</strong></span>
+            <span className="opacity-50 hidden sm:inline">·</span>
+            <span>Collection drops 07.07</span>
+          </div>
+
           {/* Desktop Layout */}
           <div className="hidden md:flex h-20 px-6 items-center justify-between relative">
             {/* Left: Menu */}
@@ -286,22 +297,21 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
               <MakeDifferenceButton />
             </div>
 
-            {/* Right: Shop & Cart */}
+            {/* Right: Cart */}
             <div className="flex items-center gap-3 flex-shrink-0 z-50">
-              <ShopButton />
               <CartButton />
             </div>
           </div>
 
           {/* Mobile Layout - Same as Home Page */}
           <div className="md:hidden h-20 px-3 relative">
-            <div className="absolute left-3 top-6 z-[60]">
+            <div className="absolute left-3 top-5 z-[60]">
               {/* Left: Menu */}
               <MenuButton />
             </div>
 
             {/* Center: Logo */}
-            <div className="absolute left-1/2 top-6 -translate-x-1/2 z-40">
+            <div className="absolute left-1/2 top-5 -translate-x-1/2 z-40">
               <Link to="/">
                 <img
                   src={isDarkContent ? logoBlack : logoWhite}
@@ -312,14 +322,14 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
             </div>
 
             {/* Right: Cart & Shop (stacked) */}
-            <div className="absolute right-3 top-6 flex flex-col items-end gap-1.5 z-50">
+            <div className="absolute right-3 top-5 flex flex-col items-end gap-1.5 z-50">
               <CartButton isMobile={true} />
               <ShopButton isMobile={true} />
             </div>
           </div>
         </header>
         {/* Spacer to prevent content from going behind fixed header */}
-        <div className="h-20" aria-hidden="true" />
+        <div className="h-[116px]" aria-hidden="true" />
 
         <MenuOverlay isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
@@ -330,9 +340,16 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
   // Render for Animated Header (Home Page)
   return (
     <>
+      {/* Announcement Bar */}
+      <div className="fixed top-0 left-0 right-0 h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center z-50 border-b border-white/5">
+        <span>Early-bird: 10% off every pre-order with code <strong className="font-bold underline decoration-dotted">RICH10</strong></span>
+        <span className="opacity-50 hidden sm:inline">·</span>
+        <span>Collection drops 07.07</span>
+      </div>
+
       {/* Centered Logo */}
       <motion.div
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-40"
+        className="fixed top-[60px] left-1/2 -translate-x-1/2 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -350,7 +367,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       {/* Menu - Top Left */}
       <motion.div
         ref={menuRef}
-        className="fixed top-6 left-6 z-[60]"
+        className="fixed top-[60px] left-6 z-[60]"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -361,7 +378,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       {/* Cart and Shop - Top Right (Stack vertically on mobile with smaller buttons) */}
       <motion.div
         ref={shopRef}
-        className="fixed top-6 right-3 md:right-6 z-40 flex flex-col md:flex-row items-end md:items-center gap-1.5 md:gap-3"
+        className="fixed top-[60px] right-3 md:right-6 z-40 flex flex-col md:flex-row items-end md:items-center gap-1.5 md:gap-3"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -375,16 +392,13 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         <div className="hidden md:block">
           <CartButton isMobile={false} />
         </div>
-        <div className="hidden md:block">
-          <ShopButton isMobile={false} />
-        </div>
       </motion.div>
 
       {/* Learn More - Middle Left (Hidden on mobile) */}
       <motion.div
         ref={aboutUsRef}
         className="fixed top-1/2 z-40 hidden md:block"
-        style={{ left: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
+        style={{ left: 'calc(50vw - 550px)', transform: 'translateY(-50%)' }}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
@@ -396,7 +410,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       <motion.div
         ref={transparencyRef}
         className="fixed top-1/2 z-40 hidden md:block"
-        style={{ right: 'calc(50vw - 450px)', transform: 'translateY(-50%)' }}
+        style={{ right: 'calc(50vw - 550px)', transform: 'translateY(-50%)' }}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
@@ -425,31 +439,9 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
       {/* m-auto centers when content fits and allows scrolling when it doesn't */}
       <nav className="flex flex-col items-center gap-5 md:gap-8 m-auto py-24">
         {[
-          { to: "/", label: "Home" },
           { to: "/projects", label: "Projects" },
-          { to: "/about", label: "About Us" },
+          { to: "/about", label: "About & Transparency" },
           { to: "/shop", label: "Shop" },
-          { to: "/transparency", label: "Transparency" },
-          { to: "/#faq", label: "FAQ" },
-        ].map((item, index) => (
-          <motion.div
-            key={item.to}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }}
-            transition={{ delay: 0.1 + index * 0.05 }}
-          >
-            <Link
-              to={item.to}
-              onClick={toggleMenu}
-              className="text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition-colors"
-            >
-              {item.label}
-            </Link>
-          </motion.div>
-        ))}
-
-        {/* More Links */}
-        {[
           { to: "/podcasts", label: "Podcasts" },
           { to: "/contact", label: "Contact" },
         ].map((item, index) => (
@@ -457,7 +449,7 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
             key={item.to}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }}
-            transition={{ delay: 0.5 + index * 0.1 }}
+            transition={{ delay: 0.1 + index * 0.05 }}
           >
             <Link
               to={item.to}

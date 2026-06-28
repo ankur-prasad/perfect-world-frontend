@@ -45,6 +45,7 @@ const COLOR_MAP: Record<string, string> = {
   'ivory': '#FFFFF0',
   'charcoal': '#36454F',
   'natural': '#F5F5DC',
+  'mocha': '#705335',
   'multi': 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A)',
 }
 
@@ -86,16 +87,18 @@ export default function ProductCardWithColors({
   const baseName = extractBaseName(product.title)
   const productType = extractProductType(product.title)
 
-  // Use second image (back design) for Wild at Heart products, first image for others
-  const isWildAtHeart = product.title.toLowerCase().includes('wild at heart')
-  const imageIndex = isWildAtHeart ? 1 : 0
+  // Use second image (back design) if multiple images are available, otherwise first image
+  const hasMultipleImages = (displayProduct?.images?.length ?? product.images?.length ?? 0) > 1
+  const imageIndex = hasMultipleImages ? 1 : 0
   const displayImage = displayProduct?.images[imageIndex]?.url || displayProduct?.images[0]?.url || product.images[imageIndex]?.url || product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
+  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   // Product type badge
   const typeBadge = productType === 'tshirt' ? 'T-SHIRT' :
     productType === 'hoodie' ? 'HOODIE' :
-      productType === 'tote' ? 'TOTE BAG' : ''
+      productType === 'tote' ? 'TOTE BAG' :
+        productType === 'oversized' ? 'OVERSIZED SHIRT' : ''
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -187,10 +190,10 @@ export default function ProductCardWithColors({
           {/* Color Selector Overlay - Visible on card hover - Glassy Style */}
           {siblings.length > 0 && (
             <div
-              className={`hidden md:block absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 ${isHoveringCard ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              className={`hidden md:block absolute bottom-0 left-0 right-0 py-2.5 px-3 bg-gradient-to-t from-black/95 via-black/70 to-transparent transition-opacity duration-300 ${isHoveringCard ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
             >
-              <div className="flex flex-wrap gap-3 justify-center">
+              <div className="flex flex-wrap gap-2 justify-center items-center">
                 {siblings.map((sibling) => {
                   const colorName = extractColorFromTitle(sibling.title)
                   const colorKey = colorName.toLowerCase()
@@ -202,7 +205,7 @@ export default function ProductCardWithColors({
                     <Link
                       key={sibling.id}
                       to={`/product/${sibling.handle}`}
-                      className={`group relative transition-all duration-200 ${isHovered ? 'scale-125' : 'scale-100'
+                      className={`group/swatch relative transition-all duration-200 ${isHovered ? 'scale-110' : 'scale-100'
                         }`}
                       onMouseEnter={(e) => {
                         e.preventDefault()
@@ -220,15 +223,15 @@ export default function ProductCardWithColors({
                       {/* Color swatch circle - Enhanced Glassy Style */}
                       <div className="relative">
                         <div
-                          className={`w-12 h-12 rounded-full transition-all duration-300 ${isCurrentProduct
-                              ? 'ring-2 ring-white/90 ring-offset-2 ring-offset-black/60 shadow-xl scale-110'
-                              : 'ring-1 ring-white/50 hover:ring-2 hover:ring-white/90 hover:scale-110 hover:shadow-xl'
+                          className={`w-7 h-7 rounded-full transition-all duration-300 ${isCurrentProduct
+                              ? 'ring-2 ring-white/95 ring-offset-1 ring-offset-black/70 shadow-lg scale-105'
+                              : 'ring-1 ring-white/40 hover:ring-2 hover:ring-white/95 hover:scale-105 hover:shadow-lg'
                             }`}
                           style={{
                             background: colorValue,
                             boxShadow: isCurrentProduct
-                              ? '0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)'
-                              : '0 4px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)',
+                              ? '0 4px 10px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2)'
+                              : '0 2px 6px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2)',
                             backdropFilter: 'blur(8px)',
                           }}
                         >
@@ -243,8 +246,8 @@ export default function ProductCardWithColors({
                         </div>
                       </div>
                       {/* Tooltip with color name on hover - Enhanced Glassy Style */}
-                      <div className="absolute -top-11 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
-                        <div className="px-3 py-1.5 bg-white/15 backdrop-blur-lg border border-white/30 text-white text-xs rounded-full whitespace-nowrap shadow-xl font-semibold">
+                      <div className="absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover/swatch:opacity-100 transition-all duration-200 pointer-events-none">
+                        <div className="px-2 py-1 bg-black/80 backdrop-blur-md border border-white/20 text-white text-[10px] rounded-md whitespace-nowrap shadow-xl font-semibold">
                           {colorName}
                         </div>
                       </div>
@@ -322,7 +325,7 @@ export default function ProductCardWithColors({
             ) : !isAvailable ? (
               'Sold Out'
             ) : (
-              'Add to Cart'
+              isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
             )}
           </GlassyButton>
         </div>

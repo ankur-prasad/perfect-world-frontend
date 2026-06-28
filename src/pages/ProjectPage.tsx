@@ -366,7 +366,8 @@ export default function ProjectPage() {
                         project.slug === 'talk-about-it' ? '/assets/videos/talk about it vid.mp4' :
                           project.slug === 'cool-down' ? '/assets/videos/cool down vid.mp4' :
                             project.slug === 'wild-at-heart' ? '/assets/videos/wild%20at%20heart.mp4' :
-                              ''
+                              project.slug === 'rich-in-life' ? '/assets/videos/WEB%20PROMO%20FINAL.mp4' :
+                                ''
                   }
                 >
                   Your browser does not support the video tag.
@@ -374,27 +375,29 @@ export default function ProjectPage() {
               </div>
 
               {/* Problem */}
-              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1">The Problem</h3>
-                <p className="text-black text-base md:text-xl leading-relaxed py-1">{project.mission.problem}</p>
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1 text-center w-full">
+                  {project.slug === 'rich-in-life' ? 'The Challenge' : 'The Problem'}
+                </h3>
+                <p className="text-black text-base md:text-xl leading-relaxed py-1 max-w-3xl mx-auto">{project.mission.problem}</p>
               </div>
 
               {/* Solution */}
-              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1">Our Solution</h3>
-                <p className="text-black text-base md:text-xl leading-relaxed py-1">{project.mission.solution}</p>
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1 text-center w-full">Our Solution</h3>
+                <p className="text-black text-base md:text-xl leading-relaxed py-1 max-w-3xl mx-auto">{project.mission.solution}</p>
               </div>
 
               {/* Partner Charity */}
-              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center">
-                <h3 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12 py-1">Our Partner</h3>
-                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
+              <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12 py-1 text-center w-full">Our Partner</h3>
+                <div className="flex flex-col items-center gap-6 md:gap-12 w-full">
                   <img
                     src={project.mission.partnerCharity.logo}
                     alt={project.mission.partnerCharity.name}
                     className="h-auto max-h-40 w-full max-w-[320px] md:max-w-[384px] object-contain bg-white/5 rounded-xl p-6 md:p-8"
                   />
-                  <div className="flex-1 text-center md:text-left">
+                  <div className="flex-1 text-center max-w-3xl mx-auto">
                     <h4 className="text-2xl md:text-3xl font-semibold text-black mb-4 md:mb-6 py-1">
                       {project.mission.partnerCharity.name}
                     </h4>

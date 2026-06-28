@@ -41,8 +41,8 @@ export default function GlassyButton({
   lightDirection = 'top-left',
   shadowHoverColor = 'rgba(0, 0, 0, 0.18)',
   shadowHoverIntensity = 1,
-  fontSize = '18px',
-  fontWeight = 700,
+  fontSize = '15px',
+  fontWeight = 600,
   paddingX = '32px',
   paddingY = '12px'
 }: GlassyButtonProps) {
@@ -187,7 +187,7 @@ export default function GlassyButton({
     userSelect: 'none' as const,
     fontWeight,
     fontSize,
-    fontFamily: '"Shadows Into Light", "Indie Flower", cursive',
+    fontFamily: "'Poppins', system-ui, sans-serif",
     letterSpacing: '-0.01em',
     lineHeight: '1.2em',
     textAlign: 'center' as const,
