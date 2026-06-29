@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import ProductCardWithColors from '../Product/ProductCardWithColors'
-import { extractBaseName, extractColorFromTitle, extractProductType } from '../../utils/productGrouping'
+import { extractBaseName, extractColorFromTitle, extractProductType, getPreferredColorForCollection } from '../../utils/productGrouping'
 
 interface CollectionRowProps {
   collectionName: string
@@ -9,6 +9,22 @@ interface CollectionRowProps {
   collectionColor: string
   products: ShopifyProduct[]
   allProducts: ShopifyProduct[]
+}
+
+const SUBTITLES: Record<string, string> = {
+  'one-world': 'aiding Ukrainian children with Care In action',
+  'one world': 'aiding Ukrainian children with Care In action',
+  'wild-at-heart': 'supporting elephant conservation through Elephants for Africa',
+  'wild at heart': 'supporting elephant conservation through Elephants for Africa',
+  'talk-about-it': 'destigmatizing mental health with the Mental Health Initiative',
+  'talk about it': 'destigmatizing mental health with the Mental Health Initiative',
+  'frontpage': 'Protecting our climate and reforesting trees with Plant-For-The-Planet',
+  'cool-down': 'Protecting our climate and reforesting trees with Plant-For-The-Planet',
+  'cool down': 'Protecting our climate and reforesting trees with Plant-For-The-Planet',
+  'endangered-oceans': 'protecting and supporting coral restoration with SECORE International',
+  'endangered oceans': 'protecting and supporting coral restoration with SECORE International',
+  'rich-in-life': 'Empowering communities in rural South America through Mission Positivity',
+  'rich in life': 'Empowering communities in rural South America through Mission Positivity'
 }
 
 export default function CollectionRow({
@@ -33,19 +49,33 @@ export default function CollectionRow({
     'tshirt': 1,
     'hoodie': 2,
     'oversized': 3,
-    'tote': 3,
-    'other': 4
+    'tote': 4,
+    'other': 5
   }
 
   const itemsToRender = Array.from(baseNameGroups.entries()).map(([_, groupProducts]) => {
-    // Deduplicate groupProducts by product ID
-    const uniqueGroupProducts = groupProducts.filter((product, index, self) =>
-      self.findIndex((p) => p.id === product.id) === index
-    )
+    // Deduplicate groupProducts by color name to prevent duplicates (e.g. 2 French Navy hoodies)
+    const uniqueGroupProducts: ShopifyProduct[] = []
+    groupProducts.forEach(product => {
+      const colorName = extractColorFromTitle(product.title).toLowerCase()
+      const existingIndex = uniqueGroupProducts.findIndex(
+        p => extractColorFromTitle(p.title).toLowerCase() === colorName
+      )
+      if (existingIndex === -1) {
+        uniqueGroupProducts.push(product)
+      } else {
+        if (product.availableForSale && !uniqueGroupProducts[existingIndex].availableForSale) {
+          uniqueGroupProducts[existingIndex] = product
+        }
+      }
+    })
 
-    // Determine representative product (default to Black, then first available)
-    const preferredColor = 'black'
+    // Determine representative product (default to preferred color, then Black, then first available)
+    const preferredColor = getPreferredColorForCollection(collectionHandle)
     let representative = uniqueGroupProducts.find(p => extractColorFromTitle(p.title).toLowerCase() === preferredColor)
+    if (!representative) {
+      representative = uniqueGroupProducts.find(p => extractColorFromTitle(p.title).toLowerCase() === 'black')
+    }
     if (!representative) {
       representative = uniqueGroupProducts[0]
     }
@@ -83,9 +113,14 @@ export default function CollectionRow({
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 font-primary my-4 md:my-6">
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 font-primary my-2 md:my-4">
           {collectionName}
         </h2>
+        {SUBTITLES[collectionHandle.toLowerCase()] && (
+          <p className="text-sm md:text-base text-gray-500 mt-1 max-w-2xl font-light">
+            {SUBTITLES[collectionHandle.toLowerCase()]}
+          </p>
+        )}
         {/* Color accent bar */}
         <div
           className="w-24 h-1 mt-4 rounded-full"

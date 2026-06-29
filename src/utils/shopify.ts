@@ -477,3 +477,94 @@ export function generateCustomerAccountLogoutUrl(postLogoutRedirectUri?: string)
   return url.toString()
 }
 
+// Fetch all products in the store
+export async function getAllProducts(): Promise<ShopifyProduct[]> {
+  return withCache('all-products', () => fetchAllProducts())
+}
+
+async function fetchAllProducts(): Promise<ShopifyProduct[]> {
+  const query = `
+    query getAllProducts {
+      products(first: 100) {
+        edges {
+          node {
+            id
+            title
+            description
+            handle
+            availableForSale
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            options {
+              id
+              name
+              values
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  handle
+                  title
+                }
+              }
+            }
+            images(first: 10) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            variants(first: 20) {
+              edges {
+                node {
+                  id
+                  title
+                  priceV2 {
+                    amount
+                    currencyCode
+                  }
+                  availableForSale
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const data = await shopifyFetch<any>(query)
+  if (!data || !data.products) return []
+
+  return data.products.edges.map((edge: any) => ({
+    id: edge.node.id,
+    title: edge.node.title,
+    description: edge.node.description,
+    handle: edge.node.handle,
+    availableForSale: edge.node.availableForSale,
+    priceRange: edge.node.priceRange,
+    options: edge.node.options,
+    images: edge.node.images.edges.map((imgEdge: any) => imgEdge.node),
+    variants: edge.node.variants.edges.map((varEdge: any) => ({
+      ...varEdge.node,
+      price: varEdge.node.priceV2,
+    })),
+    collections: edge.node.collections?.edges.map((colEdge: any) => colEdge.node) || [],
+  }))
+}
+
+

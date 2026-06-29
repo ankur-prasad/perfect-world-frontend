@@ -38,6 +38,15 @@ export default function Carousel3D({
     const [responsiveSizes, setResponsiveSizes] = useState({ width: itemWidth, height: itemHeight, translateZ })
     const [isTouching, setIsTouching] = useState(false)
 
+    // Drag tracking refs
+    const isDraggingRef = useRef(false)
+    const hasDraggedRef = useRef(false)
+    const startXRef = useRef(0)
+    const startRotationRef = useRef(0)
+    const dragVelocityRef = useRef(0)
+    const lastXRef = useRef(0)
+    const lastTimeDragRef = useRef(0)
+
     // Responsive sizing based on window width
     useEffect(() => {
         const updateSizes = () => {
@@ -66,9 +75,9 @@ export default function Carousel3D({
         return () => window.removeEventListener('resize', updateSizes)
     }, [itemWidth, itemHeight, translateZ])
 
-    // Auto-rotation when not hovered or touching - improved with timestamp-based animation
+    // Auto-rotation when not hovered, touching, or transitioning
     useEffect(() => {
-        if ((pauseOnHover && isHovered) || isTouching) {
+        if ((pauseOnHover && isHovered) || isTouching || isTransitioning) {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current)
                 animationRef.current = undefined
@@ -82,15 +91,10 @@ export default function Carousel3D({
             const deltaTime = currentTime - lastTimeRef.current
             lastTimeRef.current = currentTime
 
-            // Calculate rotation increment based on actual time elapsed
-            // This ensures smooth rotation regardless of frame rate
+            // Slow ambient rotation when idle (rotates clockwise/positive direction)
             const rotationIncrement = (360 / (rotateSpeed * 1000)) * deltaTime
 
-            setRotation((prev) => {
-                // Normalize rotation to prevent infinite accumulation
-                const newRotation = (prev + rotationIncrement) % 360
-                return newRotation
-            })
+            setRotation((prev) => prev + rotationIncrement)
 
             animationRef.current = requestAnimationFrame(animate)
         }
@@ -103,50 +107,121 @@ export default function Carousel3D({
                 animationRef.current = undefined
             }
         }
-    }, [isHovered, isTouching, rotateSpeed, pauseOnHover])
+    }, [isHovered, isTouching, isTransitioning, rotateSpeed, pauseOnHover])
 
     const handlePrevious = () => {
         if (isTransitioning) return
         setIsTransitioning(true)
-        setRotation((prev) => (prev - spreadAngle + 360) % 360)
+        setRotation((prev) => prev + spreadAngle)
         setTimeout(() => setIsTransitioning(false), 600)
     }
 
     const handleNext = () => {
         if (isTransitioning) return
         setIsTransitioning(true)
-        setRotation((prev) => (prev + spreadAngle) % 360)
+        setRotation((prev) => prev - spreadAngle)
         setTimeout(() => setIsTransitioning(false), 600)
     }
 
-    // Update isHovered based on hoveredIndex instead of container hover
+    // Update isHovered based on hoveredIndex
     useEffect(() => {
         setIsHovered(hoveredIndex !== null)
     }, [hoveredIndex])
 
-    const handleTouchStart = () => {
+    // Pointer-based drag handlers
+    const handlePointerDown = (e: React.PointerEvent) => {
+        // Ignore if clicked on buttons or controls
+        if ((e.target as HTMLElement).closest('button')) return
+
+        if (e.button !== 0 && e.pointerType === 'mouse') return
+        
+        isDraggingRef.current = true
         setIsTouching(true)
+        hasDraggedRef.current = false
+        startXRef.current = e.clientX
+        startRotationRef.current = rotation
+        lastXRef.current = e.clientX
+        lastTimeDragRef.current = performance.now()
+        dragVelocityRef.current = 0
+        
+        e.currentTarget.setPointerCapture(e.pointerId)
     }
 
-    const handleTouchEnd = () => {
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!isDraggingRef.current) return
+        
+        const deltaX = e.clientX - startXRef.current
+        
+        if (Math.abs(deltaX) > 5) {
+            hasDraggedRef.current = true
+        }
+
+        const currentTime = performance.now()
+        const deltaTime = currentTime - lastTimeDragRef.current
+        
+        const containerWidth = containerRef.current?.clientWidth || window.innerWidth
+        const sensitivity = 180 / containerWidth
+        const newRotation = startRotationRef.current + deltaX * sensitivity
+        
+        setRotation(newRotation)
+        
+        if (deltaTime > 0) {
+            const instantDeltaX = e.clientX - lastXRef.current
+            dragVelocityRef.current = (instantDeltaX * sensitivity) / (deltaTime / 1000)
+        }
+        
+        lastXRef.current = e.clientX
+        lastTimeDragRef.current = currentTime
+    }
+
+    const handlePointerUp = (e: React.PointerEvent) => {
+        if (!isDraggingRef.current) return
+        isDraggingRef.current = false
         setIsTouching(false)
+        e.currentTarget.releasePointerCapture(e.pointerId)
+        
+        // Momentum and snapping to nearest index
+        const velocityThreshold = 150
+        let shift = 0
+        if (Math.abs(dragVelocityRef.current) > velocityThreshold) {
+            shift = Math.round(dragVelocityRef.current / 300)
+            shift = Math.max(-1, Math.min(1, shift))
+        }
+        
+        const nearestIndex = Math.round(-rotation / spreadAngle) - shift
+        const snappedRotation = -nearestIndex * spreadAngle
+        
+        setIsTransitioning(true)
+        setRotation(snappedRotation)
+        setTimeout(() => setIsTransitioning(false), 600)
     }
 
-    // Which item currently faces the viewer (for the label readout)
-    const frontIndex =
-        ((Math.round(((360 - rotation) % 360) / spreadAngle) % totalItems) + totalItems) % totalItems
+    const handleClickCapture = (e: React.MouseEvent) => {
+        if (hasDraggedRef.current) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+    }
+
+    // Determine which item faces the front
+    const rawIndex = Math.round(-rotation / spreadAngle) % totalItems
+    const frontIndex = (rawIndex + totalItems) % totalItems
 
     return (
         <div
             ref={containerRef}
-            className="w-full h-full relative overflow-visible select-none"
+            className="w-full h-full relative overflow-visible select-none cursor-grab active:cursor-grabbing touch-none"
             style={{
                 perspective: '1200px',
                 zIndex: 0,
                 pointerEvents: 'auto',
             }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onDragStart={(e) => e.preventDefault()}
+            onClickCapture={handleClickCapture}
         >
             {/* Carousel wrapper with overflow hidden */}
             <div className="w-full h-full overflow-hidden absolute inset-0">
@@ -182,7 +257,7 @@ export default function Carousel3D({
                         return (
                             <div
                                 key={index}
-                                className="absolute"
+                                className="absolute select-none"
                                 style={{
                                     width: `${responsiveSizes.width}px`,
                                     height: `${responsiveSizes.height}px`,
@@ -200,6 +275,8 @@ export default function Carousel3D({
                                     willChange: 'transform, opacity',
                                     // Only front items react to hover/clicks; rear items stay inert
                                     pointerEvents: isFrontHalf ? 'auto' : 'none',
+                                    userSelect: 'none',
+                                    WebkitUserSelect: 'none',
                                 }}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}

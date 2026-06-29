@@ -46,64 +46,65 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
   scrollProgress: number
 }) {
   const groupRef = useRef<Group>(null)
-  const [isGlobeHovered, setIsGlobeHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const { pointer } = useThree()
-  const currentSpeedRef = useRef(0) // Track current speed for smooth transitions
-  const dragStartRef = useRef({ x: 0, rotation: 0 })
-  const dragVelocityRef = useRef(0)
-  const prevPointerRef = useRef({ x: 0, y: 0 })
+  
+  const ambientSpeed = 0.05 // constant slow rotation speed (rad/sec)
+  const dragVelocity = useRef(0)
+  const prevPointerX = useRef(0)
+  
   const mobile = isMobile()
   const globeScale = mobile ? 0.83125 : 1.1875
+
+  // Global event listener to release drag anywhere on the page/window
+  useEffect(() => {
+    const handleGlobalRelease = () => {
+      setIsDragging(false)
+    }
+
+    if (isDragging) {
+      window.addEventListener('pointerup', handleGlobalRelease)
+      window.addEventListener('touchend', handleGlobalRelease)
+    }
+
+    return () => {
+      window.removeEventListener('pointerup', handleGlobalRelease)
+      window.removeEventListener('touchend', handleGlobalRelease)
+    }
+  }, [isDragging])
 
   useFrame((_, delta) => {
     if (!groupRef.current) return
 
-    // Store previous pointer for next frame (do this first)
     const currentPointerX = pointer.x
-    const currentPointerY = pointer.y
-
-    // --- Mouse-Controlled Rotation ---
-    let targetRotationSpeed = 0
 
     if (isDragging) {
-      // During drag: rotate based on mouse movement delta
-      const dragDelta = currentPointerX - prevPointerRef.current.x
-
-      // Cap delta to prevent huge jumps on mobile
-      const cappedDelta = Math.max(-0.1, Math.min(0.1, dragDelta))
-
-      // Smoother drag with damping - increased sensitivity for mobile
-      const smoothDragDelta = cappedDelta * (mobile ? 3.5 : 2.5)
-      dragVelocityRef.current = smoothDragDelta // Store velocity for momentum
-      groupRef.current.rotation.y += smoothDragDelta // Direct control during drag
-
-      // Reset current speed to prevent interference
-      currentSpeedRef.current = 0
-    } else if (isGlobeHovered) {
-      // When hovering but not dragging: slower ambient rotation + momentum decay
-      targetRotationSpeed = -currentPointerX * 0.09 // Much slower when hovered
-
-      // Add decaying momentum from previous drag
-      dragVelocityRef.current *= 0.95 // Decay momentum
-      if (Math.abs(dragVelocityRef.current) > 0.001) {
-        groupRef.current.rotation.y += dragVelocityRef.current
-      }
+      // Direct drag rotation based on frame-by-frame delta
+      const pointerDeltaX = currentPointerX - prevPointerX.current
+      
+      // Cap pointer delta to prevent massive jumps on quick swipes
+      const cappedDelta = Math.max(-0.1, Math.min(0.1, pointerDeltaX))
+      
+      const sensitivity = mobile ? 4.5 : 3.0
+      const rotationDelta = cappedDelta * sensitivity
+      
+      groupRef.current.rotation.y += rotationDelta
+      dragVelocity.current = rotationDelta / delta // update momentum velocity
     } else {
-      // Normal mode: rotate based on mouse position
-      targetRotationSpeed = -currentPointerX * 0.3
-      dragVelocityRef.current = 0 // Reset momentum when not hovering
+      // Momentum decay (inertia after spinning)
+      dragVelocity.current *= 0.95
+      
+      if (Math.abs(dragVelocity.current) > 0.01) {
+        groupRef.current.rotation.y += dragVelocity.current * delta
+      } else {
+        // Slow ambient rotation when idle
+        dragVelocity.current = 0
+        groupRef.current.rotation.y -= ambientSpeed * delta
+      }
     }
 
-    // Apply normal rotation speed (when not dragging)
-    if (!isDragging) {
-      currentSpeedRef.current += (targetRotationSpeed - currentSpeedRef.current) * 0.05
-      groupRef.current.rotation.y += currentSpeedRef.current * delta
-    }
-
-    // Update previous pointer
-    prevPointerRef.current.x = currentPointerX
-    prevPointerRef.current.y = currentPointerY
+    // Update previous pointer coordinate
+    prevPointerX.current = currentPointerX
 
     // Parallax tilt - completely disable on mobile, disable during dragging on desktop
     const parallaxMultiplier = (isDragging || mobile) ? 0 : 1.0
@@ -116,30 +117,27 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
     groupRef.current.rotation.z += (targetTiltZ - groupRef.current.rotation.z) * tiltSmoothing
 
     // Scroll-based upward movement (Stage 1: 0-250px scroll)
-    // 250px = 16.7% of 1500px hero height
-    const stage1End = 250 / 1500 // 0.167
-    const baseY = 0.6 // Original Y position
+    const stage1End = 250 / 1500
+    const baseY = 0.6
     let yOffset = 0
     if (scrollProgress > 0 && scrollProgress <= stage1End) {
-      const moveProgress = scrollProgress / stage1End // 0-1 over first 250px
-      yOffset = moveProgress * 8 // Move 8 units upward (positive Y = up)
+      const moveProgress = scrollProgress / stage1End
+      yOffset = moveProgress * 8
     } else if (scrollProgress > stage1End) {
-      yOffset = 8 // Stay at +8 after 250px
+      yOffset = 8
     }
 
-    // Smooth interpolation for Y position (baseY + offset)
     const targetY = baseY + yOffset
     groupRef.current.position.y += (targetY - groupRef.current.position.y) * 0.1
   })
 
   const handleGlobeHover = (hovered: boolean) => {
-    setIsGlobeHovered(hovered)
     if (onGlobeHoverChange) onGlobeHoverChange(hovered)
   }
 
   const handleDragStart = () => {
     setIsDragging(true)
-    dragStartRef.current = { x: pointer.x, rotation: groupRef.current?.rotation.y || 0 }
+    prevPointerX.current = pointer.x
   }
 
   const handleDragEnd = () => {

@@ -5,7 +5,7 @@ import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import CollectionRow from '../components/Shop/CollectionRow'
 import { projects } from '../data/projects'
-import { getCollectionProducts } from '../utils/shopify'
+import { getAllProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import SustainabilityPromise from '../components/Shop/SustainabilityPromise'
 import { usePageTitle } from '../hooks/usePageTitle'
@@ -17,87 +17,49 @@ export default function Shop() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch all products from all collections
+  // Fetch all products in one request and distribute them to projects
   useEffect(() => {
     const fetchAllProducts = async () => {
       setLoading(true)
       setError(null)
 
       try {
-        const allProducts: ShopifyProduct[] = []
+        const allFetchedProducts = await getAllProducts()
+        const taggedProducts: ShopifyProduct[] = []
 
-        // 1. Fetch products from each project collection
-        await Promise.all([
-          ...projects.map(async (project) => {
-            try {
-              const collection = await getCollectionProducts(project.shopifyCollection.handle)
-              if (collection && collection.products) {
-                const taggedProducts = collection.products.map((product) => ({
-                  ...product,
-                  collectionHandle: project.shopifyCollection.handle,
-                  collectionName: project.name,
-                  collectionColor: project.theme.primaryColor,
-                }))
-                allProducts.push(...taggedProducts)
-              }
-            } catch (err) {
-              console.warn(`Failed to fetch products for ${project.name}(${project.shopifyCollection.handle}): `, err)
-            }
-          }),
-          // Fetch Organic Tote Bags collection and distribute to matching projects
-          (async () => {
-            try {
-              // The tote collection handle varies between store setups; query candidates in parallel
-              const possibleHandles = ['organic-tote-bags', 'tote-bags', 'organic-totes', 'totes']
-              const candidates = await Promise.all(
-                possibleHandles.map((handle) => getCollectionProducts(handle).catch(() => null))
-              )
-              const toteCollection = candidates.find((c) => c && c.products && c.products.length > 0)
+        allFetchedProducts.forEach((product) => {
+          // Find matching project
+          let matchingProject = projects.find((project) =>
+            // Match by collection handle in product collections
+            product.collections?.some((col) => col.handle === project.shopifyCollection.handle) ||
+            // Match by project name in title (case-insensitive)
+            product.title.toLowerCase().includes(project.name.toLowerCase()) ||
+            // Match by slug in title
+            product.title.toLowerCase().includes(project.slug.replace(/-/g, ' ').toLowerCase())
+          )
 
-              if (toteCollection && toteCollection.products) {
-                // Distribute totes to matching projects
-                toteCollection.products.forEach(tote => {
-                  // Try to match tote to a project by name
-                  const matchingProject = projects.find(project =>
-                    tote.title.toLowerCase().includes(project.name.toLowerCase()) ||
-                    tote.title.toLowerCase().includes(project.slug.replace(/-/g, ' ').toLowerCase())
-                  )
+          if (matchingProject) {
+            taggedProducts.push({
+              ...product,
+              collectionHandle: matchingProject.shopifyCollection.handle,
+              collectionName: matchingProject.name,
+              collectionColor: matchingProject.theme.primaryColor,
+            })
+          } else if (
+            product.collections?.some((col) => col.handle === 'perfect-world') ||
+            product.title.toLowerCase().includes('embroidered')
+          ) {
+            taggedProducts.push({
+              ...product,
+              collectionHandle: 'perfect-world',
+              collectionName: 'Embroidered Logo',
+              collectionColor: '#000000',
+            })
+          }
+        })
 
-                  if (matchingProject) {
-                    allProducts.push({
-                      ...tote,
-                      collectionHandle: matchingProject.shopifyCollection.handle,
-                      collectionName: matchingProject.name,
-                      collectionColor: matchingProject.theme.primaryColor,
-                    })
-                  }
-                })
-              }
-            } catch (err) {
-              console.error('Failed to fetch tote bags:', err)
-            }
-          })(),
-          // Fetch Embroidered Logo collection
-          (async () => {
-            try {
-              const collection = await getCollectionProducts('perfect-world')
-              if (collection && collection.products) {
-                const taggedProducts = collection.products.map((product) => ({
-                  ...product,
-                  collectionHandle: 'perfect-world',
-                  collectionName: 'Embroidered Logo',
-                  collectionColor: '#FFFFFF', // White for neutral
-                }))
-                allProducts.push(...taggedProducts)
-              }
-            } catch (err) {
-              console.warn('Failed to fetch Embroidered Logo collection:', err)
-            }
-          })(),
-        ])
-
-        // Deduplicate products by product ID to prevent duplicates (e.g. double-added tote bags)
-        const uniqueProducts = allProducts.filter((product, index, self) =>
+        // Deduplicate products by product ID
+        const uniqueProducts = taggedProducts.filter((product, index, self) =>
           self.findIndex((p) => p.id === product.id) === index
         )
 

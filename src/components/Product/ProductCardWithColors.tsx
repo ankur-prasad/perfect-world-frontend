@@ -47,6 +47,7 @@ const COLOR_MAP: Record<string, string> = {
   'natural': '#F5F5DC',
   'mocha': '#705335',
   'multi': 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #FFA07A)',
+  'dusk': '#5f7682',
 }
 
 interface ProductCardWithColorsProps {
@@ -87,10 +88,7 @@ export default function ProductCardWithColors({
   const baseName = extractBaseName(product.title)
   const productType = extractProductType(product.title)
 
-  // Use second image (back design) if multiple images are available, otherwise first image
-  const hasMultipleImages = (displayProduct?.images?.length ?? product.images?.length ?? 0) > 1
-  const imageIndex = hasMultipleImages ? 1 : 0
-  const displayImage = displayProduct?.images[imageIndex]?.url || displayProduct?.images[0]?.url || product.images[imageIndex]?.url || product.images[0]?.url || '/placeholder-product.jpg'
+  const displayImage = displayProduct?.images[0]?.url || product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
   const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
@@ -294,13 +292,31 @@ export default function ProductCardWithColors({
 
           <GlassyButton
             onClick={handleAddToCart}
-            variant="dark"
+            variant={isPreOrderProduct && isAvailable && !isAdding ? 'primary' : 'dark'}
             fontSize="13px"
             paddingX="16px"
             paddingY="8px"
-            background={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
-            hoverBackground={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
-            textColor={!isAvailable || isAdding ? 'rgb(156, 163, 175)' : undefined}
+            background={
+              !isAvailable || isAdding
+                ? 'rgba(107, 114, 128, 0.3)'
+                : isPreOrderProduct
+                  ? 'rgba(192, 148, 103, 0.9)'
+                  : undefined
+            }
+            hoverBackground={
+              !isAvailable || isAdding
+                ? 'rgba(107, 114, 128, 0.3)'
+                : isPreOrderProduct
+                  ? 'rgba(170, 128, 85, 1)'
+                  : undefined
+            }
+            textColor={
+              !isAvailable || isAdding
+                ? 'rgb(156, 163, 175)'
+                : isPreOrderProduct
+                  ? '#ffffff'
+                  : undefined
+            }
           >
             {isAdding ? (
               <span className="flex items-center gap-2">

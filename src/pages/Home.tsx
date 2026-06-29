@@ -21,6 +21,44 @@ import { projects } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
 
+function makeImageTransparent(url: string, threshold = 250): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
+      const ctx = canvas.getContext('2d')
+      if (!ctx) {
+        resolve(url)
+        return
+      }
+      ctx.drawImage(img, 0, 0)
+      try {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+        const data = imageData.data
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i]
+          const g = data[i + 1]
+          const b = data[i + 2]
+          if (r >= threshold && g >= threshold && b >= threshold) {
+            data[i + 3] = 0
+          }
+        }
+        ctx.putImageData(imageData, 0, 0)
+        resolve(canvas.toDataURL('image/png'))
+      } catch (e) {
+        resolve(url)
+      }
+    }
+    img.onerror = () => {
+      resolve(url)
+    }
+    img.src = url
+  })
+}
+
 export default function Home() {
   usePageTitle()
   const navigate = useNavigate()
@@ -50,12 +88,16 @@ export default function Home() {
         .then((col) => {
           if (col && col.products && col.products.length > 0) {
             const redBrownTee = col.products.find(p => p.handle === 'rich-in-life-organic-t-shirt-red-brown')
-            if (redBrownTee && redBrownTee.images && redBrownTee.images.length > 1) {
-              setRichInLifeImage(redBrownTee.images[1].url)
+            if (redBrownTee && redBrownTee.images && redBrownTee.images.length > 0) {
+              makeImageTransparent(redBrownTee.images[0].url).then(transparentUrl => {
+                setRichInLifeImage(transparentUrl)
+              })
             } else {
               const product = col.products[0]
               if (product && product.images && product.images.length > 0) {
-                setRichInLifeImage(product.images[0].url)
+                makeImageTransparent(product.images[0].url).then(transparentUrl => {
+                  setRichInLifeImage(transparentUrl)
+                })
               }
             }
           }

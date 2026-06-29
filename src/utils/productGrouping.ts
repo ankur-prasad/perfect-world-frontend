@@ -2,7 +2,7 @@ import type { ShopifyProduct } from '../types/shopify.types'
 
 // Color regex pattern matching ProductDetail.tsx
 // Updated to handle tote bag color formats like "Blue Soul" at the end
-const COLOR_REGEX = / (Blue Soul|Bright Orange|Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Indian Grey|Sky Blue|French Navy|Green Bay|Fiesta|Anthracite|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold)$/i
+const COLOR_REGEX = / (Blue Soul|Bright Orange|Worker Blue|Heather Grey|Dark Blue|Light Blue|Royal Blue|Navy Blue|Midnight Blue|Forest Green|Kelly Green|Olive Green|Dark Green|Light Green|Heather Red|Dark Red|Light Red|Burgundy|Maroon|Indian Grey|Sky Blue|French Navy|Green Bay|Fiesta|Anthracite|Black|White|Blue|Red|Green|Yellow|Pink|Purple|Orange|Grey|Gray|Navy|Teal|Beige|Brown|Multi|Natural|Khaki|Charcoal|Cream|Ivory|Silver|Gold|Mocha|Red Brown|Red-Brown|Dusk)$/i
 
 const KNOWN_COLORS = [
   'blue soul', 'bright orange', 'worker blue', 'heather grey', 'dark blue',
@@ -12,7 +12,7 @@ const KNOWN_COLORS = [
   'french navy', 'green bay', 'fiesta', 'anthracite', 'black', 'white',
   'blue', 'red', 'green', 'yellow', 'pink', 'purple', 'orange', 'grey',
   'gray', 'navy', 'teal', 'beige', 'brown', 'multi', 'natural', 'khaki',
-  'charcoal', 'cream', 'ivory', 'silver', 'gold', 'mocha', 'red brown', 'red-brown'
+  'charcoal', 'cream', 'ivory', 'silver', 'gold', 'mocha', 'red brown', 'red-brown', 'dusk'
 ]
 
 /**
@@ -55,8 +55,6 @@ export function extractProductType(title: string): 'tshirt' | 'hoodie' | 'tote' 
  * Extract color from product title
  */
 export function extractColorFromTitle(title: string): string {
-  const lower = title.toLowerCase()
-
   // 1. Try regex match at the end
   const match = title.match(COLOR_REGEX)
   if (match && match[1]) {
@@ -64,9 +62,10 @@ export function extractColorFromTitle(title: string): string {
     return matchedColor.charAt(0).toUpperCase() + matchedColor.slice(1)
   }
 
-  // 2. Fallback: Scan title for any color name in our KNOWN_COLORS list
+  // 2. Fallback: Scan title for any color name in our KNOWN_COLORS list as a whole word
   for (const colorKey of KNOWN_COLORS) {
-    if (lower.includes(colorKey)) {
+    const regex = new RegExp(`\\b${colorKey}\\b`, 'i')
+    if (regex.test(title)) {
       return colorKey
         .split(/[ -]/)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -85,9 +84,8 @@ export function extractBaseName(title: string): string {
   const collectionKey = getCollectionKey(title)
 
   if (collectionKey) {
-    // Rich in Life Oversized Shirt is treated separately
-    if (collectionKey === 'RICH IN LIFE' && (lower.includes('oversized') || lower.includes('oversize'))) {
-      return 'RICH IN LIFE Organic Oversized Shirt'
+    if (lower.includes('oversized') || lower.includes('oversize')) {
+      return `${collectionKey} Organic Oversized Shirt`
     }
 
     if (lower.includes('hoodie')) {
@@ -144,6 +142,28 @@ export function findColorSiblings(product: ShopifyProduct, allProducts: ShopifyP
   return siblings.sort((a, b) => a.title.localeCompare(b.title))
 }
 
+// Preferred colors mapping for all collections (both handle and name keys)
+export const PREFERRED_COLORS: Record<string, string> = {
+  'wild-at-heart': 'indian grey',
+  'wild at heart': 'indian grey',
+  'endangered-oceans': 'worker blue',
+  'endangered oceans': 'worker blue',
+  'one-world': 'sky blue',
+  'one world': 'sky blue',
+  'frontpage': 'green bay', // Cool Down collection handle
+  'cool-down': 'green bay',
+  'cool down': 'green bay',
+  'talk-about-it': 'fiesta',
+  'talk about it': 'fiesta',
+  'rich-in-life': 'red brown',
+  'rich in life': 'red brown'
+}
+
+export function getPreferredColorForCollection(handleOrName: string): string {
+  const key = handleOrName.toLowerCase().trim()
+  return PREFERRED_COLORS[key] || 'black'
+}
+
 /**
  * Group products by type for a collection
  * Prioritizes specific colors for certain products, then Black, then first available
@@ -157,32 +177,23 @@ export function groupProductsByTypeForCollection(products: ShopifyProduct[]): {
   const hoodies = products.filter(p => extractProductType(p.title) === 'hoodie')
   const totes = products.filter(p => extractProductType(p.title) === 'tote' || extractProductType(p.title) === 'oversized')
 
-  // Preferred colors for specific products (case-insensitive)
-  const PREFERRED_COLORS: Record<string, string> = {
-    'wild at heart': 'indian grey',
-    'endangered oceans': 'worker blue',
-    'one world': 'sky blue',
-    'cool down': 'green bay',
-    'talk about it': 'fiesta'
-  }
-
   // Helper to pick preferred product
-  const pickPreferredProduct = (productList: ShopifyProduct[], isHoodie: boolean = false): ShopifyProduct | null => {
+  const pickPreferredProduct = (productList: ShopifyProduct[]): ShopifyProduct | null => {
     if (productList.length === 0) return null
 
-    // 1. Check for specific preferred color based on base name (skip for hoodies)
-    if (!isHoodie) {
-      for (const product of productList) {
-        const baseName = extractBaseName(product.title).toLowerCase()
+    // 1. Check for specific preferred color based on base name
+    for (const product of productList) {
+      const baseName = extractBaseName(product.title).toLowerCase()
 
-        // Check if any key in PREFERRED_COLORS is contained in baseName
-        const matchedKey = Object.keys(PREFERRED_COLORS).find(key => baseName.includes(key))
+      // Check if any key in PREFERRED_COLORS is contained in baseName or collectionHandle
+      const matchedKey = Object.keys(PREFERRED_COLORS).find(key => 
+        baseName.includes(key) || (product.collectionHandle && product.collectionHandle.toLowerCase().includes(key))
+      )
 
-        if (matchedKey) {
-          const preferredColor = PREFERRED_COLORS[matchedKey]
-          const color = extractColorFromTitle(product.title).toLowerCase()
-          if (color === preferredColor) return product
-        }
+      if (matchedKey) {
+        const preferredColor = PREFERRED_COLORS[matchedKey]
+        const color = extractColorFromTitle(product.title).toLowerCase()
+        if (color === preferredColor) return product
       }
     }
 
@@ -198,7 +209,7 @@ export function groupProductsByTypeForCollection(products: ShopifyProduct[]): {
 
   return {
     tshirt: pickPreferredProduct(tshirts),
-    hoodie: pickPreferredProduct(hoodies, true),
+    hoodie: pickPreferredProduct(hoodies),
     tote: pickPreferredProduct(totes),
   }
 }

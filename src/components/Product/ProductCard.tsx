@@ -21,9 +21,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price)
 
-  const hasMultipleImages = (product.images?.length || 0) > 1
-  const imageIndex = hasMultipleImages ? 1 : 0
-  const mainImage = product.images[imageIndex]?.url || product.images[0]?.url || '/placeholder-product.jpg'
+  const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
   const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
@@ -129,10 +127,28 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
           <GlassyButton
             onClick={handleAddToCart}
-            variant={isLightMode ? 'dark' : 'light'}
-            background={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
-            hoverBackground={!isAvailable || isAdding ? 'rgba(107, 114, 128, 0.3)' : undefined}
-            textColor={!isAvailable || isAdding ? 'rgb(156, 163, 175)' : undefined}
+            variant={isPreOrderProduct && isAvailable && !isAdding ? 'primary' : (isLightMode ? 'dark' : 'light')}
+            background={
+              !isAvailable || isAdding
+                ? 'rgba(107, 114, 128, 0.3)'
+                : isPreOrderProduct
+                  ? 'rgba(192, 148, 103, 0.9)'
+                  : undefined
+            }
+            hoverBackground={
+              !isAvailable || isAdding
+                ? 'rgba(107, 114, 128, 0.3)'
+                : isPreOrderProduct
+                  ? 'rgba(170, 128, 85, 1)'
+                  : undefined
+            }
+            textColor={
+              !isAvailable || isAdding
+                ? 'rgb(156, 163, 175)'
+                : isPreOrderProduct
+                  ? '#ffffff'
+                  : undefined
+            }
           >
             {isAdding ? (
               <span className="flex items-center gap-2">

@@ -44,6 +44,7 @@ const Footer: FC<FooterProps> = ({
     { label: 'Contact', href: '/contact', external: false },
   ],
   projectLinks = [
+    { label: 'Rich in Life', href: '/shop?collection=rich-in-life', external: false },
     { label: 'Wild at Heart', href: '/shop?collection=wild-at-heart', external: false },
     { label: 'Endangered Oceans', href: '/shop?collection=endangered-oceans', external: false },
     { label: 'One World', href: '/shop?collection=one-world', external: false },

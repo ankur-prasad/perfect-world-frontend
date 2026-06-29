@@ -72,7 +72,7 @@ export default function RichInLifePreOrder() {
   const burgundyImage = burgundyProduct?.images[0]?.url || 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop'
   
   const blackProduct = products.find(p => p.handle.includes('black'))
-  const blackImage = blackProduct?.images[1]?.url || blackProduct?.images[0]?.url || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop'
+  const blackImage = blackProduct?.images[0]?.url || blackProduct?.images[1]?.url || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop'
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-[#2C2621]">
