@@ -197,6 +197,7 @@ export default function Shop() {
                       collectionColor={project.theme.primaryColor}
                       products={collectionProducts}
                       allProducts={products}
+                      isNew={project.shopifyCollection.handle === 'rich-in-life'}
                     />
                   )
                 })}

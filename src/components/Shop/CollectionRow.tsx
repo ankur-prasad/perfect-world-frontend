@@ -9,6 +9,7 @@ interface CollectionRowProps {
   collectionColor: string
   products: ShopifyProduct[]
   allProducts: ShopifyProduct[]
+  isNew?: boolean
 }
 
 const SUBTITLES: Record<string, string> = {
@@ -32,6 +33,7 @@ export default function CollectionRow({
   collectionHandle,
   collectionColor,
   products,
+  isNew = false,
 }: CollectionRowProps) {
   // Group products by unique base name
   const baseNameGroups = new Map<string, ShopifyProduct[]>()
@@ -113,8 +115,16 @@ export default function CollectionRow({
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 font-primary my-2 md:my-4">
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 font-primary my-2 md:my-4 flex items-center gap-3 flex-wrap">
           {collectionName}
+          {isNew && (
+            <span
+              className="px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider text-white align-middle"
+              style={{ backgroundColor: collectionColor }}
+            >
+              New
+            </span>
+          )}
         </h2>
         {SUBTITLES[collectionHandle.toLowerCase()] && (
           <p className="text-sm md:text-base text-gray-500 mt-1 max-w-2xl font-light">

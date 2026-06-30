@@ -318,6 +318,32 @@ export default function Home() {
             Our Collections
           </motion.h2>
 
+          {/* New collection promo banner */}
+          <motion.div
+            className="w-full max-w-2xl mb-10 px-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 rounded-2xl bg-[#F5F2EB] border border-[#F0EAE1] shadow-lg px-6 py-5 text-center sm:text-left">
+              <div className="flex-1">
+                <span className="text-[11px] tracking-[0.2em] text-[#A98467] font-bold uppercase block mb-1">
+                  New Collection
+                </span>
+                <p className="text-lg md:text-xl font-bold text-[#2C2621]">
+                  Rich in Life — wealth you can't buy
+                </p>
+              </div>
+              <button
+                onClick={() => navigate('/rich-in-life')}
+                className="shrink-0 px-6 py-3 bg-[#2C2621] text-white rounded-full font-semibold hover:bg-[#473E36] active:scale-[0.98] transition-all shadow-md"
+              >
+                Pre-order now →
+              </button>
+            </div>
+          </motion.div>
+
           <div className="w-full max-w-5xl h-[460px] md:h-[600px]">
             <Carousel3D
               rotateSpeed={25}
@@ -328,16 +354,22 @@ export default function Home() {
               borderRadius={12}
               showBackface={true}
               labels={[
+                'Rich in Life',
                 'Endangered Oceans',
                 'One World',
                 'Talk About It',
                 'Cool Down',
                 'Wild at Heart',
-                'Rich in Life',
                 'Embroidered',
               ]}
             >
               {[
+                {
+                  name: 'Mission Positivity',
+                  collectionHandle: 'rich-in-life',
+                  image: richInLifeImage || '/assets/images/tote-bag-placeholder.png',
+                  isNew: true,
+                },
                 {
                   name: 'SECORE International',
                   collectionHandle: 'endangered-oceans',
@@ -364,16 +396,11 @@ export default function Home() {
                   image: '/assets/images/wild-at-heart-back.webp',
                 },
                 {
-                  name: 'Mission Positivity',
-                  collectionHandle: 'rich-in-life',
-                  image: richInLifeImage || '/assets/images/tote-bag-placeholder.png',
-                },
-                {
                   name: 'Embroidered',
                   collectionHandle: 'perfect-world',
                   image: '/assets/images/embriodered-hoodie.webp',
                 },
-              ].map((project, index) => (
+              ].map((project: { name: string; collectionHandle: string; image: string; isNew?: boolean }, index) => (
                 <div
                   key={project.collectionHandle}
                   onClick={() => {
@@ -384,6 +411,16 @@ export default function Home() {
                 >
                   {/* Card backdrop */}
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-gray-50 to-gray-200/80 border border-gray-200/70 shadow-2xl" />
+
+                  {/* "NEW" badge for the newest collection */}
+                  {project.isNew && (
+                    <span
+                      className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-md"
+                      style={{ backgroundColor: '#A98467' }}
+                    >
+                      New
+                    </span>
+                  )}
 
                   {/* Ground shadow under the floating shirt */}
                   <div
