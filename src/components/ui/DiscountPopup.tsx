@@ -49,7 +49,7 @@ export default function DiscountPopup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.95 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="fixed bottom-6 right-6 z-50 w-full max-w-[400px] p-6 rounded-3xl bg-black/85 backdrop-blur-xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] mx-4 sm:mx-0"
+          className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-50 w-auto sm:w-full max-w-[400px] p-6 rounded-3xl bg-black/85 backdrop-blur-xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         >
           {/* Close Button */}
           <button

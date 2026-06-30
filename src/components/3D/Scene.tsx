@@ -76,31 +76,36 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
   useFrame((_, delta) => {
     if (!groupRef.current) return
 
+    // Clamp the frame delta so a long frame (tab refocus, GC pause, slow
+    // first frame) can't translate into a visible jump in the spin.
+    const dt = Math.min(delta, 0.05)
+
     const currentPointerX = pointer.x
 
     if (isDragging) {
-      // Direct drag rotation based on frame-by-frame delta
+      // Direct 1:1 drag rotation based on frame-by-frame pointer delta
       const pointerDeltaX = currentPointerX - prevPointerX.current
-      
+
       // Cap pointer delta to prevent massive jumps on quick swipes
       const cappedDelta = Math.max(-0.1, Math.min(0.1, pointerDeltaX))
-      
+
       const sensitivity = mobile ? 4.5 : 3.0
       const rotationDelta = cappedDelta * sensitivity
-      
+
       groupRef.current.rotation.y += rotationDelta
-      dragVelocity.current = rotationDelta / delta // update momentum velocity
+      // Angular velocity (rad/sec) for release momentum, clamped so a single
+      // jittery frame can't fling the globe.
+      const v = rotationDelta / dt
+      dragVelocity.current = v < -6 ? -6 : v > 6 ? 6 : v
     } else {
-      // Momentum decay (inertia after spinning)
-      dragVelocity.current *= 0.95
-      
-      if (Math.abs(dragVelocity.current) > 0.01) {
-        groupRef.current.rotation.y += dragVelocity.current * delta
-      } else {
-        // Slow ambient rotation when idle
-        dragVelocity.current = 0
-        groupRef.current.rotation.y -= ambientSpeed * delta
-      }
+      // Frame-rate independent momentum decay (exponential), so the glide
+      // feels identical on 60Hz and 120Hz displays.
+      dragVelocity.current *= Math.exp(-2.5 * dt)
+      if (Math.abs(dragVelocity.current) < 0.02) dragVelocity.current = 0
+
+      // Blend the decaying flick momentum with the constant ambient spin so
+      // the hand-off is seamless — no sudden speed change when momentum ends.
+      groupRef.current.rotation.y += (dragVelocity.current - ambientSpeed) * dt
     }
 
     // Update previous pointer coordinate

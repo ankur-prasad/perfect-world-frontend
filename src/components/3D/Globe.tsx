@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import { SCENE } from '../../utils/constants'
 import { isMobile } from '../../utils/animations'
@@ -15,17 +16,20 @@ export default function Globe({ onHoverChange, onDragStart, onDragEnd }: GlobePr
   const mobile = isMobile()
   const segments = mobile ? SCENE.GLOBE_MOBILE_SEGMENTS : SCENE.GLOBE_SEGMENTS
   const meshRef = useRef<THREE.Mesh>(null)
-  const { camera, raycaster, pointer } = useThree()
+  const { camera, raycaster, pointer, gl } = useThree()
   const prevHoverRef = useRef(false)
 
-  // Load Earth texture
-  const colorMap = useMemo(() => {
-    const textureLoader = new THREE.TextureLoader()
-    const texture = textureLoader.load('/assets/textures/earth.jpg')
-    texture.wrapS = THREE.RepeatWrapping
-    texture.wrapT = THREE.RepeatWrapping
-    return texture
-  }, [])
+  // Load Earth texture via Suspense so the globe never renders an
+  // untextured (black) sphere while the image is still downloading —
+  // this was the cause of the "earth skin not loading" on some devices.
+  const colorMap = useTexture('/assets/textures/earth.jpg')
+  useMemo(() => {
+    colorMap.colorSpace = THREE.SRGBColorSpace
+    colorMap.wrapS = THREE.RepeatWrapping
+    colorMap.wrapT = THREE.RepeatWrapping
+    colorMap.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy())
+    colorMap.needsUpdate = true
+  }, [colorMap, gl])
 
   // Globe shader material
   const shaderMaterial = useMemo(
