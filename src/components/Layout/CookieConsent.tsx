@@ -71,10 +71,10 @@ export default function CookieConsent() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 100 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-4rem)] max-w-max"
+                    className="fixed bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-md sm:w-[calc(100%-4rem)] sm:max-w-2xl lg:max-w-max"
                 >
-                    <div className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl p-8 sm:p-10 md:p-12 lg:px-20 lg:py-16 xl:px-32 xl:py-20">
-                        <div className="flex flex-col gap-10 items-center">
+                    <div className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl p-5 sm:p-8 md:p-12 lg:px-20 lg:py-16 xl:px-32 xl:py-20">
+                        <div className="flex flex-col gap-6 sm:gap-10 items-center">
                             {/* Content */}
                             <div className="flex-1">
                                 <h2 className="text-white text-2xl font-bold mb-4">Notice</h2>
@@ -99,7 +99,7 @@ export default function CookieConsent() {
                             {/* Controls */}
                             <div className="flex flex-col gap-8 w-full max-w-2xl">
                                 {/* Toggle Switches */}
-                                <div className="grid grid-cols-2 gap-x-8 gap-y-4 justify-items-center">
+                                <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-4 justify-items-start sm:justify-items-center">
                                     {[
                                         { key: 'necessary' as const, label: 'Necessary' },
                                         { key: 'functionality' as const, label: 'Functionality' },
@@ -127,7 +127,7 @@ export default function CookieConsent() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="flex items-center justify-center gap-2 sm:gap-3 lg:gap-4">
+                                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:gap-4">
                                     <GlassyButton
                                         onClick={() => setShowDetails(!showDetails)}
                                         label="Learn more"
