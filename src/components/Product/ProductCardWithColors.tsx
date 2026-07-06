@@ -90,7 +90,6 @@ export default function ProductCardWithColors({
 
   const displayImage = displayProduct?.images[0]?.url || product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
-  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   // Product type badge
   const typeBadge = productType === 'tshirt' ? 'T-SHIRT' :
@@ -292,30 +291,24 @@ export default function ProductCardWithColors({
 
           <GlassyButton
             onClick={handleAddToCart}
-            variant={isPreOrderProduct && isAvailable && !isAdding ? 'primary' : 'dark'}
+            variant="dark"
             fontSize="13px"
             paddingX="16px"
             paddingY="8px"
             background={
               !isAvailable || isAdding
                 ? 'rgba(107, 114, 128, 0.3)'
-                : isPreOrderProduct
-                  ? 'rgba(192, 148, 103, 0.9)'
-                  : undefined
+                : undefined
             }
             hoverBackground={
               !isAvailable || isAdding
                 ? 'rgba(107, 114, 128, 0.3)'
-                : isPreOrderProduct
-                  ? 'rgba(170, 128, 85, 1)'
-                  : undefined
+                : undefined
             }
             textColor={
               !isAvailable || isAdding
                 ? 'rgb(156, 163, 175)'
-                : isPreOrderProduct
-                  ? '#ffffff'
-                  : undefined
+                : undefined
             }
           >
             {isAdding ? (
@@ -341,7 +334,7 @@ export default function ProductCardWithColors({
             ) : !isAvailable ? (
               'Sold Out'
             ) : (
-              isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
+              'Add to Cart'
             )}
           </GlassyButton>
         </div>

@@ -33,7 +33,6 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
   const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = selectedVariant.availableForSale
-  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   const handleAddToCart = async () => {
     if (!isAvailable) return
@@ -201,7 +200,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                     ) : !isAvailable ? (
                       'Sold Out'
                     ) : (
-                      isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
+                      'Add to Cart'
                     )}
                   </GlassyButton>
 

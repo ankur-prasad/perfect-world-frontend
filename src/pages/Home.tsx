@@ -339,7 +339,7 @@ export default function Home() {
                 onClick={() => navigate('/rich-in-life')}
                 className="shrink-0 px-6 py-3 bg-[#2C2621] text-white rounded-full font-semibold hover:bg-[#473E36] active:scale-[0.98] transition-all shadow-md"
               >
-                Pre-order now →
+                Shop now →
               </button>
             </div>
           </motion.div>
@@ -458,6 +458,28 @@ export default function Home() {
       <MainVideo />
       <ImpactSlides />
       <FAQ />
+
+      {/* Final CTA - last stop before the footer */}
+      <section className="relative z-10 bg-white py-20 px-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center gap-6"
+        >
+          <p className="text-2xl md:text-3xl text-black font-light" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
+            Together. Not alone.
+          </p>
+          <button
+            onClick={() => navigate('/shop')}
+            className="whitespace-nowrap px-10 py-4 bg-black text-white rounded-full font-semibold text-lg shadow-xl hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all"
+          >
+            Shop Now
+          </button>
+        </motion.div>
+      </section>
+
       <Footer />
     </div>
   )

@@ -273,9 +273,9 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         }`}>
           {/* Announcement Bar */}
           <div className="h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center border-b border-white/5">
-            <span>Early-bird: 10% off every pre-order with code <strong className="font-bold underline decoration-dotted">RICH10</strong></span>
+            <span>New: <strong className="font-bold">Rich in Life</strong> — the new collection with Mission Positivity</span>
             <span className="opacity-50 hidden sm:inline">·</span>
-            <span>Collection drops 07.07</span>
+            <span>100% of profits donated</span>
           </div>
 
           {/* Desktop Layout */}
@@ -345,9 +345,9 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     <>
       {/* Announcement Bar */}
       <div className="fixed top-0 left-0 right-0 h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center z-50 border-b border-white/5">
-        <span>Early-bird: 10% off every pre-order with code <strong className="font-bold underline decoration-dotted">RICH10</strong></span>
+        <span>New: <strong className="font-bold">Rich in Life</strong> — the new collection with Mission Positivity</span>
         <span className="opacity-50 hidden sm:inline">·</span>
-        <span>Collection drops 07.07</span>
+        <span>100% of profits donated</span>
       </div>
 
       {/* Centered Logo */}

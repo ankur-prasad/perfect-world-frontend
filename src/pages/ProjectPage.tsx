@@ -366,7 +366,7 @@ export default function ProjectPage() {
                         project.slug === 'talk-about-it' ? '/assets/videos/talk about it vid.mp4' :
                           project.slug === 'cool-down' ? '/assets/videos/cool down vid.mp4' :
                             project.slug === 'wild-at-heart' ? '/assets/videos/wild%20at%20heart.mp4' :
-                              project.slug === 'rich-in-life' ? '/assets/videos/WEB%20PROMO%20FINAL.mp4' :
+                              project.slug === 'rich-in-life' ? '/assets/videos/rich-in-life-film.mp4' :
                                 ''
                   }
                 >

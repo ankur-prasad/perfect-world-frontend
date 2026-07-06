@@ -85,7 +85,7 @@ export default function MainVideo() {
                 muted
                 loop
                 playsInline
-                src="/assets/videos/WEB%20PROMO%20FINAL.mp4"
+                src="/assets/videos/now-and-forever-home.mp4"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onVolumeChange={(e) => setIsMuted(e.currentTarget.muted)}
