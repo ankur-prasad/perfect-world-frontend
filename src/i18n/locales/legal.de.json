@@ -1,0 +1,201 @@
+{
+  "refund": {
+    "title": "Rückerstattungs- & Rückgaberichtlinie",
+    "blocks": [
+      { "type": "p", "text": "Danke, dass du Perfect World unterstützt und dich unserer Mission anschließt, eine bessere und mitfühlendere Welt zu schaffen. Alle Gewinne aus deinem Kauf fließen direkt in unsere wohltätigen Zwecke. Aufgrund dieser Verpflichtung, jeden Monat 100% unserer Gewinne zu spenden, können wir keine Rückerstattungen anbieten – wir setzen uns jedoch stets dafür ein, dass du mit deiner Bestellung zufrieden bist." },
+      { "type": "h2", "text": "Fehlerhafte oder beschädigte Produkte" },
+      { "type": "p", "text": "Sollten Artikel beschädigt oder defekt ankommen, kontaktiere uns bitte. Wenn du einen Artikel erhältst, der nicht unseren Standards entspricht, schreibe uns an [info@perfectworld.global](mailto:info@perfectworld.global) mit deinen Bestelldaten, einer Beschreibung des Problems und, sofern zutreffend, Fotos des Produkts. Unser Team prüft den Fall und arbeitet mit dir an einer Lösung." },
+      { "type": "h2", "text": "Umtausch und Ersatz" },
+      { "type": "p", "text": "Auch wenn Rückerstattungen nicht möglich sind, bieten wir Umtausch oder Ersatz für fehlerhafte Artikel an. Bitte beachte, dass ein Umtausch von der Produktverfügbarkeit abhängt." },
+      { "type": "h2", "text": "Unser Bekenntnis zu Transparenz und Verantwortung" },
+      { "type": "p", "text": "Wir spenden jeden Monat 100% unserer Gewinne, um sinnvolle Zwecke zu unterstützen – deshalb erlaubt unsere Richtlinie keine Rückerstattungen. Wir laden dich ein, unsere Seiten [Transparenz](/transparency) und [Projekte](/projects) zu besuchen, um mehr über die Wirkung deines Kaufs zu erfahren." },
+      { "type": "p", "text": "Danke, dass du unsere Mission unterstützt." }
+    ]
+  },
+  "shipping": {
+    "title": "Versandrichtlinie",
+    "blocks": [
+      { "type": "p", "text": "Der Versand dauert je nach deinem Standort zwischen 7 und 14 Tagen." },
+      { "type": "p", "text": "Wenn du Fragen zum Versandstatus deiner Bestellung hast, kontaktiere uns bitte unter [info@perfectworld.global](mailto:info@perfectworld.global)." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5\n82319 Starnberg, Deutschland\n+49 15129109696" }
+    ]
+  },
+  "legalNotice": {
+    "title": "Impressum",
+    "blocks": [
+      { "type": "h2", "text": "Angaben gemäß § 5 TMG" },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Deutschland" },
+      { "type": "h2", "text": "Vertreten durch" },
+      { "type": "p", "text": "Nicholas Freitag" },
+      { "type": "h2", "text": "Kontakt" },
+      { "type": "p", "text": "Telefon: +49 15129109696\nE-Mail: [info@perfectworld.global](mailto:info@perfectworld.global)" }
+    ]
+  },
+  "cookie": {
+    "title": "Cookie-Richtlinie",
+    "blocks": [
+      { "type": "p", "text": "Diese Cookie-Richtlinie erklärt, wie Perfect World (\"wir\", \"uns\" oder \"unser\") Cookies und ähnliche Technologien auf perfectworld.global verwendet. Sie ist zusammen mit unserer [Datenschutzerklärung](/privacy-policy) zu lesen, die erklärt, wie wir personenbezogene Daten allgemein verwenden." },
+      { "type": "h2", "text": "Was sind Cookies" },
+      { "type": "p", "text": "Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert werden, wenn du eine Website besuchst. Sie ermöglichen einer Website, dein Gerät wiederzuerkennen und Informationen über deinen Besuch zu speichern, etwa deine Präferenzen und Aktionen auf der Website." },
+      { "type": "h2", "text": "Kategorien der von uns verwendeten Cookies" },
+      { "type": "ul", "items": [
+        "**Notwendig** — Unerlässlich für die Funktion der Website und nicht deaktivierbar.",
+        "**Funktionalität** — Ermöglichen erweiterte Funktionen und Personalisierung.",
+        "**Erfahrung** — Helfen uns zu verstehen, wie du mit unserer Website interagierst.",
+        "**Messung** — Helfen uns, den Traffic zu messen und das Verhalten zu analysieren.",
+        "**Marketing** — Werden verwendet, um personalisierte Werbung auszuspielen."
+      ] },
+      { "type": "p", "text": "Du kannst deine Präferenzen für diese Kategorien jederzeit über das Cookie-Einwilligungsbanner auf unserer Website oder über die Einstellungen deines Browsers verwalten. Die Verweigerung der Einwilligung für nicht notwendige Kategorien kann dazu führen, dass zugehörige Funktionen nicht verfügbar sind." },
+      { "type": "h2", "text": "Cookies von Drittanbietern" },
+      { "type": "p", "text": "Unser Shop wird von Shopify betrieben, und wir nutzen die Commerce-Plattform von Shopify für den Betrieb unserer Website. Für spezifische Informationen zu den Cookies, die Shopify zum Betrieb unseres Shops verwendet, siehe [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). Wir können auch anderen Dritten und Dienstleistern gestatten, Cookies auf unserer Website zu verwenden, um Dienste, Produkte und Werbung auf unserer Website und anderen Websites besser anzupassen." },
+      { "type": "h2", "text": "Cookies verwalten" },
+      { "type": "p", "text": "Die meisten Browser akzeptieren Cookies standardmäßig automatisch, aber du kannst deinen Browser so einstellen, dass Cookies über die Browsersteuerung entfernt oder abgelehnt werden. Bitte beachte, dass das Entfernen oder Blockieren von Cookies deine Erfahrung auf unserer Website beeinträchtigen und dazu führen kann, dass einige Funktionen nicht korrekt funktionieren oder nicht mehr verfügbar sind." },
+      { "type": "p", "text": "Unsere Website erkennt außerdem das Global-Privacy-Control-Signal (GPC). Wenn du uns deine Präferenz über GPC mitteilst, behandeln wir dieses Signal als gültige Aufforderung, dem Teilen / der zielgerichteten Werbung für den zugehörigen Browser oder das Gerät zu widersprechen." },
+      { "type": "h2", "text": "Änderungen dieser Richtlinie" },
+      { "type": "p", "text": "Wir können diese Cookie-Richtlinie von Zeit zu Zeit aktualisieren, um Änderungen der von uns verwendeten Cookies widerzuspiegeln oder aus anderen betrieblichen, rechtlichen oder regulatorischen Gründen. Bitte besuche diese Seite regelmäßig, um informiert zu bleiben." },
+      { "type": "h2", "text": "Kontakt" },
+      { "type": "p", "text": "Wenn du Fragen zu unserer Verwendung von Cookies hast, kontaktiere uns bitte unter [info@perfectworld.global](mailto:info@perfectworld.global)." }
+    ]
+  },
+  "terms": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "blocks": [
+      { "type": "p", "text": "Diese Website wird von Perfect World betrieben. Auf der gesamten Website beziehen sich die Begriffe \"wir\", \"uns\" und \"unser\" auf Perfect World. Indem du unsere Website besuchst und/oder etwas bei uns kaufst, nimmst du unseren \"Service\" in Anspruch und erklärst dich an die folgenden Bedingungen (\"Allgemeine Geschäftsbedingungen\", \"AGB\") gebunden, einschließlich der hierin genannten und/oder per Link verfügbaren zusätzlichen Bedingungen und Richtlinien." },
+      { "type": "h2", "text": "Abschnitt 1 — Bedingungen des Online-Shops" },
+      { "type": "p", "text": "Du musst in deiner Rechtsordnung volljährig sein oder die Zustimmung eines Erziehungsberechtigten haben, um diese Website zu nutzen. Du darfst unsere Produkte nicht für illegale oder unbefugte Zwecke verwenden und darfst bei der Nutzung des Service keine Gesetze verletzen, keine Urheberrechte verletzen und keine Würmer, Viren oder zerstörerischen Code übertragen. Ein Verstoß gegen die AGB führt zur sofortigen Beendigung deiner Services." },
+      { "type": "h2", "text": "Abschnitt 2 — Allgemeine Bedingungen" },
+      { "type": "p", "text": "Wir behalten uns das Recht vor, den Service jederzeit und aus beliebigem Grund zu verweigern. Deine Inhalte können unverschlüsselt über Netzwerke übertragen werden, während Kreditkarteninformationen stets verschlüsselt werden. Du erklärst dich damit einverstanden, keinen Teil des Service ohne unsere ausdrückliche schriftliche Genehmigung zu reproduzieren, zu vervielfältigen, zu kopieren, zu verkaufen, weiterzuverkaufen oder zu verwerten." },
+      { "type": "h2", "text": "Abschnitt 3 — Richtigkeit, Vollständigkeit und Aktualität der Informationen" },
+      { "type": "p", "text": "Wir sind nicht verantwortlich, wenn auf dieser Website bereitgestellte Informationen nicht korrekt, vollständig oder aktuell sind. Das Material auf dieser Website dient ausschließlich der allgemeinen Information und sollte nicht als alleinige Grundlage für Entscheidungen herangezogen werden. Du erklärst dich damit einverstanden, dass es in deiner Verantwortung liegt, Änderungen an unserer Website zu verfolgen." },
+      { "type": "h2", "text": "Abschnitt 4 — Änderungen des Service und der Preise" },
+      { "type": "p", "text": "Die Preise unserer Produkte können ohne Vorankündigung geändert werden. Wir behalten uns das Recht vor, den Service (oder einen Teil oder Inhalt davon) jederzeit ohne Vorankündigung zu ändern oder einzustellen. Wir haften weder dir noch Dritten gegenüber für Änderungen, Preisänderungen, Aussetzungen oder Einstellungen des Service." },
+      { "type": "h2", "text": "Abschnitt 5 — Produkte oder Services" },
+      { "type": "p", "text": "Bestimmte Produkte oder Services können ausschließlich online über die Website verfügbar sein. Diese Produkte oder Services können in begrenzter Menge verfügbar sein und unterliegen unserer Rückerstattungsrichtlinie. Wir können nicht garantieren, dass die Farbdarstellung auf deinem Bildschirm korrekt ist. Wir behalten uns das Recht vor, den Verkauf unserer Produkte oder Services auf beliebige Personen, geografische Regionen oder Rechtsordnungen zu beschränken. Jedes auf dieser Website gemachte Angebot für ein Produkt oder einen Service ist dort ungültig, wo es verboten ist." },
+      { "type": "h2", "text": "Abschnitt 6 — Richtigkeit der Abrechnungs- und Kontoinformationen" },
+      { "type": "p", "text": "Wir behalten uns das Recht vor, jede bei uns aufgegebene Bestellung abzulehnen. Wir können nach eigenem Ermessen die pro Person, pro Haushalt oder pro Bestellung gekauften Mengen begrenzen oder stornieren. Du verpflichtest dich, für alle in unserem Shop getätigten Käufe aktuelle, vollständige und richtige Kauf- und Kontoinformationen anzugeben und dein Konto sowie andere Informationen umgehend zu aktualisieren." },
+      { "type": "h2", "text": "Abschnitt 7 — Optionale Tools" },
+      { "type": "p", "text": "Wir können dir Zugang zu Tools von Drittanbietern gewähren, die wir weder überwachen noch kontrollieren noch beeinflussen. Solche Tools werden \"wie besehen\" und \"wie verfügbar\" ohne jegliche Gewährleistungen, Zusicherungen oder Bedingungen bereitgestellt. Jede Nutzung der über die Website angebotenen optionalen Tools erfolgt ausschließlich auf dein eigenes Risiko und nach deinem eigenen Ermessen." },
+      { "type": "h2", "text": "Abschnitt 8 — Links zu Drittanbietern" },
+      { "type": "p", "text": "Bestimmte Inhalte, Produkte und Dienstleistungen, die über unseren Service verfügbar sind, können Materialien von Dritten enthalten. Links zu Drittanbietern auf dieser Website können dich zu Websites Dritter führen, die nicht mit uns verbunden sind. Wir sind nicht verantwortlich für die Prüfung oder Bewertung der Inhalte oder Richtigkeit solcher Materialien Dritter und haften nicht für Schäden im Zusammenhang mit deiner Nutzung von Websites Dritter." },
+      { "type": "h2", "text": "Abschnitt 9 — Kommentare, Feedback und andere Einsendungen von Nutzern" },
+      { "type": "p", "text": "Wenn du auf unsere Aufforderung hin bestimmte Einsendungen sendest oder ohne Aufforderung kreative Ideen, Vorschläge, Pläne oder andere Materialien einreichst, erklärst du dich damit einverstanden, dass wir die von dir übermittelten Kommentare jederzeit uneingeschränkt bearbeiten, kopieren, veröffentlichen, verbreiten, übersetzen und in jedem Medium anderweitig verwenden dürfen. Wir sind berechtigt, aber nicht verpflichtet, Inhalte zu überwachen, zu bearbeiten oder zu entfernen, die wir nach eigenem Ermessen als rechtswidrig, beleidigend oder anstößig einstufen." },
+      { "type": "h2", "text": "Abschnitt 10 — Personenbezogene Daten" },
+      { "type": "p", "text": "Die Übermittlung deiner personenbezogenen Daten über den Shop unterliegt unserer [Datenschutzerklärung](/privacy-policy)." },
+      { "type": "h2", "text": "Abschnitt 11 — Fehler, Ungenauigkeiten und Auslassungen" },
+      { "type": "p", "text": "Gelegentlich können auf unserer Website Informationen enthalten sein, die Tippfehler, Ungenauigkeiten oder Auslassungen enthalten. Wir behalten uns das Recht vor, Fehler, Ungenauigkeiten oder Auslassungen zu korrigieren sowie Informationen zu ändern oder zu aktualisieren oder Bestellungen zu stornieren, wenn Informationen ungenau sind, jederzeit und ohne vorherige Ankündigung." },
+      { "type": "h2", "text": "Abschnitt 12 — Verbotene Nutzungen" },
+      { "type": "p", "text": "Zusätzlich zu anderen in den AGB genannten Verboten ist es dir untersagt, die Website oder deren Inhalte zu nutzen: (a) für rechtswidrige Zwecke; (b) um andere zur Ausführung oder Teilnahme an rechtswidrigen Handlungen aufzufordern; (c) um internationale, bundesstaatliche, landesrechtliche oder lokale Vorschriften, Regeln oder Gesetze zu verletzen; (d) um unsere geistigen Eigentumsrechte oder die Dritter zu verletzen; (e) um zu belästigen, zu missbrauchen, zu beleidigen, zu schädigen, zu verleumden, herabzusetzen, einzuschüchtern oder zu diskriminieren; (f) um falsche oder irreführende Informationen einzureichen; (g) um Viren oder anderen schädlichen Code hochzuladen oder zu übertragen; (h) um personenbezogene Daten anderer zu sammeln oder zu verfolgen; (i) um zu spammen, phishen, pharmen, unter Vorwänden zu handeln, zu spidern, zu crawlen oder zu scrapen; (j) für obszöne oder unmoralische Zwecke; oder (k) um die Sicherheitsfunktionen des Service zu beeinträchtigen oder zu umgehen. Wir behalten uns das Recht vor, deine Nutzung des Service bei Verstoß gegen eine der verbotenen Nutzungen zu beenden." },
+      { "type": "h2", "text": "Abschnitt 13 — Haftungsausschluss; Haftungsbeschränkung" },
+      { "type": "p", "text": "Wir garantieren, versichern oder gewährleisten nicht, dass deine Nutzung unseres Service ununterbrochen, pünktlich, sicher oder fehlerfrei ist. Der Service sowie alle über den Service an dich gelieferten Produkte und Services werden (sofern von uns nicht ausdrücklich anders angegeben) \"wie besehen\" und \"wie verfügbar\" zu deiner Nutzung bereitgestellt, ohne jegliche Zusicherung, Gewährleistung oder Bedingung. In keinem Fall haften Perfect World, unsere Geschäftsführer, leitenden Angestellten, Mitarbeiter, verbundenen Unternehmen, Vertreter, Auftragnehmer, Praktikanten, Lieferanten, Dienstleister oder Lizenzgeber für Verletzungen, Verluste, Ansprüche oder direkte, indirekte, beiläufige, strafende, besondere oder Folgeschäden jeglicher Art." },
+      { "type": "h2", "text": "Abschnitt 14 — Freistellung" },
+      { "type": "p", "text": "Du erklärst dich damit einverstanden, Perfect World und unsere Muttergesellschaft, Tochtergesellschaften, verbundenen Unternehmen, Partner, leitenden Angestellten, Geschäftsführer, Vertreter, Auftragnehmer, Lizenzgeber, Dienstleister, Subunternehmer, Lieferanten, Praktikanten und Mitarbeiter von jeglichen Ansprüchen oder Forderungen, einschließlich angemessener Anwaltskosten, freizustellen, zu verteidigen und schadlos zu halten, die von Dritten aufgrund oder infolge deines Verstoßes gegen diese AGB geltend gemacht werden." },
+      { "type": "h2", "text": "Abschnitt 15 — Salvatorische Klausel" },
+      { "type": "p", "text": "Sollte eine Bestimmung dieser AGB als rechtswidrig, nichtig oder undurchsetzbar erachtet werden, so ist diese Bestimmung dennoch im größtmöglichen nach anwendbarem Recht zulässigen Umfang durchsetzbar." },
+      { "type": "h2", "text": "Abschnitt 16 — Kündigung" },
+      { "type": "p", "text": "Diese AGB gelten, bis sie von dir oder uns gekündigt werden. Du kannst diese AGB jederzeit kündigen, indem du uns mitteilst, dass du unsere Services nicht mehr nutzen möchtest. Wenn du nach unserem alleinigen Ermessen einer Bestimmung dieser AGB nicht nachkommst oder wir dies vermuten, können wir diese Vereinbarung ebenfalls jederzeit ohne Vorankündigung kündigen." },
+      { "type": "h2", "text": "Abschnitt 17 — Gesamte Vereinbarung" },
+      { "type": "p", "text": "Diese AGB sowie alle von uns auf dieser Website oder in Bezug auf den Service veröffentlichten Richtlinien oder Betriebsregeln stellen die gesamte Vereinbarung und Verständigung zwischen dir und uns dar." },
+      { "type": "h2", "text": "Abschnitt 18 — Anwendbares Recht" },
+      { "type": "p", "text": "Diese AGB sowie alle separaten Vereinbarungen, mit denen wir dir Services bereitstellen, unterliegen dem Recht der Bundesrepublik Deutschland und werden entsprechend ausgelegt." },
+      { "type": "h2", "text": "Abschnitt 19 — Änderungen der AGB" },
+      { "type": "p", "text": "Wir behalten uns das Recht vor, nach eigenem Ermessen jeden Teil dieser AGB durch Veröffentlichung von Aktualisierungen und Änderungen auf unserer Website zu aktualisieren, zu ändern oder zu ersetzen. Deine fortgesetzte Nutzung oder dein Zugriff auf unsere Website oder den Service nach der Veröffentlichung von Änderungen dieser AGB gilt als Annahme dieser Änderungen." },
+      { "type": "h2", "text": "Abschnitt 20 — Kontaktinformationen" },
+      { "type": "p", "text": "Fragen zu den AGB sind an [info@perfectworld.global](mailto:info@perfectworld.global) zu richten." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Deutschland\n+49 15129109696" }
+    ]
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "subtitle": "Zuletzt aktualisiert: 4. Dezember 2025",
+    "blocks": [
+      { "type": "p", "text": "Diese Datenschutzerklärung beschreibt, wie Perfect World (die \"Website\", \"wir\", \"uns\" oder \"unser\") deine personenbezogenen Daten erhebt, verwendet und offenlegt, wenn du perfectworld.global (die \"Website\") besuchst, unsere Dienste nutzt oder einen Kauf tätigst oder anderweitig mit uns bezüglich der Website kommunizierst (zusammen die \"Dienste\"). Im Sinne dieser Datenschutzerklärung bedeutet \"du\" und \"dein\" dich als Nutzer der Dienste, unabhängig davon, ob du Kunde, Website-Besucher oder eine andere Person bist, deren Daten wir gemäß dieser Datenschutzerklärung erhoben haben." },
+      { "type": "p", "text": "Bitte lies diese Datenschutzerklärung sorgfältig." },
+      { "type": "h2", "text": "Änderungen dieser Datenschutzerklärung" },
+      { "type": "p", "text": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren, auch um Änderungen unserer Praktiken widerzuspiegeln oder aus anderen betrieblichen, rechtlichen oder regulatorischen Gründen. Wir veröffentlichen die überarbeitete Datenschutzerklärung auf der Website, aktualisieren das Datum \"Zuletzt aktualisiert\" und ergreifen alle weiteren nach anwendbarem Recht erforderlichen Maßnahmen." },
+      { "type": "h2", "text": "Wie wir deine personenbezogenen Daten erheben und verwenden" },
+      { "type": "p", "text": "Um die Dienste bereitzustellen, erheben wir und haben wir in den letzten 12 Monaten personenbezogene Daten über dich aus verschiedenen Quellen erhoben, wie nachstehend dargestellt. Die von uns erhobenen und verwendeten Daten variieren je nachdem, wie du mit uns interagierst." },
+      { "type": "p", "text": "Zusätzlich zu den unten aufgeführten spezifischen Verwendungen können wir die über dich erhobenen Daten verwenden, um mit dir zu kommunizieren, die Dienste bereitzustellen oder zu verbessern, geltende rechtliche Verpflichtungen zu erfüllen, geltende Nutzungsbedingungen durchzusetzen sowie die Dienste, unsere Rechte und die Rechte unserer Nutzer oder anderer zu schützen oder zu verteidigen." },
+      { "type": "h3", "text": "Daten, die wir direkt von dir erheben" },
+      { "type": "p", "text": "Daten, die du uns direkt über unsere Dienste übermittelst, können umfassen:" },
+      { "type": "ul", "items": [
+        "**Kontaktdaten**, einschließlich deines Namens, deiner Adresse, Telefonnummer und E-Mail-Adresse.",
+        "**Bestellinformationen**, einschließlich deines Namens, deiner Rechnungsadresse, Lieferadresse, Zahlungsbestätigung, E-Mail-Adresse und Telefonnummer.",
+        "**Kontoinformationen**, einschließlich deines Benutzernamens, Passworts, deiner Sicherheitsfragen und anderer Informationen, die zu Zwecken der Kontosicherheit verwendet werden.",
+        "**Informationen des Kundensupports**, einschließlich der Informationen, die du in deine Kommunikation mit uns aufnimmst, beispielsweise beim Senden einer Nachricht über die Dienste."
+      ] },
+      { "type": "p", "text": "Einige Funktionen der Dienste können erfordern, dass du uns bestimmte Informationen über dich direkt zur Verfügung stellst. Du kannst dich entscheiden, diese Informationen nicht anzugeben, was dich jedoch daran hindern kann, diese Funktionen zu nutzen oder darauf zuzugreifen." },
+      { "type": "h3", "text": "Daten, die wir über deine Nutzung erheben" },
+      { "type": "p", "text": "Wir können außerdem automatisch bestimmte Informationen über deine Interaktion mit den Diensten erheben (\"Nutzungsdaten\"). Dazu können wir Cookies, Pixel und ähnliche Technologien (\"Cookies\") verwenden. Nutzungsdaten können Informationen darüber enthalten, wie du auf unsere Website und dein Konto zugreifst und diese nutzt, einschließlich Geräteinformationen, Browserinformationen, Informationen über deine Netzwerkverbindung, deine IP-Adresse und andere Informationen zu deiner Interaktion mit den Diensten." },
+      { "type": "h3", "text": "Daten, die wir von Dritten erhalten" },
+      { "type": "p", "text": "Schließlich können wir Informationen über dich von Dritten erhalten, einschließlich von Anbietern und Dienstleistern, die Informationen in unserem Auftrag erheben, wie zum Beispiel:" },
+      { "type": "ul", "items": [
+        "Unternehmen, die unsere Website und Dienste unterstützen, wie Shopify.",
+        "Unsere Zahlungsabwickler, die Zahlungsinformationen (z. B. Bankkonto, Kredit- oder Debitkarteninformationen, Rechnungsadresse) erheben, um deine Zahlung zu verarbeiten, deine Bestellungen auszuführen und dir die von dir angeforderten Produkte oder Dienstleistungen bereitzustellen, um unseren Vertrag mit dir zu erfüllen.",
+        "Wenn du unsere Website besuchst, von uns gesendete E-Mails öffnest oder anklickst oder mit unseren Diensten oder Werbeanzeigen interagierst, können wir oder Dritte, mit denen wir zusammenarbeiten, automatisch bestimmte Informationen mithilfe von Online-Tracking-Technologien wie Pixeln, Web-Beacons, Software-Entwicklungskits, Bibliotheken von Dritten und Cookies erheben."
+      ] },
+      { "type": "p", "text": "Alle Informationen, die wir von Dritten erhalten, werden in Übereinstimmung mit dieser Datenschutzerklärung behandelt. Siehe auch den nachstehenden Abschnitt \"Websites und Links Dritter\"." },
+      { "type": "h3", "text": "Wie wir deine personenbezogenen Daten verwenden" },
+      { "type": "ul", "items": [
+        "**Bereitstellung von Produkten und Diensten.** Wir verwenden deine personenbezogenen Daten, um dir die Dienste zur Erfüllung unseres Vertrags mit dir bereitzustellen, einschließlich der Verarbeitung deiner Zahlungen, der Ausführung deiner Bestellungen, des Versands von Benachrichtigungen zu deinem Konto, Käufen, Rücksendungen, Umtausch oder anderen Transaktionen, der Erstellung, Pflege und Verwaltung deines Kontos sowie der Organisation des Versands und der Abwicklung von Rücksendungen und Umtausch.",
+        "**Marketing und Werbung.** Wir können deine personenbezogenen Daten für Marketing- und Werbezwecke verwenden, etwa um Marketing-, Werbe- und Promotionsmitteilungen per E-Mail, SMS oder Post zu senden und dir Werbung für Produkte oder Dienstleistungen anzuzeigen.",
+        "**Sicherheit und Betrugsprävention.** Wir verwenden deine personenbezogenen Daten, um mögliche betrügerische, rechtswidrige oder böswillige Aktivitäten zu erkennen, zu untersuchen oder Maßnahmen dagegen zu ergreifen. Wenn du dich für die Registrierung eines Kontos entscheidest, bist du dafür verantwortlich, deine Kontozugangsdaten sicher aufzubewahren.",
+        "**Kommunikation mit dir und Verbesserung der Dienste.** Wir verwenden deine personenbezogenen Daten, um dir Kundensupport zu bieten und unsere Dienste zu verbessern."
+      ] },
+      { "type": "h2", "text": "Cookies" },
+      { "type": "p", "text": "Wie viele Websites verwenden wir Cookies auf unserer Website. Für spezifische Informationen zu den Cookies, die wir im Zusammenhang mit dem Betrieb unseres Shops mit Shopify verwenden, siehe [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). Wir verwenden Cookies, um unsere Website und Dienste zu betreiben und zu verbessern (einschließlich des Speicherns deiner Aktionen und Präferenzen), Analysen durchzuführen und die Interaktion der Nutzer mit den Diensten besser zu verstehen. Wir können auch Dritten und Dienstleistern gestatten, Cookies auf unserer Website zu verwenden, um die Dienste, Produkte und Werbung auf unserer Website und anderen Websites besser anzupassen." },
+      { "type": "p", "text": "Die meisten Browser akzeptieren Cookies standardmäßig automatisch, aber du kannst deinen Browser so einstellen, dass Cookies über die Browsersteuerung entfernt oder abgelehnt werden. Bitte beachte, dass das Entfernen oder Blockieren von Cookies deine Nutzererfahrung beeinträchtigen kann. Weitere Einzelheiten zu den Cookie-Kategorien, die wir verwenden, und zur Verwaltung deiner Präferenzen findest du in unserer [Cookie-Richtlinie](/cookie-policy)." },
+      { "type": "p", "text": "Unsere Website erkennt außerdem das Global-Privacy-Control-Signal (GPC), mit dem du bestimmten Verwendungen oder Offenlegungen deiner Daten widersprechen kannst. Wenn du uns deine Präferenz über GPC mitteilst, behandeln wir dieses Signal als gültige Aufforderung, dem Teilen / der zielgerichteten Werbung für den zugehörigen Browser oder das Gerät zu widersprechen." },
+      { "type": "h2", "text": "Wie wir personenbezogene Daten offenlegen" },
+      { "type": "p", "text": "Unter bestimmten Umständen können wir deine personenbezogenen Daten zu Zwecken der Vertragserfüllung, zu berechtigten Zwecken und aus anderen Gründen im Rahmen dieser Datenschutzerklärung an Dritte offenlegen. Solche Umstände können umfassen:" },
+      { "type": "ul", "items": [
+        "Mit Anbietern oder anderen Dritten, die in unserem Auftrag Dienstleistungen erbringen (z. B. IT-Management, Zahlungsabwicklung, Datenanalyse, Kundensupport, Cloud-Speicher, Auftragsabwicklung und Versand).",
+        "Mit Geschäfts- und Marketingpartnern, um Dienstleistungen zu erbringen und dir Werbung anzuzeigen.",
+        "Wenn du uns anweist, uns darum bittest oder anderweitig einwilligst, bestimmte Informationen an Dritte offenzulegen.",
+        "Mit unseren verbundenen Unternehmen oder anderweitig innerhalb unserer Unternehmensgruppe.",
+        "Im Zusammenhang mit einer Geschäftstransaktion wie einer Fusion oder Insolvenz, zur Erfüllung geltender rechtlicher Verpflichtungen, zur Durchsetzung geltender Nutzungsbedingungen sowie zum Schutz oder zur Verteidigung der Dienste, unserer Rechte und der Rechte unserer Nutzer oder anderer."
+      ] },
+      { "type": "p", "text": "Wir verwenden oder offenbaren keine sensiblen personenbezogenen Daten ohne deine Einwilligung oder zum Zweck, Eigenschaften über dich abzuleiten." },
+      { "type": "h2", "text": "Websites und Links Dritter" },
+      { "type": "p", "text": "Unsere Website kann Links zu Websites oder anderen Online-Plattformen bereitstellen, die von Dritten betrieben werden. Wenn du Links zu Websites folgst, die nicht mit uns verbunden oder von uns kontrolliert werden, solltest du deren Datenschutz- und Sicherheitsrichtlinien sowie weitere Bedingungen prüfen. Wir übernehmen keine Gewähr und sind nicht verantwortlich für den Datenschutz oder die Sicherheit solcher Websites." },
+      { "type": "h2", "text": "Daten von Kindern" },
+      { "type": "p", "text": "Die Dienste sind nicht für die Nutzung durch Kinder bestimmt, und wir erheben wissentlich keine personenbezogenen Daten über Kinder. Wenn du Elternteil oder Erziehungsberechtigter eines Kindes bist, das uns seine personenbezogenen Daten übermittelt hat, kannst du uns über die unten angegebenen Kontaktdaten kontaktieren, um deren Löschung zu verlangen." },
+      { "type": "h2", "text": "Sicherheit und Aufbewahrung deiner Daten" },
+      { "type": "p", "text": "Bitte beachte, dass keine Sicherheitsmaßnahme perfekt oder undurchdringlich ist und wir keine \"perfekte Sicherheit\" garantieren können. Wir empfehlen, keine unsicheren Kanäle zu nutzen, um uns sensible oder vertrauliche Informationen mitzuteilen. Wie lange wir deine personenbezogenen Daten aufbewahren, hängt von verschiedenen Faktoren ab, etwa davon, ob wir die Daten benötigen, um dein Konto zu führen, die Dienste bereitzustellen, rechtliche Verpflichtungen zu erfüllen, Streitigkeiten beizulegen oder andere geltende Verträge und Richtlinien durchzusetzen." },
+      { "type": "h2", "text": "Deine Rechte" },
+      { "type": "p", "text": "Je nachdem, wo du lebst, hast du möglicherweise einige oder alle der unten aufgeführten Rechte in Bezug auf deine personenbezogenen Daten. Diese Rechte sind jedoch nicht absolut, können nur unter bestimmten Umständen gelten und in bestimmten Fällen können wir deine Anfrage ablehnen, soweit dies gesetzlich zulässig ist." },
+      { "type": "ul", "items": [
+        "**Recht auf Auskunft / Kenntnis:** Zugang zu den personenbezogenen Daten zu verlangen, die wir über dich gespeichert haben.",
+        "**Recht auf Löschung:** zu verlangen, dass wir personenbezogene Daten löschen, die wir über dich führen.",
+        "**Recht auf Berichtigung:** zu verlangen, dass wir unrichtige personenbezogene Daten berichtigen, die wir über dich führen.",
+        "**Recht auf Datenübertragbarkeit:** eine Kopie der personenbezogenen Daten zu erhalten, die wir über dich führen, und zu verlangen, dass wir sie an einen Dritten übermitteln.",
+        "**Recht auf Widerspruch gegen Verkauf, Weitergabe oder zielgerichtete Werbung:** uns anzuweisen, deine personenbezogenen Daten nicht zu \"verkaufen\" oder zu \"teilen\".",
+        "**Einschränkung der Verarbeitung:** uns zu bitten, die Verarbeitung deiner personenbezogenen Daten einzustellen oder einzuschränken.",
+        "**Widerruf der Einwilligung:** die Einwilligung zu widerrufen, sofern wir uns zur Verarbeitung deiner personenbezogenen Daten auf die Einwilligung stützen.",
+        "**Widerspruch:** gegen unsere Entscheidung Widerspruch einzulegen, wenn wir deine Anfrage ablehnen.",
+        "**Verwaltung der Kommunikationspräferenzen:** dich jederzeit über die Abmeldeoption von Werbe-E-Mails abzumelden."
+      ] },
+      { "type": "p", "text": "Du kannst jedes dieser Rechte ausüben, indem du uns über die unten angegebenen Kontaktdaten kontaktierst. Wir werden dich nicht dafür benachteiligen, dass du eines dieser Rechte ausübst." },
+      { "type": "h2", "text": "Beschwerden" },
+      { "type": "p", "text": "Wenn du Beschwerden darüber hast, wie wir deine personenbezogenen Daten verarbeiten, kontaktiere uns bitte über die unten angegebenen Kontaktdaten. Wenn du mit unserer Antwort nicht zufrieden bist, hast du je nach Wohnort möglicherweise das Recht, deine Beschwerde bei deiner örtlichen Datenschutzbehörde einzureichen." },
+      { "type": "h2", "text": "Internationale Nutzer" },
+      { "type": "p", "text": "Bitte beachte, dass wir deine personenbezogenen Daten möglicherweise außerhalb deines Wohnsitzlandes übermitteln, speichern und verarbeiten. Wenn wir deine personenbezogenen Daten aus Europa heraus übermitteln, stützen wir uns auf anerkannte Übermittlungsmechanismen wie die Standardvertragsklauseln der Europäischen Kommission, es sei denn, die Datenübermittlung erfolgt in ein Land, dem ein angemessenes Schutzniveau bescheinigt wurde." },
+      { "type": "h2", "text": "Kontakt" },
+      { "type": "p", "text": "Solltest du Fragen zu unseren Datenschutzpraktiken oder zu dieser Datenschutzerklärung haben oder eines der dir zustehenden Rechte ausüben wollen, rufe uns an oder schreibe uns an [info@perfectworld.global](mailto:info@perfectworld.global) oder kontaktiere uns unter Am Hochwald 5, 82319 Starnberg, Deutschland." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\ninfo@perfectworld.global\n+49 15129109696\nAm Hochwald 5\n82319 Starnberg, Deutschland" }
+    ]
+  },
+  "info": {
+    "allProfits": {
+      "title": "Alle Gewinne Gespendet",
+      "body": "Eine Marke, die greifbare Hoffnung schafft. Mit 100% gespendeten Gewinnen existiert Perfect World, um zu helfen – nicht, um auszubeuten."
+    },
+    "fashionTool": {
+      "title": "Mode als Werkzeug",
+      "body": "Wir glauben an die Kraft der Mode, ein Statement zu setzen. Sie gibt dir eine Stimme und unterstützt zugleich die Organisationen, die an vorderster Front unserer globalen Herausforderungen stehen."
+    },
+    "together": {
+      "title": "Gemeinsam. Nicht Allein.",
+      "body": "Mehr als ein Slogan – ein Versprechen für Wandel und Verbesserung. Mach den Unterschied!"
+    }
+  }
+}

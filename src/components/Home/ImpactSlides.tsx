@@ -1,24 +1,27 @@
 import { motion } from 'framer-motion';
-
-const slides = [
-    {
-        title: "All Profits Donated",
-        content: "A Brand built on creating tangible hope. With 100% of profits donated, Perfect World exists to help, not to exploit.",
-        image: "/assets/images/all-profits-donated.webp"
-    },
-    {
-        title: "Reason and Change",
-        content: "We want to make a statement—a statement that combines style with a call for urgent change on our planet. Perfect World is about more than clothing; it’s a movement that uses fashion to advocate for a better, more compassionate world. With each purchase, we invite our customers to make that same statement, to wear their values proudly, and to join us in raising awareness for causes that matter. We are glad you are here, reading this :) let's make a difference, together.",
-        image: "/assets/images/reason-for-change.webp"
-    },
-    {
-        title: "Fashion as a Tool",
-        content: "We believe in the power fashion holds to make a Statement. Giving you a voice, while simultaneously aiding and supporting charities on the forefront of our global challenges.",
-        image: "/assets/images/fashion-as-a-tool.webp"
-    }
-];
+import { useTranslation } from 'react-i18next';
 
 export default function ImpactSlides() {
+    const { t } = useTranslation();
+
+    const slides = [
+        {
+            title: t('impact.slide1Title'),
+            content: t('impact.slide1Content'),
+            image: "/assets/images/all-profits-donated.webp"
+        },
+        {
+            title: t('impact.slide2Title'),
+            content: t('impact.slide2Content'),
+            image: "/assets/images/reason-for-change.webp"
+        },
+        {
+            title: t('impact.slide3Title'),
+            content: t('impact.slide3Content'),
+            image: "/assets/images/fashion-as-a-tool.webp"
+        }
+    ];
+
     return (
         <section className="bg-white text-black relative z-10">
             {slides.map((slide, index) => (

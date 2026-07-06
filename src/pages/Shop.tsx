@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 import CollectionRow from '../components/Shop/CollectionRow'
@@ -12,6 +13,7 @@ import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function Shop() {
   usePageTitle('Shop')
+  const { t } = useTranslation()
   const location = useLocation()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(true)
@@ -66,7 +68,7 @@ export default function Shop() {
         setProducts(uniqueProducts)
       } catch (err) {
         console.error('Failed to fetch products:', err)
-        setError('Failed to load products. Please try again later.')
+        setError(t('shop.error'))
       } finally {
         setLoading(false)
       }
@@ -144,13 +146,13 @@ export default function Shop() {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Oops!</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('shop.oops')}</h3>
             <p className="text-gray-600 mb-6">{error}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
             >
-              Try Again
+              {t('shop.tryAgain')}
             </button>
           </div>
         </div>
@@ -173,10 +175,10 @@ export default function Shop() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 text-center font-primary py-1">
-                Shop Our Products
+                {t('shop.title')}
               </h1>
               <p className="text-base md:text-lg text-gray-600 text-center mb-6 md:mb-8">
-                Every purchase supports a charitable cause
+                {t('shop.subtitle')}
               </p>
 
               {/* Collection Rows - Each project gets one row with 3 products */}

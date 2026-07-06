@@ -1,5 +1,6 @@
 import { useEffect, Suspense, useRef, useState, lazy } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -61,6 +62,7 @@ function makeImageTransparent(url: string, threshold = 250): Promise<string> {
 
 export default function Home() {
   usePageTitle()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   const { setIsScrolled } = useNavigation()
@@ -204,7 +206,7 @@ export default function Home() {
         <Suspense
           fallback={
             <div className="flex items-center justify-center h-full">
-              <div className="text-white text-xl">Loading 3D Experience...</div>
+              <div className="text-white text-xl">{t('home.loading3d')}</div>
             </div>
           }
         >
@@ -236,7 +238,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.8 }}
         >
           <p className="text-3xl md:text-4xl lg:text-5xl text-white font-light whitespace-nowrap" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            Together. Not alone.
+            {t('home.tagline')}
           </p>
         </motion.div>
       )}
@@ -251,7 +253,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 1 }}
         >
           <p className="text-white/80 text-lg md:text-2xl tracking-widest uppercase font-bold" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            Shop Hope !
+            {t('home.shopHope')}
           </p>
         </motion.div>
       )}
@@ -269,7 +271,7 @@ export default function Home() {
             onClick={() => navigate('/shop')}
             className="whitespace-nowrap px-8 md:px-10 py-3 md:py-3.5 bg-white text-black rounded-full font-semibold text-sm md:text-lg shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:bg-gray-200 hover:scale-105 active:scale-95 transition-all"
           >
-            Shop the Collections
+            {t('home.shopCollections')}
           </button>
         </motion.div>
       )}
@@ -315,7 +317,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            Our Collections
+            {t('home.ourCollections')}
           </motion.h2>
 
           {/* New collection promo banner */}
@@ -329,17 +331,17 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 rounded-2xl bg-[#F5F2EB] border border-[#F0EAE1] shadow-lg px-6 py-5 text-center sm:text-left">
               <div className="flex-1">
                 <span className="text-[11px] tracking-[0.2em] text-[#A98467] font-bold uppercase block mb-1">
-                  New Collection
+                  {t('home.newCollection')}
                 </span>
                 <p className="text-lg md:text-xl font-bold text-[#2C2621]">
-                  Rich in Life — wealth you can't buy
+                  {t('home.richBanner')}
                 </p>
               </div>
               <button
                 onClick={() => navigate('/rich-in-life')}
                 className="shrink-0 px-6 py-3 bg-[#2C2621] text-white rounded-full font-semibold hover:bg-[#473E36] active:scale-[0.98] transition-all shadow-md"
               >
-                Shop now →
+                {t('home.shopNowArrow')}
               </button>
             </div>
           </motion.div>
@@ -418,7 +420,7 @@ export default function Home() {
                       className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-md"
                       style={{ backgroundColor: '#A98467' }}
                     >
-                      New
+                      {t('home.new')}
                     </span>
                   )}
 
@@ -469,13 +471,13 @@ export default function Home() {
           className="flex flex-col items-center gap-6"
         >
           <p className="text-2xl md:text-3xl text-black font-light" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-            Together. Not alone.
+            {t('home.tagline')}
           </p>
           <button
             onClick={() => navigate('/shop')}
             className="whitespace-nowrap px-10 py-4 bg-black text-white rounded-full font-semibold text-lg shadow-xl hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all"
           >
-            Shop Now
+            {t('home.shopNow')}
           </button>
         </motion.div>
       </section>

@@ -1,0 +1,201 @@
+{
+  "refund": {
+    "title": "Política de Reembolsos y Devoluciones",
+    "blocks": [
+      { "type": "p", "text": "Gracias por apoyar a Perfect World y unirte a nuestra misión de crear un mundo mejor y más compasivo. Todas las ganancias de tu compra se destinan directamente a nuestras causas benéficas. Debido a este compromiso de donar el 100% de nuestras ganancias cada mes, no podemos ofrecer reembolsos, aunque siempre estamos comprometidos con que quedes satisfecho con tu pedido." },
+      { "type": "h2", "text": "Productos defectuosos o dañados" },
+      { "type": "p", "text": "Si los artículos llegan dañados o defectuosos, contáctanos. Si recibes un artículo que no cumple con nuestros estándares, escríbenos a [info@perfectworld.global](mailto:info@perfectworld.global) con los datos de tu pedido, una descripción del problema y fotos del producto si aplica. Nuestro equipo evaluará el caso y trabajará contigo hacia una solución." },
+      { "type": "h2", "text": "Cambios y reemplazos" },
+      { "type": "p", "text": "Aunque no hay reembolsos disponibles, ofrecemos cambios o reemplazos para artículos defectuosos. Ten en cuenta que los cambios están sujetos a la disponibilidad del producto." },
+      { "type": "h2", "text": "Nuestro compromiso con la transparencia y la responsabilidad" },
+      { "type": "p", "text": "Donamos el 100% de nuestras ganancias cada mes para apoyar causas significativas, por eso nuestra política no permite reembolsos. Te invitamos a visitar nuestras páginas de [Transparencia](/transparency) y [Proyectos](/projects) para más información sobre el impacto que genera tu compra." },
+      { "type": "p", "text": "Gracias por apoyar nuestra misión." }
+    ]
+  },
+  "shipping": {
+    "title": "Política de Envíos",
+    "blocks": [
+      { "type": "p", "text": "El envío, según tu ubicación, tarda entre 7 y 14 días." },
+      { "type": "p", "text": "Si tienes preguntas sobre el estado del envío de tu pedido, contáctanos en [info@perfectworld.global](mailto:info@perfectworld.global)." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5\n82319 Starnberg, Alemania\n+49 15129109696" }
+    ]
+  },
+  "legalNotice": {
+    "title": "Aviso Legal",
+    "blocks": [
+      { "type": "h2", "text": "Según el § 5 de la TMG (ley alemana)" },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Alemania" },
+      { "type": "h2", "text": "Representado por" },
+      { "type": "p", "text": "Nicholas Freitag" },
+      { "type": "h2", "text": "Contacto" },
+      { "type": "p", "text": "Teléfono: +49 15129109696\nCorreo: [info@perfectworld.global](mailto:info@perfectworld.global)" }
+    ]
+  },
+  "cookie": {
+    "title": "Política de Cookies",
+    "blocks": [
+      { "type": "p", "text": "Esta Política de Cookies explica cómo Perfect World (\"nosotros\", \"nos\" o \"nuestro\") utiliza cookies y tecnologías similares en perfectworld.global. Debe leerse junto con nuestra [Política de Privacidad](/privacy-policy), que explica cómo usamos la información personal en general." },
+      { "type": "h2", "text": "Qué son las cookies" },
+      { "type": "p", "text": "Las cookies son pequeños archivos de texto que se colocan en tu dispositivo cuando visitas un sitio web. Permiten que un sitio reconozca tu dispositivo y recuerde información sobre tu visita, como tus preferencias y acciones en el sitio." },
+      { "type": "h2", "text": "Categorías de cookies que usamos" },
+      { "type": "ul", "items": [
+        "**Necesarias** — Esenciales para el funcionamiento del sitio y no se pueden desactivar.",
+        "**Funcionalidad** — Permiten una funcionalidad y personalización mejoradas.",
+        "**Experiencia** — Nos ayudan a entender cómo interactúas con nuestro sitio.",
+        "**Medición** — Nos ayudan a medir el tráfico y analizar el comportamiento.",
+        "**Marketing** — Se usan para mostrar anuncios personalizados."
+      ] },
+      { "type": "p", "text": "Puedes gestionar tus preferencias para estas categorías en cualquier momento a través del banner de consentimiento de cookies en nuestro sitio, o ajustando la configuración de tu navegador. Denegar el consentimiento para las categorías no necesarias puede hacer que algunas funciones no estén disponibles." },
+      { "type": "h2", "text": "Cookies de terceros" },
+      { "type": "p", "text": "Nuestra tienda funciona con Shopify, y utilizamos la plataforma de comercio de Shopify para operar nuestro sitio. Para información específica sobre las cookies que Shopify usa para hacer funcionar nuestra tienda, consulta [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). También podemos permitir que otros terceros y proveedores de servicios utilicen cookies en nuestro sitio para adaptar mejor los servicios, productos y publicidad en nuestro sitio y en otros sitios web." },
+      { "type": "h2", "text": "Gestión de cookies" },
+      { "type": "p", "text": "La mayoría de los navegadores aceptan cookies automáticamente por defecto, pero puedes configurar tu navegador para eliminar o rechazar cookies a través de sus controles. Ten en cuenta que eliminar o bloquear cookies puede afectar negativamente tu experiencia en nuestro sitio y hacer que algunas funciones no funcionen correctamente o dejen de estar disponibles." },
+      { "type": "p", "text": "Nuestro sitio web también reconoce la señal de Control Global de Privacidad (GPC). Si nos comunicas tu preferencia mediante GPC, trataremos dicha señal como una solicitud válida para excluirte de la venta / publicidad dirigida para el navegador o dispositivo asociado." },
+      { "type": "h2", "text": "Cambios en esta política" },
+      { "type": "p", "text": "Podemos actualizar esta Política de Cookies de vez en cuando para reflejar cambios en las cookies que usamos o por otros motivos operativos, legales o regulatorios. Vuelve a visitar esta página periódicamente para mantenerte informado." },
+      { "type": "h2", "text": "Contacto" },
+      { "type": "p", "text": "Si tienes preguntas sobre nuestro uso de cookies, contáctanos en [info@perfectworld.global](mailto:info@perfectworld.global)." }
+    ]
+  },
+  "terms": {
+    "title": "Términos del Servicio",
+    "blocks": [
+      { "type": "p", "text": "Este sitio web es operado por Perfect World. A lo largo del sitio, los términos \"nosotros\", \"nos\" y \"nuestro\" se refieren a Perfect World. Al visitar nuestro sitio y/o comprar algo, participas en nuestro \"Servicio\" y aceptas quedar vinculado por los siguientes términos y condiciones (\"Términos del Servicio\", \"Términos\"), incluidos los términos, condiciones y políticas adicionales aquí referenciados y/o disponibles mediante enlace." },
+      { "type": "h2", "text": "Sección 1 — Términos de la tienda en línea" },
+      { "type": "p", "text": "Debes tener la mayoría de edad legal en tu jurisdicción, o contar con el consentimiento de tus padres, para usar este sitio. No puedes usar nuestros productos con ningún fin ilegal o no autorizado, ni puedes, al usar el Servicio, infringir ninguna ley, vulnerar derechos de autor ni transmitir gusanos, virus o código destructivo. El incumplimiento o la violación de cualquiera de los Términos resultará en la terminación inmediata de tus Servicios." },
+      { "type": "h2", "text": "Sección 2 — Condiciones generales" },
+      { "type": "p", "text": "Nos reservamos el derecho de rechazar el Servicio a cualquier persona por cualquier motivo en cualquier momento. Tu contenido puede transferirse sin cifrar a través de las redes, mientras que la información de la tarjeta de crédito siempre se cifra. Aceptas no reproducir, duplicar, copiar, vender, revender ni explotar ninguna parte del Servicio sin nuestro permiso expreso por escrito." },
+      { "type": "h2", "text": "Sección 3 — Exactitud, integridad y vigencia de la información" },
+      { "type": "p", "text": "No somos responsables si la información disponible en este sitio no es exacta, completa o actual. El material de este sitio se ofrece solo con fines de información general y no debe considerarse ni utilizarse como única base para tomar decisiones. Aceptas que es tu responsabilidad supervisar los cambios en nuestro sitio." },
+      { "type": "h2", "text": "Sección 4 — Modificaciones del Servicio y los precios" },
+      { "type": "p", "text": "Los precios de nuestros productos pueden cambiar sin previo aviso. Nos reservamos el derecho, en cualquier momento, de modificar o discontinuar el Servicio (o cualquier parte o contenido del mismo) sin previo aviso. No seremos responsables ante ti ni ante terceros por ninguna modificación, cambio de precio, suspensión o discontinuación del Servicio." },
+      { "type": "h2", "text": "Sección 5 — Productos o Servicios" },
+      { "type": "p", "text": "Ciertos productos o Servicios pueden estar disponibles exclusivamente en línea a través del sitio web. Estos productos o Servicios pueden tener cantidades limitadas y están sujetos a nuestra Política de Reembolsos. No podemos garantizar que la visualización de cualquier color en el monitor de tu computadora sea exacta. Nos reservamos el derecho de limitar las ventas de nuestros productos o Servicios a cualquier persona, región geográfica o jurisdicción. Cualquier oferta de producto o Servicio realizada en este sitio es nula donde esté prohibida." },
+      { "type": "h2", "text": "Sección 6 — Exactitud de la facturación y de la información de la cuenta" },
+      { "type": "p", "text": "Nos reservamos el derecho de rechazar cualquier pedido que realices. Podemos, a nuestro exclusivo criterio, limitar o cancelar las cantidades compradas por persona, por hogar o por pedido. Aceptas proporcionar información de compra y de cuenta actual, completa y exacta para todas las compras realizadas en nuestra tienda, y actualizar puntualmente tu cuenta y demás información." },
+      { "type": "h2", "text": "Sección 7 — Herramientas opcionales" },
+      { "type": "p", "text": "Podemos darte acceso a herramientas de terceros que no supervisamos ni controlamos ni sobre las que tenemos influencia. Dichas herramientas se ofrecen \"tal cual\" y \"según disponibilidad\", sin garantías, representaciones ni condiciones de ningún tipo. Cualquier uso que hagas de las herramientas opcionales ofrecidas a través del sitio corre por tu propia cuenta y riesgo." },
+      { "type": "h2", "text": "Sección 8 — Enlaces de terceros" },
+      { "type": "p", "text": "Cierto contenido, productos y servicios disponibles a través de nuestro Servicio pueden incluir materiales de terceros. Los enlaces de terceros en este sitio pueden dirigirte a sitios web que no están afiliados a nosotros. No somos responsables de examinar ni evaluar el contenido o la exactitud de dichos materiales de terceros, ni somos responsables de ningún daño o perjuicio relacionado con tu uso de sitios web de terceros." },
+      { "type": "h2", "text": "Sección 9 — Comentarios, opiniones y otros envíos de usuarios" },
+      { "type": "p", "text": "Si, a petición nuestra, envías ciertos envíos específicos o, sin que te lo pidamos, envías ideas creativas, sugerencias, propuestas, planes u otros materiales, aceptas que podamos, en cualquier momento y sin restricción, editar, copiar, publicar, distribuir, traducir y utilizar de cualquier otro modo y en cualquier medio los comentarios que nos remitas. Podemos, pero no tenemos obligación de, supervisar, editar o eliminar contenido que determinemos, a nuestro exclusivo criterio, que sea ilegal, ofensivo o inaceptable." },
+      { "type": "h2", "text": "Sección 10 — Información personal" },
+      { "type": "p", "text": "El envío de tu información personal a través de la tienda se rige por nuestra [Política de Privacidad](/privacy-policy)." },
+      { "type": "h2", "text": "Sección 11 — Errores, inexactitudes y omisiones" },
+      { "type": "p", "text": "Ocasionalmente puede haber información en nuestro sitio que contenga errores tipográficos, inexactitudes u omisiones. Nos reservamos el derecho de corregir cualquier error, inexactitud u omisión, y de cambiar o actualizar información o cancelar pedidos si alguna información es inexacta, en cualquier momento y sin previo aviso." },
+      { "type": "h2", "text": "Sección 12 — Usos prohibidos" },
+      { "type": "p", "text": "Además de otras prohibiciones establecidas en los Términos del Servicio, se te prohíbe usar el sitio o su contenido: (a) para cualquier fin ilícito; (b) para inducir a otros a realizar o participar en actos ilícitos; (c) para infringir cualquier normativa, regla, ley u ordenanza internacional, federal, provincial o estatal; (d) para infringir o vulnerar nuestros derechos de propiedad intelectual o los de terceros; (e) para acosar, abusar, insultar, dañar, difamar, calumniar, menospreciar, intimidar o discriminar; (f) para enviar información falsa o engañosa; (g) para cargar o transmitir virus o cualquier otro tipo de código malicioso; (h) para recopilar o rastrear la información personal de otros; (i) para hacer spam, phishing, pharming, pretexting, spidering, crawling o scraping; (j) para cualquier fin obsceno o inmoral; o (k) para interferir o eludir las funciones de seguridad del Servicio. Nos reservamos el derecho de terminar tu uso del Servicio por violar cualquiera de los usos prohibidos." },
+      { "type": "h2", "text": "Sección 13 — Exención de garantías; limitación de responsabilidad" },
+      { "type": "p", "text": "No garantizamos ni declaramos que tu uso de nuestro Servicio será ininterrumpido, puntual, seguro o libre de errores. El Servicio y todos los productos y Servicios que se te entregan a través del Servicio se proporcionan (salvo que lo indiquemos expresamente) \"tal cual\" y \"según disponibilidad\" para tu uso, sin ninguna representación, garantía o condición de ningún tipo. En ningún caso Perfect World, nuestros directores, funcionarios, empleados, afiliados, agentes, contratistas, pasantes, proveedores, proveedores de Servicios o licenciantes serán responsables de ninguna lesión, pérdida, reclamación o daño directo, indirecto, incidental, punitivo, especial o consecuente de ningún tipo." },
+      { "type": "h2", "text": "Sección 14 — Indemnización" },
+      { "type": "p", "text": "Aceptas indemnizar, defender y eximir de responsabilidad a Perfect World y a nuestra matriz, subsidiarias, afiliadas, socios, funcionarios, directores, agentes, contratistas, licenciantes, proveedores de Servicios, subcontratistas, proveedores, pasantes y empleados, de cualquier reclamación o demanda, incluidos honorarios razonables de abogados, presentada por cualquier tercero debido a o derivada de tu incumplimiento de estos Términos del Servicio." },
+      { "type": "h2", "text": "Sección 15 — Divisibilidad" },
+      { "type": "p", "text": "En caso de que se determine que alguna disposición de estos Términos del Servicio es ilegal, nula o inaplicable, dicha disposición seguirá siendo aplicable en la máxima medida permitida por la ley aplicable." },
+      { "type": "h2", "text": "Sección 16 — Terminación" },
+      { "type": "p", "text": "Estos Términos del Servicio son efectivos hasta que tú o nosotros los terminemos. Puedes terminar estos Términos del Servicio en cualquier momento notificándonos que ya no deseas usar nuestros Servicios. Si, a nuestro exclusivo juicio, incumples, o sospechamos que has incumplido, cualquier término o disposición de estos Términos del Servicio, también podemos terminar este acuerdo en cualquier momento sin previo aviso." },
+      { "type": "h2", "text": "Sección 17 — Acuerdo íntegro" },
+      { "type": "p", "text": "Estos Términos del Servicio y cualquier política o regla operativa publicada por nosotros en este sitio o en relación con el Servicio constituyen el acuerdo y entendimiento íntegro entre tú y nosotros." },
+      { "type": "h2", "text": "Sección 18 — Ley aplicable" },
+      { "type": "p", "text": "Estos Términos del Servicio y cualquier acuerdo separado por el cual te proporcionemos Servicios se regirán e interpretarán de acuerdo con las leyes de Alemania." },
+      { "type": "h2", "text": "Sección 19 — Cambios en los Términos del Servicio" },
+      { "type": "p", "text": "Nos reservamos el derecho, a nuestro exclusivo criterio, de actualizar, cambiar o reemplazar cualquier parte de estos Términos del Servicio publicando actualizaciones y cambios en nuestro sitio web. Tu uso continuado o el acceso a nuestro sitio web o al Servicio tras la publicación de cualquier cambio en estos Términos del Servicio constituye la aceptación de dichos cambios." },
+      { "type": "h2", "text": "Sección 20 — Información de contacto" },
+      { "type": "p", "text": "Las preguntas sobre los Términos del Servicio deben enviarse a [info@perfectworld.global](mailto:info@perfectworld.global)." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Alemania\n+49 15129109696" }
+    ]
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "subtitle": "Última actualización: 4 de diciembre de 2025",
+    "blocks": [
+      { "type": "p", "text": "Esta Política de Privacidad describe cómo Perfect World (el \"Sitio\", \"nosotros\", \"nos\" o \"nuestro\") recopila, usa y divulga tu información personal cuando visitas, usas nuestros servicios o realizas una compra en perfectworld.global (el \"Sitio\") o cuando te comunicas con nosotros de otro modo respecto al Sitio (colectivamente, los \"Servicios\"). A los efectos de esta Política de Privacidad, \"tú\" y \"tu\" significan tú como usuario de los Servicios, ya seas cliente, visitante del sitio web u otra persona cuya información hayamos recopilado conforme a esta Política de Privacidad." },
+      { "type": "p", "text": "Por favor, lee esta Política de Privacidad detenidamente." },
+      { "type": "h2", "text": "Cambios en esta Política de Privacidad" },
+      { "type": "p", "text": "Podemos actualizar esta Política de Privacidad de vez en cuando, incluso para reflejar cambios en nuestras prácticas o por otros motivos operativos, legales o regulatorios. Publicaremos la Política de Privacidad revisada en el Sitio, actualizaremos la fecha de \"Última actualización\" y tomaremos cualquier otra medida exigida por la ley aplicable." },
+      { "type": "h2", "text": "Cómo recopilamos y usamos tu información personal" },
+      { "type": "p", "text": "Para proporcionar los Servicios, recopilamos y hemos recopilado durante los últimos 12 meses información personal sobre ti de diversas fuentes, según se indica a continuación. La información que recopilamos y usamos varía según cómo interactúes con nosotros." },
+      { "type": "p", "text": "Además de los usos específicos indicados a continuación, podemos usar la información que recopilamos sobre ti para comunicarnos contigo, proporcionar o mejorar los Servicios, cumplir con cualquier obligación legal aplicable, hacer cumplir cualquier término de servicio aplicable y proteger o defender los Servicios, nuestros derechos y los derechos de nuestros usuarios u otros." },
+      { "type": "h3", "text": "Información que recopilamos directamente de ti" },
+      { "type": "p", "text": "La información que nos envías directamente a través de nuestros Servicios puede incluir:" },
+      { "type": "ul", "items": [
+        "**Datos de contacto**, incluidos tu nombre, dirección, número de teléfono y correo electrónico.",
+        "**Información del pedido**, incluidos tu nombre, dirección de facturación, dirección de envío, confirmación de pago, correo electrónico y número de teléfono.",
+        "**Información de la cuenta**, incluidos tu nombre de usuario, contraseña, preguntas de seguridad y demás información usada con fines de seguridad de la cuenta.",
+        "**Información de atención al cliente**, incluida la información que decidas incluir en tus comunicaciones con nosotros, por ejemplo, al enviar un mensaje a través de los Servicios."
+      ] },
+      { "type": "p", "text": "Algunas funciones de los Servicios pueden requerir que nos proporciones directamente cierta información sobre ti. Puedes optar por no proporcionar esta información, pero hacerlo puede impedirte usar o acceder a esas funciones." },
+      { "type": "h3", "text": "Información que recopilamos sobre tu uso" },
+      { "type": "p", "text": "También podemos recopilar automáticamente cierta información sobre tu interacción con los Servicios (\"Datos de uso\"). Para ello, podemos usar cookies, píxeles y tecnologías similares (\"Cookies\"). Los Datos de uso pueden incluir información sobre cómo accedes y usas nuestro Sitio y tu cuenta, incluidos datos del dispositivo, del navegador, sobre tu conexión de red, tu dirección IP y otra información relativa a tu interacción con los Servicios." },
+      { "type": "h3", "text": "Información que obtenemos de terceros" },
+      { "type": "p", "text": "Por último, podemos obtener información sobre ti de terceros, incluidos proveedores y prestadores de servicios que pueden recopilar información en nuestro nombre, tales como:" },
+      { "type": "ul", "items": [
+        "Empresas que dan soporte a nuestro Sitio y Servicios, como Shopify.",
+        "Nuestros procesadores de pagos, que recopilan información de pago (por ejemplo, cuenta bancaria, información de tarjeta de crédito o débito, dirección de facturación) para procesar tu pago con el fin de cumplir con tus pedidos y proporcionarte los productos o servicios que hayas solicitado, para ejecutar nuestro contrato contigo.",
+        "Cuando visitas nuestro Sitio, abres o haces clic en correos que te enviamos, o interactúas con nuestros Servicios o anuncios, nosotros, o terceros con los que trabajamos, podemos recopilar automáticamente cierta información mediante tecnologías de seguimiento en línea como píxeles, balizas web, kits de desarrollo de software, bibliotecas de terceros y cookies."
+      ] },
+      { "type": "p", "text": "Cualquier información que obtengamos de terceros será tratada de acuerdo con esta Política de Privacidad. Consulta también la sección siguiente, \"Sitios web y enlaces de terceros\"." },
+      { "type": "h3", "text": "Cómo usamos tu información personal" },
+      { "type": "ul", "items": [
+        "**Prestación de productos y Servicios.** Usamos tu información personal para proporcionarte los Servicios con el fin de ejecutar nuestro contrato contigo, incluido procesar tus pagos, cumplir con tus pedidos, enviar notificaciones relacionadas con tu cuenta, compras, devoluciones, cambios u otras transacciones, crear, mantener y gestionar tu cuenta, y organizar el envío y facilitar devoluciones y cambios.",
+        "**Marketing y publicidad.** Podemos usar tu información personal con fines de marketing y promoción, como enviar comunicaciones de marketing, publicidad y promoción por correo electrónico, mensaje de texto o correo postal, y mostrarte anuncios de productos o servicios.",
+        "**Seguridad y prevención del fraude.** Usamos tu información personal para detectar, investigar o tomar medidas ante posibles actividades fraudulentas, ilegales o maliciosas. Si decides registrar una cuenta, eres responsable de mantener seguras tus credenciales.",
+        "**Comunicación contigo y mejora del Servicio.** Usamos tu información personal para brindarte atención al cliente y mejorar nuestros Servicios."
+      ] },
+      { "type": "h2", "text": "Cookies" },
+      { "type": "p", "text": "Como muchos sitios web, usamos Cookies en nuestro Sitio. Para información específica sobre las Cookies que usamos relacionadas con el funcionamiento de nuestra tienda con Shopify, consulta [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). Usamos Cookies para hacer funcionar y mejorar nuestro Sitio y Servicios (incluido recordar tus acciones y preferencias), realizar analíticas y entender mejor la interacción de los usuarios con los Servicios. También podemos permitir que terceros y proveedores de servicios usen Cookies en nuestro Sitio para adaptar mejor los servicios, productos y publicidad en nuestro Sitio y en otros sitios web." },
+      { "type": "p", "text": "La mayoría de los navegadores aceptan Cookies automáticamente por defecto, pero puedes configurar tu navegador para eliminar o rechazar Cookies mediante sus controles. Ten en cuenta que eliminar o bloquear Cookies puede afectar negativamente tu experiencia como usuario. Para más detalles sobre las categorías de Cookies que usamos y cómo gestionar tus preferencias, consulta nuestra [Política de Cookies](/cookie-policy)." },
+      { "type": "p", "text": "Nuestro sitio web también reconoce la señal de Control Global de Privacidad (GPC), que te permite excluirte de ciertos usos o divulgaciones de tu información. Si nos comunicas tu preferencia mediante GPC, trataremos dicha señal como una solicitud válida para excluirte de la venta / publicidad dirigida para el navegador o dispositivo asociado." },
+      { "type": "h2", "text": "Cómo divulgamos la información personal" },
+      { "type": "p", "text": "En determinadas circunstancias, podemos divulgar tu información personal a terceros con fines de cumplimiento de contratos, fines legítimos y otros motivos sujetos a esta Política de Privacidad. Dichas circunstancias pueden incluir:" },
+      { "type": "ul", "items": [
+        "Con proveedores u otros terceros que prestan servicios en nuestro nombre (por ejemplo, gestión de TI, procesamiento de pagos, análisis de datos, atención al cliente, almacenamiento en la nube, cumplimiento de pedidos y envío).",
+        "Con socios comerciales y de marketing para prestar servicios y hacerte publicidad.",
+        "Cuando nos indicas, solicitas o consientes de otro modo que divulguemos cierta información a terceros.",
+        "Con nuestras afiliadas o dentro de nuestro grupo corporativo.",
+        "En relación con una transacción comercial como una fusión o quiebra, para cumplir con cualquier obligación legal aplicable, hacer cumplir cualquier término de servicio aplicable y proteger o defender los Servicios, nuestros derechos y los derechos de nuestros usuarios u otros."
+      ] },
+      { "type": "p", "text": "No usamos ni divulgamos información personal sensible sin tu consentimiento ni con el fin de inferir características sobre ti." },
+      { "type": "h2", "text": "Sitios web y enlaces de terceros" },
+      { "type": "p", "text": "Nuestro Sitio puede ofrecer enlaces a sitios web u otras plataformas en línea operadas por terceros. Si sigues enlaces a sitios no afiliados ni controlados por nosotros, debes revisar sus políticas de privacidad y seguridad y sus demás términos y condiciones. No garantizamos ni somos responsables de la privacidad o seguridad de dichos sitios." },
+      { "type": "h2", "text": "Datos de menores" },
+      { "type": "p", "text": "Los Servicios no están destinados a ser usados por menores, y no recopilamos conscientemente información personal de menores. Si eres el padre, madre o tutor de un menor que nos ha proporcionado su información personal, puedes contactarnos usando los datos de contacto indicados a continuación para solicitar que se elimine." },
+      { "type": "h2", "text": "Seguridad y conservación de tu información" },
+      { "type": "p", "text": "Ten en cuenta que ninguna medida de seguridad es perfecta ni impenetrable, y no podemos garantizar una \"seguridad perfecta\". Te recomendamos no usar canales inseguros para comunicarnos información sensible o confidencial. El tiempo que conservamos tu información personal depende de distintos factores, como si necesitamos la información para mantener tu cuenta, prestar los Servicios, cumplir obligaciones legales, resolver disputas o hacer cumplir otros contratos y políticas aplicables." },
+      { "type": "h2", "text": "Tus derechos" },
+      { "type": "p", "text": "Según el lugar donde vivas, puedes tener algunos o todos los derechos que se enumeran a continuación en relación con tu información personal. Sin embargo, estos derechos no son absolutos, pueden aplicar solo en ciertas circunstancias y, en algunos casos, podemos rechazar tu solicitud según lo permita la ley." },
+      { "type": "ul", "items": [
+        "**Derecho de acceso / a saber:** solicitar acceso a la información personal que tenemos sobre ti.",
+        "**Derecho de supresión:** solicitar que eliminemos la información personal que mantenemos sobre ti.",
+        "**Derecho de rectificación:** solicitar que corrijamos información personal inexacta que mantenemos sobre ti.",
+        "**Derecho de portabilidad:** recibir una copia de la información personal que tenemos sobre ti y solicitar que la transfiramos a un tercero.",
+        "**Derecho a excluirte de la venta, el intercambio o la publicidad dirigida:** indicarnos que no \"vendamos\" ni \"compartamos\" tu información personal.",
+        "**Restricción del tratamiento:** pedirnos que detengamos o restrinjamos el tratamiento de tu información personal.",
+        "**Retirada del consentimiento:** retirar el consentimiento cuando nos basemos en él para tratar tu información personal.",
+        "**Apelación:** apelar nuestra decisión si rechazamos tu solicitud.",
+        "**Gestión de preferencias de comunicación:** darte de baja de los correos promocionales en cualquier momento mediante la opción de cancelar suscripción."
+      ] },
+      { "type": "p", "text": "Puedes ejercer cualquiera de estos derechos contactándonos mediante los datos de contacto proporcionados a continuación. No te discriminaremos por ejercer cualquiera de estos derechos." },
+      { "type": "h2", "text": "Reclamaciones" },
+      { "type": "p", "text": "Si tienes reclamaciones sobre cómo tratamos tu información personal, contáctanos usando los datos de contacto proporcionados a continuación. Si no quedas satisfecho con nuestra respuesta, según el lugar donde vivas, puedes tener derecho a presentar tu reclamación ante tu autoridad local de protección de datos." },
+      { "type": "h2", "text": "Usuarios internacionales" },
+      { "type": "p", "text": "Ten en cuenta que podemos transferir, almacenar y procesar tu información personal fuera del país donde vives. Si transferimos tu información personal fuera de Europa, nos basaremos en mecanismos de transferencia reconocidos como las Cláusulas Contractuales Tipo de la Comisión Europea, a menos que la transferencia de datos sea a un país que se haya determinado que ofrece un nivel adecuado de protección." },
+      { "type": "h2", "text": "Contacto" },
+      { "type": "p", "text": "Si tienes preguntas sobre nuestras prácticas de privacidad o sobre esta Política de Privacidad, o si deseas ejercer cualquiera de los derechos disponibles para ti, llámanos o escríbenos a [info@perfectworld.global](mailto:info@perfectworld.global) o contáctanos en Am Hochwald 5, 82319 Starnberg, Alemania." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\ninfo@perfectworld.global\n+49 15129109696\nAm Hochwald 5\n82319 Starnberg, Alemania" }
+    ]
+  },
+  "info": {
+    "allProfits": {
+      "title": "Todas las Ganancias Donadas",
+      "body": "Una marca construida para crear esperanza tangible. Con el 100% de las ganancias donadas, Perfect World existe para ayudar, no para explotar."
+    },
+    "fashionTool": {
+      "title": "La Moda como Herramienta",
+      "body": "Creemos en el poder de la moda para hacer una declaración. Te da una voz, mientras apoya a las organizaciones que están al frente de nuestros desafíos globales."
+    },
+    "together": {
+      "title": "Juntos. No Solos.",
+      "body": "Más que un eslogan, es una promesa de cambio y mejora. ¡Haz la diferencia!"
+    }
+  }
+}

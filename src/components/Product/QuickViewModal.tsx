@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { useState, useEffect } from 'react'
@@ -12,6 +13,7 @@ interface QuickViewModalProps {
 
 export default function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
   const { addToCart } = useCart()
+  const { t, i18n } = useTranslation()
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
@@ -26,7 +28,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
   const selectedVariant = product.variants[selectedVariantIndex]
   const price = parseFloat(selectedVariant.price.amount)
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat(i18n.language, {
     style: 'currency',
     currency: selectedVariant.price.currencyCode,
   }).format(price)
@@ -100,7 +102,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                 {!isAvailable && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
                     <span className="px-6 py-3 bg-red-500 text-white text-lg font-bold rounded-full">
-                      Sold Out
+                      {t('product.soldOut')}
                     </span>
                   </div>
                 )}
@@ -195,12 +197,12 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           />
                         </svg>
-                        Adding to Cart...
+                        {t('product.addingToCart')}
                       </span>
                     ) : !isAvailable ? (
-                      'Sold Out'
+                      t('product.soldOut')
                     ) : (
-                      'Add to Cart'
+                      t('product.addToCart')
                     )}
                   </GlassyButton>
 
@@ -211,7 +213,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                     background="rgba(255, 255, 255, 0.1)"
                     hoverBackground="rgba(255, 255, 255, 0.2)"
                   >
-                    View Full Details
+                    {t('product.viewFullDetails')}
                   </GlassyButton>
                 </div>
               </div>

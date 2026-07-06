@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigation } from '../../contexts/NavigationContext'
 import { useCart } from '../../contexts/CartContext'
 import CartDrawer from '../Cart/CartDrawer'
+import LanguageSwitcher from './LanguageSwitcher'
 import GlassyButton from '../ui/GlassyButton'
 import logoBlack from '../../assets/logos/perfect-world-logo-black.png'
 import logoWhite from '../../assets/logos/perfect-world-logo-white.png'
@@ -20,6 +22,7 @@ interface NavigationProps {
 export default function Navigation({ isDarkContent = false, enableScrollAnimations = false }: NavigationProps) {
   const { isMenuOpen, toggleMenu } = useNavigation()
   const { cartCount, isCartOpen, openCart, closeCart } = useCart()
+  const { t } = useTranslation()
   const aboutUsRef = useRef<HTMLDivElement>(null)
   const shopRef = useRef<HTMLDivElement>(null)
   const transparencyRef = useRef<HTMLDivElement>(null)
@@ -209,7 +212,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       paddingX={isMobile ? "20px" : "32px"}
       paddingY={isMobile ? "6px" : undefined}
     >
-      <span className={isMobile ? "text-xs font-semibold" : "text-sm font-semibold"}>Shop</span>
+      <span className={isMobile ? "text-xs font-semibold" : "text-sm font-semibold"}>{t('nav.shop')}</span>
     </GlassyButton>
   )
 
@@ -244,7 +247,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
   const LearnMoreButton = () => (
     <GlassyButton
-      label="Projects"
+      label={t('nav.projects')}
       to="/projects"
       variant={isDarkContent ? 'secondary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
@@ -254,7 +257,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
   const MakeDifferenceButton = () => (
     <GlassyButton
-      label="Shop the Difference"
+      label={t('nav.shopTheDifference')}
       to="/shop"
       variant={isDarkContent ? 'primary' : 'light'}
       textColor={isDarkContent ? '#000000' : '#ffffff'}
@@ -272,10 +275,13 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
             : 'bg-black/80 backdrop-blur-md border-b border-white/10'
         }`}>
           {/* Announcement Bar */}
-          <div className="h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center border-b border-white/5">
-            <span>New: <strong className="font-bold">Rich in Life</strong> — the new collection with Mission Positivity</span>
+          <div className="relative h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center border-b border-white/5">
+            <span>{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</span>
             <span className="opacity-50 hidden sm:inline">·</span>
-            <span>100% of profits donated</span>
+            <span>{t('nav.announcementProfits')}</span>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <LanguageSwitcher />
+            </div>
           </div>
 
           {/* Desktop Layout */}
@@ -345,9 +351,12 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     <>
       {/* Announcement Bar */}
       <div className="fixed top-0 left-0 right-0 h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center z-50 border-b border-white/5">
-        <span>New: <strong className="font-bold">Rich in Life</strong> — the new collection with Mission Positivity</span>
+        <span>{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</span>
         <span className="opacity-50 hidden sm:inline">·</span>
-        <span>100% of profits donated</span>
+        <span>{t('nav.announcementProfits')}</span>
+        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {/* Centered Logo */}
@@ -429,6 +438,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 
 // Helper component for Menu Overlay to reduce duplication
 function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMenu: () => void }) {
+  const { t } = useTranslation()
   return (
     <motion.div
       className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex flex-col overflow-y-auto"
@@ -442,11 +452,11 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
       {/* m-auto centers when content fits and allows scrolling when it doesn't */}
       <nav className="flex flex-col items-center gap-5 md:gap-8 m-auto py-24">
         {[
-          { to: "/projects", label: "Projects" },
-          { to: "/about", label: "About & Transparency" },
-          { to: "/shop", label: "Shop" },
-          { to: "/podcasts", label: "Podcasts" },
-          { to: "/contact", label: "Contact" },
+          { to: "/projects", label: t('nav.menu.projects') },
+          { to: "/about", label: t('nav.menu.about') },
+          { to: "/shop", label: t('nav.menu.shop') },
+          { to: "/podcasts", label: t('nav.menu.podcasts') },
+          { to: "/contact", label: t('nav.menu.contact') },
         ].map((item, index) => (
           <motion.div
             key={item.to}

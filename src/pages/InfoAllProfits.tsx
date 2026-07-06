@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
 
 export default function InfoAllProfits() {
+  const { t } = useTranslation('legal')
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Navigation />
@@ -14,10 +16,9 @@ export default function InfoAllProfits() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-10 md:mb-16 text-center">All Profits Donated</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-10 md:mb-16 text-center">{t('info.allProfits.title')}</h1>
             <p className="text-lg md:text-xl text-gray-300 leading-loose text-center mb-8">
-              A brand built on creating tangible hope. With 100% of profits donated, Perfect World
-              exists to help, not to exploit.
+              {t('info.allProfits.body')}
             </p>
           </motion.div>
         </div>
@@ -27,5 +28,3 @@ export default function InfoAllProfits() {
     </div>
   )
 }
-
-

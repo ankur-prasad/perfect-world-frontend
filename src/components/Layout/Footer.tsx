@@ -1,5 +1,6 @@
 import React, { useState, type FC, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -35,14 +36,7 @@ const Footer: FC<FooterProps> = ({
   logoSrc = '/assets/LOGOS/perfect-world-logo-white.png',
   companyName = 'Perfect World',
   description = 'Together. Not Alone. More than a slogan, it\'s a Promise for Change and Improvement.',
-  usefulLinks = [
-    { label: 'About Us', href: '/about', external: false },
-    { label: 'Shop', href: '/shop', external: false },
-    { label: 'Transparency', href: '/about#transparency', external: false },
-    { label: 'FAQ', href: '/#faq', external: false },
-    { label: "Founder's Story", href: '/founders', external: false },
-    { label: 'Contact', href: '/contact', external: false },
-  ],
+  usefulLinks: usefulLinksProp,
   projectLinks = [
     { label: 'Rich in Life', href: '/shop?collection=rich-in-life', external: false },
     { label: 'Wild at Heart', href: '/shop?collection=wild-at-heart', external: false },
@@ -81,12 +75,22 @@ const Footer: FC<FooterProps> = ({
       )
     },
   ],
-  newsletterTitle = 'Subscribe to our Newsletter',
+  newsletterTitle,
   onSubscribe,
   className,
   ...props
 }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
+
+  const usefulLinks = usefulLinksProp ?? [
+    { label: t('footer.aboutUs'), href: '/about', external: false },
+    { label: t('footer.shop'), href: '/shop', external: false },
+    { label: t('footer.transparency'), href: '/about#transparency', external: false },
+    { label: t('footer.faq'), href: '/#faq', external: false },
+    { label: t('footer.foundersStory'), href: '/founders', external: false },
+    { label: t('footer.contact'), href: '/contact', external: false },
+  ];
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -122,11 +126,11 @@ const Footer: FC<FooterProps> = ({
               className="w-full mb-2 object-contain"
             />
             <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
-              About
+              {t('footer.about')}
             </h3>
             <p className="text-gray-400 text-xs md:text-sm mb-2">
-              Together. Not Alone.<br />
-              More than a slogan, it's a Promise for Change and Improvement.
+              {t('footer.aboutLine1')}<br />
+              {t('footer.aboutLine2')}
             </p>
             <div className="text-gray-400 text-xs space-y-1.5">
               <p>Nicholas Freitag</p>
@@ -146,7 +150,7 @@ const Footer: FC<FooterProps> = ({
           {/* Quick Links */}
           <div className="flex flex-col gap-3">
             <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
-              Quick Links
+              {t('footer.quickLinks')}
             </h3>
             {usefulLinks.map((link) => (
               <div key={link.label}>
@@ -180,7 +184,7 @@ const Footer: FC<FooterProps> = ({
               className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2 hover:text-white transition-colors cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              All Projects
+              {t('footer.allProjects')}
             </Link>
             {projectLinks.map((link) => (
               <div key={link.label}>
@@ -210,54 +214,54 @@ const Footer: FC<FooterProps> = ({
           {/* Legal/Support */}
           <div className="flex flex-col gap-3">
             <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
-              Support
+              {t('footer.support')}
             </h3>
             <Link
               to="/privacy-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              Privacy Policy
+              {t('footer.privacyPolicy')}
             </Link>
             <Link
               to="/refund-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              Refund Policy
+              {t('footer.refundPolicy')}
             </Link>
             <Link
               to="/terms-of-service"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              Terms of Service
+              {t('footer.termsOfService')}
             </Link>
             <Link
               to="/legal-notice"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm mb-2 cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              Legal Notice
+              {t('footer.legalNotice')}
             </Link>
             <Link
               to="/shipping-policy"
               className="block text-gray-400 hover:text-white transition-colors text-xs md:text-sm cursor-pointer relative"
               style={{ zIndex: 20 }}
             >
-              Shipping Policy
+              {t('footer.shippingPolicy')}
             </Link>
           </div>
 
           {/* Newsletter & Social */}
           <div className="flex flex-col gap-3">
             <h3 className="mb-3 uppercase text-gray-400 text-xs font-semibold tracking-wider border-b border-white/10 pb-2">
-              Stay Connected
+              {t('footer.stayConnected')}
             </h3>
             <form onSubmit={handleSubscribe} className="space-y-3 mb-4">
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('footer.emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting || subscriptionStatus !== 'idle'}
@@ -272,14 +276,14 @@ const Footer: FC<FooterProps> = ({
                 className="w-full px-8 py-3 rounded-full bg-white text-black text-xs font-semibold hover:bg-gray-200 transition-colors"
                 style={{ marginTop: '10px', marginBottom: '10px' }}
               >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                {isSubmitting ? t('footer.subscribing') : t('footer.subscribe')}
               </Button>
               {(subscriptionStatus === 'success' || subscriptionStatus === 'error') && (
                 <div className="text-center text-xs">
                   {subscriptionStatus === 'success' ? (
-                    <span className="font-semibold text-green-500">Subscribed! 🎉</span>
+                    <span className="font-semibold text-green-500">{t('footer.subscribed')}</span>
                   ) : (
-                    <span className="font-semibold text-red-500">Failed. Try again.</span>
+                    <span className="font-semibold text-red-500">{t('footer.subscribeFailed')}</span>
                   )}
                 </div>
               )}
@@ -310,10 +314,10 @@ const Footer: FC<FooterProps> = ({
         <div style={{ paddingLeft: '32px', paddingRight: '32px', paddingTop: '32px', paddingBottom: '40px' }}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-2">
             <p className="text-gray-400 text-xs md:text-sm">
-              © {new Date().getFullYear()} Perfect World. All rights reserved.
+              © {new Date().getFullYear()} Perfect World. {t('footer.rights')}
             </p>
             <p className="text-gray-400 text-xs md:text-sm" style={{ fontFamily: '"Shadows Into Light", "Indie Flower", cursive' }}>
-              Together. Not Alone.
+              {t('footer.slogan')}
             </p>
           </div>
         </div>

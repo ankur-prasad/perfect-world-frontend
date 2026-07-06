@@ -1,0 +1,201 @@
+{
+  "refund": {
+    "title": "Refund & Return Policy",
+    "blocks": [
+      { "type": "p", "text": "Thank you for supporting Perfect World and joining us in our mission to create a better, more compassionate world. All profits from your purchase go directly toward our charitable causes. Because of this commitment to donating 100% of our profits each month, we are unable to offer refunds, though we are always committed to ensuring you are satisfied with your order." },
+      { "type": "h2", "text": "Faulty or Damaged Products" },
+      { "type": "p", "text": "If items arrive damaged or defective, please contact us. Should you receive an item that does not meet our standards, please email us at [info@perfectworld.global](mailto:info@perfectworld.global) with your order details, a description of the issue, and any photos of the product if applicable. Our team will assess the issue and work with you toward a solution." },
+      { "type": "h2", "text": "Exchanges and Replacements" },
+      { "type": "p", "text": "While refunds are unavailable, we offer exchanges or replacements for faulty items. Please note that exchanges are subject to product availability." },
+      { "type": "h2", "text": "Our Commitment to Transparency and Accountability" },
+      { "type": "p", "text": "We donate 100% of our profits each month to support meaningful causes, which is why our policy does not allow for refunds. We encourage you to visit our [Transparency](/transparency) and [Projects](/projects) pages for more information about the impact your purchase makes." },
+      { "type": "p", "text": "Thank you for supporting our mission." }
+    ]
+  },
+  "shipping": {
+    "title": "Shipping Policy",
+    "blocks": [
+      { "type": "p", "text": "Shipping, depending on where you are located, will take between 7-14 days." },
+      { "type": "p", "text": "If you have any questions about your order's shipping status, please contact us at [info@perfectworld.global](mailto:info@perfectworld.global)." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5\n82319 Starnberg, Germany\n+49 15129109696" }
+    ]
+  },
+  "legalNotice": {
+    "title": "Legal Notice",
+    "blocks": [
+      { "type": "h2", "text": "According to § 5 TMG" },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Germany" },
+      { "type": "h2", "text": "Represented by" },
+      { "type": "p", "text": "Nicholas Freitag" },
+      { "type": "h2", "text": "Contact" },
+      { "type": "p", "text": "Telephone: +49 15129109696\nEmail: [info@perfectworld.global](mailto:info@perfectworld.global)" }
+    ]
+  },
+  "cookie": {
+    "title": "Cookie Policy",
+    "blocks": [
+      { "type": "p", "text": "This Cookie Policy explains how Perfect World (\"we\", \"us\", or \"our\") uses cookies and similar technologies on perfectworld.global. It should be read alongside our [Privacy Policy](/privacy-policy), which explains how we use personal information generally." },
+      { "type": "h2", "text": "What Are Cookies" },
+      { "type": "p", "text": "Cookies are small text files placed on your device when you visit a website. They allow a site to recognize your device and remember information about your visit, such as your preferences and actions on the site." },
+      { "type": "h2", "text": "Categories of Cookies We Use" },
+      { "type": "ul", "items": [
+        "**Necessary** — Essential for the website to function and cannot be disabled.",
+        "**Functionality** — Enable enhanced functionality and personalization.",
+        "**Experience** — Help us understand how you interact with our website.",
+        "**Measurement** — Help us measure traffic and analyze behavior.",
+        "**Marketing** — Used to deliver personalized advertisements."
+      ] },
+      { "type": "p", "text": "You can manage your preferences for these categories at any time through the cookie consent banner on our site, or by adjusting your browser settings. Denying consent for non-necessary categories may make related features unavailable." },
+      { "type": "h2", "text": "Third-Party Cookies" },
+      { "type": "p", "text": "Our store is powered by Shopify, and we use Shopify's commerce platform to operate our Site. For specific information about the cookies Shopify uses to power our store, see [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). We may also permit other third parties and service providers to use cookies on our Site to better tailor services, products, and advertising on our Site and other websites." },
+      { "type": "h2", "text": "Managing Cookies" },
+      { "type": "p", "text": "Most browsers automatically accept cookies by default, but you can choose to set your browser to remove or reject cookies through your browser controls. Please keep in mind that removing or blocking cookies can negatively impact your experience on our Site and may cause some features to work incorrectly or no longer be available." },
+      { "type": "p", "text": "Our website also recognizes the Global Privacy Control (GPC) signal. If you notify us of your preference through GPC, we will treat such signal as a valid request to opt out of sharing / targeted advertising for the associated browser or device." },
+      { "type": "h2", "text": "Changes to This Policy" },
+      { "type": "p", "text": "We may update this Cookie Policy from time to time to reflect changes to the cookies we use or for other operational, legal, or regulatory reasons. Please re-visit this page periodically to stay informed." },
+      { "type": "h2", "text": "Contact" },
+      { "type": "p", "text": "If you have questions about our use of cookies, please contact us at [info@perfectworld.global](mailto:info@perfectworld.global)." }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "blocks": [
+      { "type": "p", "text": "This website is operated by Perfect World. Throughout the site, the terms \"we\", \"us\" and \"our\" refer to Perfect World. By visiting our site and/or purchasing something from us, you engage in our \"Service\" and agree to be bound by the following terms and conditions (\"Terms of Service\", \"Terms\"), including those additional terms and conditions and policies referenced herein and/or available by hyperlink." },
+      { "type": "h2", "text": "Section 1 — Online Store Terms" },
+      { "type": "p", "text": "You must be the legal age of majority in your jurisdiction, or have parental consent, to use this site. You may not use our products for any illegal or unauthorized purpose, and you may not, in the use of the Service, violate any laws, infringe copyright, or transmit any worms, viruses, or destructive code. A breach or violation of any of the Terms will result in an immediate termination of your Services." },
+      { "type": "h2", "text": "Section 2 — General Conditions" },
+      { "type": "p", "text": "We reserve the right to refuse Service to anyone for any reason at any time. Your content may transfer unencrypted across networks, while credit card information is always encrypted. You agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service without express written permission by us." },
+      { "type": "h2", "text": "Section 3 — Accuracy, Completeness and Timeliness of Information" },
+      { "type": "p", "text": "We are not responsible if information made available on this site is not accurate, complete or current. The material on this site is provided for general information only and should not be relied on or used as the sole basis for making decisions. You agree that it is your responsibility to monitor changes to our site." },
+      { "type": "h2", "text": "Section 4 — Modifications to the Service and Prices" },
+      { "type": "p", "text": "Prices for our products are subject to change without notice. We reserve the right at any time to modify or discontinue the Service (or any part or content thereof) without notice at any time. We shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Service." },
+      { "type": "h2", "text": "Section 5 — Products or Services" },
+      { "type": "p", "text": "Certain products or Services may be available exclusively online through the website. These products or Services may have limited quantities and are subject to our Refund Policy. We cannot guarantee that your computer monitor's display of any color will be accurate. We reserve the right to limit the sales of our products or Services to any person, geographic region or jurisdiction. Any offer for any product or Service made on this site is void where prohibited." },
+      { "type": "h2", "text": "Section 6 — Accuracy of Billing and Account Information" },
+      { "type": "p", "text": "We reserve the right to refuse any order you place with us. We may, in our sole discretion, limit or cancel quantities purchased per person, per household or per order. You agree to provide current, complete and accurate purchase and account information for all purchases made at our store, and to promptly update your account and other information." },
+      { "type": "h2", "text": "Section 7 — Optional Tools" },
+      { "type": "p", "text": "We may provide you with access to third-party tools over which we neither monitor nor have any control nor input. Such tools are provided \"as is\" and \"as available\" without any warranties, representations or conditions of any kind. Any use by you of the optional tools offered through the site is entirely at your own risk and discretion." },
+      { "type": "h2", "text": "Section 8 — Third-Party Links" },
+      { "type": "p", "text": "Certain content, products and services available via our Service may include materials from third-parties. Third-party links on this site may direct you to third-party websites that are not affiliated with us. We are not responsible for examining or evaluating the content or accuracy of such third-party materials, and we are not liable for any harm or damages related to your use of any third-party websites." },
+      { "type": "h2", "text": "Section 9 — User Comments, Feedback and Other Submissions" },
+      { "type": "p", "text": "If, at our request, you send certain specific submissions or without a request from us you send creative ideas, suggestions, proposals, plans, or other materials, you agree that we may, at any time, without restriction, edit, copy, publish, distribute, translate and otherwise use in any medium any comments that you forward to us. We may, but have no obligation to, monitor, edit or remove content that we determine in our sole discretion to be unlawful, offensive or objectionable." },
+      { "type": "h2", "text": "Section 10 — Personal Information" },
+      { "type": "p", "text": "Your submission of personal information through the store is governed by our [Privacy Policy](/privacy-policy)." },
+      { "type": "h2", "text": "Section 11 — Errors, Inaccuracies and Omissions" },
+      { "type": "p", "text": "Occasionally there may be information on our site that contains typographical errors, inaccuracies or omissions. We reserve the right to correct any errors, inaccuracies or omissions, and to change or update information or cancel orders if any information is inaccurate at any time without prior notice." },
+      { "type": "h2", "text": "Section 12 — Prohibited Uses" },
+      { "type": "p", "text": "In addition to other prohibitions set forth in the Terms of Service, you are prohibited from using the site or its content: (a) for any unlawful purpose; (b) to solicit others to perform or participate in any unlawful acts; (c) to violate any international, federal, provincial or state regulations, rules, laws, or local ordinances; (d) to infringe upon or violate our intellectual property rights or the intellectual property rights of others; (e) to harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate; (f) to submit false or misleading information; (g) to upload or transmit viruses or any other type of malicious code; (h) to collect or track the personal information of others; (i) to spam, phish, pharm, pretext, spider, crawl, or scrape; (j) for any obscene or immoral purpose; or (k) to interfere with or circumvent the security features of the Service. We reserve the right to terminate your use of the Service for violating any of the prohibited uses." },
+      { "type": "h2", "text": "Section 13 — Disclaimer of Warranties; Limitation of Liability" },
+      { "type": "p", "text": "We do not guarantee, represent or warrant that your use of our Service will be uninterrupted, timely, secure or error-free. The Service and all products and Services delivered to you through the Service are (except as expressly stated by us) provided \"as is\" and \"as available\" for your use, without any representation, warranties or conditions of any kind. In no case shall Perfect World, our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, Service providers or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind." },
+      { "type": "h2", "text": "Section 14 — Indemnification" },
+      { "type": "p", "text": "You agree to indemnify, defend and hold harmless Perfect World and our parent, subsidiaries, affiliates, partners, officers, directors, agents, contractors, licensors, Service providers, subcontractors, suppliers, interns and employees, harmless from any claim or demand, including reasonable attorneys' fees, made by any third-party due to or arising out of your breach of these Terms of Service." },
+      { "type": "h2", "text": "Section 15 — Severability" },
+      { "type": "p", "text": "In the event that any provision of these Terms of Service is determined to be unlawful, void or unenforceable, such provision shall nonetheless be enforceable to the fullest extent permitted by applicable law." },
+      { "type": "h2", "text": "Section 16 — Termination" },
+      { "type": "p", "text": "These Terms of Service are effective unless and until terminated by either you or us. You may terminate these Terms of Service at any time by notifying us that you no longer wish to use our Services. If in our sole judgment you fail, or we suspect that you have failed, to comply with any term or provision of these Terms of Service, we also may terminate this agreement at any time without notice." },
+      { "type": "h2", "text": "Section 17 — Entire Agreement" },
+      { "type": "p", "text": "These Terms of Service and any policies or operating rules posted by us on this site or in respect to the Service constitutes the entire agreement and understanding between you and us." },
+      { "type": "h2", "text": "Section 18 — Governing Law" },
+      { "type": "p", "text": "These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the laws of Germany." },
+      { "type": "h2", "text": "Section 19 — Changes to Terms of Service" },
+      { "type": "p", "text": "We reserve the right, at our sole discretion, to update, change or replace any part of these Terms of Service by posting updates and changes to our website. Your continued use of or access to our website or the Service following the posting of any changes to these Terms of Service constitutes acceptance of those changes." },
+      { "type": "h2", "text": "Section 20 — Contact Information" },
+      { "type": "p", "text": "Questions about the Terms of Service should be sent to us at [info@perfectworld.global](mailto:info@perfectworld.global)." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\nAm Hochwald 5, 82319 Starnberg, Germany\n+49 15129109696" }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "Last updated: December 4, 2025",
+    "blocks": [
+      { "type": "p", "text": "This Privacy Policy describes how Perfect World (the \"Site\", \"we\", \"us\", or \"our\") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from perfectworld.global (the \"Site\") or otherwise communicate with us regarding the Site (collectively, the \"Services\"). For purposes of this Privacy Policy, \"you\" and \"your\" means you as the user of the Services, whether you are a customer, website visitor, or another individual whose information we have collected pursuant to this Privacy Policy." },
+      { "type": "p", "text": "Please read this Privacy Policy carefully." },
+      { "type": "h2", "text": "Changes to This Privacy Policy" },
+      { "type": "p", "text": "We may update this Privacy Policy from time to time, including to reflect changes to our practices or for other operational, legal, or regulatory reasons. We will post the revised Privacy Policy on the Site, update the \"Last updated\" date and take any other steps required by applicable law." },
+      { "type": "h2", "text": "How We Collect and Use Your Personal Information" },
+      { "type": "p", "text": "To provide the Services, we collect and have collected over the past 12 months personal information about you from a variety of sources, as set out below. The information that we collect and use varies depending on how you interact with us." },
+      { "type": "p", "text": "In addition to the specific uses set out below, we may use information we collect about you to communicate with you, provide or improve the Services, comply with any applicable legal obligations, enforce any applicable terms of service, and to protect or defend the Services, our rights, and the rights of our users or others." },
+      { "type": "h3", "text": "Information We Collect Directly from You" },
+      { "type": "p", "text": "Information that you directly submit to us through our Services may include:" },
+      { "type": "ul", "items": [
+        "**Contact details** including your name, address, phone number, and email.",
+        "**Order information** including your name, billing address, shipping address, payment confirmation, email address, and phone number.",
+        "**Account information** including your username, password, security questions and other information used for account security purposes.",
+        "**Customer support information** including the information you choose to include in communications with us, for example, when sending a message through the Services."
+      ] },
+      { "type": "p", "text": "Some features of the Services may require you to directly provide us with certain information about yourself. You may elect not to provide this information, but doing so may prevent you from using or accessing these features." },
+      { "type": "h3", "text": "Information We Collect about Your Usage" },
+      { "type": "p", "text": "We may also automatically collect certain information about your interaction with the Services (\"Usage Data\"). To do this, we may use cookies, pixels and similar technologies (\"Cookies\"). Usage Data may include information about how you access and use our Site and your account, including device information, browser information, information about your network connection, your IP address and other information regarding your interaction with the Services." },
+      { "type": "h3", "text": "Information We Obtain from Third Parties" },
+      { "type": "p", "text": "Finally, we may obtain information about you from third parties, including from vendors and service providers who may collect information on our behalf, such as:" },
+      { "type": "ul", "items": [
+        "Companies who support our Site and Services, such as Shopify.",
+        "Our payment processors, who collect payment information (e.g., bank account, credit or debit card information, billing address) to process your payment in order to fulfill your orders and provide you with products or services you have requested, in order to perform our contract with you.",
+        "When you visit our Site, open or click on emails we send you, or interact with our Services or advertisements, we, or third parties we work with, may automatically collect certain information using online tracking technologies such as pixels, web beacons, software developer kits, third-party libraries, and cookies."
+      ] },
+      { "type": "p", "text": "Any information we obtain from third parties will be treated in accordance with this Privacy Policy. Also see the section below, \"Third Party Websites and Links.\"" },
+      { "type": "h3", "text": "How We Use Your Personal Information" },
+      { "type": "ul", "items": [
+        "**Providing Products and Services.** We use your personal information to provide you with the Services in order to perform our contract with you, including to process your payments, fulfill your orders, send notifications related to your account, purchases, returns, exchanges or other transactions, create, maintain and otherwise manage your account, and arrange for shipping and facilitate returns and exchanges.",
+        "**Marketing and Advertising.** We may use your personal information for marketing and promotional purposes, such as to send marketing, advertising and promotional communications by email, text message or postal mail, and to show you advertisements for products or services.",
+        "**Security and Fraud Prevention.** We use your personal information to detect, investigate or take action regarding possible fraudulent, illegal or malicious activity. If you choose to register an account, you are responsible for keeping your account credentials safe.",
+        "**Communicating with You and Service Improvement.** We use your personal information to provide you with customer support and improve our Services."
+      ] },
+      { "type": "h2", "text": "Cookies" },
+      { "type": "p", "text": "Like many websites, we use Cookies on our Site. For specific information about the Cookies that we use related to powering our store with Shopify, see [shopify.com/legal/cookies](https://www.shopify.com/legal/cookies). We use Cookies to power and improve our Site and our Services (including to remember your actions and preferences), to run analytics and better understand user interaction with the Services. We may also permit third parties and service providers to use Cookies on our Site to better tailor the services, products and advertising on our Site and other websites." },
+      { "type": "p", "text": "Most browsers automatically accept Cookies by default, but you can choose to set your browser to remove or reject Cookies through your browser controls. Please keep in mind that removing or blocking Cookies can negatively impact your user experience. For more detail on the categories of Cookies we use and how to manage your preferences, see our [Cookie Policy](/cookie-policy)." },
+      { "type": "p", "text": "Our website also recognizes the Global Privacy Control (GPC) signal, which enables you to opt-out of certain uses or disclosures of your information. If you notify us of your preference through GPC, we will treat such signal as a valid request to opt out of sharing / targeted advertising for the associated browser or device." },
+      { "type": "h2", "text": "How We Disclose Personal Information" },
+      { "type": "p", "text": "In certain circumstances, we may disclose your personal information to third parties for contract fulfillment purposes, legitimate purposes and other reasons subject to this Privacy Policy. Such circumstances may include:" },
+      { "type": "ul", "items": [
+        "With vendors or other third parties who perform services on our behalf (e.g., IT management, payment processing, data analytics, customer support, cloud storage, fulfillment and shipping).",
+        "With business and marketing partners to provide services and advertise to you.",
+        "When you direct, request us or otherwise consent to our disclosure of certain information to third parties.",
+        "With our affiliates or otherwise within our corporate group.",
+        "In connection with a business transaction such as a merger or bankruptcy, to comply with any applicable legal obligations, to enforce any applicable terms of service, and to protect or defend the Services, our rights, and the rights of our users or others."
+      ] },
+      { "type": "p", "text": "We do not use or disclose sensitive personal information without your consent or for the purposes of inferring characteristics about you." },
+      { "type": "h2", "text": "Third Party Websites and Links" },
+      { "type": "p", "text": "Our Site may provide links to websites or other online platforms operated by third parties. If you follow links to sites not affiliated or controlled by us, you should review their privacy and security policies and other terms and conditions. We do not guarantee and are not responsible for the privacy or security of such sites." },
+      { "type": "h2", "text": "Children's Data" },
+      { "type": "p", "text": "The Services are not intended to be used by children, and we do not knowingly collect any personal information about children. If you are the parent or guardian of a child who has provided us with their personal information, you may contact us using the contact details set out below to request that it be deleted." },
+      { "type": "h2", "text": "Security and Retention of Your Information" },
+      { "type": "p", "text": "Please be aware that no security measures are perfect or impenetrable, and we cannot guarantee \"perfect security.\" We recommend that you do not use insecure channels to communicate sensitive or confidential information to us. How long we retain your personal information depends on different factors, such as whether we need the information to maintain your account, provide the Services, comply with legal obligations, resolve disputes or enforce other applicable contracts and policies." },
+      { "type": "h2", "text": "Your Rights" },
+      { "type": "p", "text": "Depending on where you live, you may have some or all of the rights listed below in relation to your personal information. However, these rights are not absolute, may apply only in certain circumstances and, in certain cases, we may decline your request as permitted by law." },
+      { "type": "ul", "items": [
+        "**Right to Access / Know:** request access to personal information that we hold about you.",
+        "**Right to Delete:** request that we delete personal information we maintain about you.",
+        "**Right to Correct:** request that we correct inaccurate personal information we maintain about you.",
+        "**Right of Portability:** receive a copy of the personal information we hold about you and request that we transfer it to a third party.",
+        "**Right to Opt out of Sale or Sharing or Targeted Advertising:** direct us not to \"sell\" or \"share\" your personal information.",
+        "**Restriction of Processing:** ask us to stop or restrict our processing of personal information.",
+        "**Withdrawal of Consent:** withdraw consent where we rely on consent to process your personal information.",
+        "**Appeal:** appeal our decision if we decline to process your request.",
+        "**Managing Communication Preferences:** opt out of promotional emails at any time using the unsubscribe option."
+      ] },
+      { "type": "p", "text": "You may exercise any of these rights by contacting us using the contact details provided below. We will not discriminate against you for exercising any of these rights." },
+      { "type": "h2", "text": "Complaints" },
+      { "type": "p", "text": "If you have complaints about how we process your personal information, please contact us using the contact details provided below. If you are not satisfied with our response, depending on where you live you may have the right to lodge your complaint with your local data protection authority." },
+      { "type": "h2", "text": "International Users" },
+      { "type": "p", "text": "Please note that we may transfer, store and process your personal information outside the country you live in. If we transfer your personal information out of Europe, we will rely on recognized transfer mechanisms like the European Commission's Standard Contractual Clauses, unless the data transfer is to a country that has been determined to provide an adequate level of protection." },
+      { "type": "h2", "text": "Contact" },
+      { "type": "p", "text": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please call or email us at [info@perfectworld.global](mailto:info@perfectworld.global) or contact us at Am Hochwald 5, 82319 Starnberg, Germany." },
+      { "type": "p", "text": "Perfect World\nNicholas Freitag\ninfo@perfectworld.global\n+49 15129109696\nAm Hochwald 5\n82319 Starnberg, Germany" }
+    ]
+  },
+  "info": {
+    "allProfits": {
+      "title": "All Profits Donated",
+      "body": "A brand built on creating tangible hope. With 100% of profits donated, Perfect World exists to help, not to exploit."
+    },
+    "fashionTool": {
+      "title": "Fashion as a Tool",
+      "body": "We believe in the power fashion holds to make a Statement. Giving you a voice, while simultaneously aiding and supporting charities on the forefront of our global challenges."
+    },
+    "together": {
+      "title": "Together. Not Alone.",
+      "body": "More than a slogan, it's a Promise for Change and Improvement. Make a difference!"
+    }
+  }
+}

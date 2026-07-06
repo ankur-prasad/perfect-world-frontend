@@ -13,6 +13,30 @@ import type {
 const domain = SHOPIFY.STORE_DOMAIN.replace(/^https?:\/\//, '').replace(/\/$/, '')
 const STOREFRONT_API_URL = `https://${domain}/api/${SHOPIFY.STOREFRONT_API_VERSION}/graphql.json`
 
+// Buyer context for Shopify Markets localization: country drives currency,
+// language drives translated product content (when translations exist).
+// Set once by LocaleProvider before any product fetch happens.
+let buyerContext: { country?: string; language?: string } = {}
+
+export function setShopifyBuyerContext(ctx: { country?: string; language?: string }) {
+  buyerContext = {
+    country: ctx.country && /^[A-Z]{2}$/.test(ctx.country) ? ctx.country : undefined,
+    language: ctx.language && /^[A-Z]{2}$/.test(ctx.language) ? ctx.language : undefined,
+  }
+}
+
+// Values are validated 2-letter ISO codes, safe to inline as GraphQL enums
+function inContextDirective(): string {
+  const parts: string[] = []
+  if (buyerContext.country) parts.push(`country: ${buyerContext.country}`)
+  if (buyerContext.language) parts.push(`language: ${buyerContext.language}`)
+  return parts.length ? ` @inContext(${parts.join(', ')})` : ''
+}
+
+function contextCacheKey(): string {
+  return `${buyerContext.country ?? ''}-${buyerContext.language ?? ''}`
+}
+
 // In-memory cache so navigating between pages doesn't refetch the catalog.
 // Failures are never cached; entries expire after CACHE_TTL.
 const CACHE_TTL = 5 * 60 * 1000
@@ -68,12 +92,12 @@ async function shopifyFetch<T>(query: string, variables: Record<string, string |
 
 // Get products by collection handle
 export async function getCollectionProducts(handle: string): Promise<ShopifyCollection> {
-  return withCache(`collection:${handle}`, () => fetchCollectionProducts(handle))
+  return withCache(`collection:${handle}:${contextCacheKey()}`, () => fetchCollectionProducts(handle))
 }
 
 async function fetchCollectionProducts(handle: string): Promise<ShopifyCollection> {
   const query = `
-    query getCollectionProducts($handle: String!) {
+    query getCollectionProducts($handle: String!)${inContextDirective()} {
       collectionByHandle(handle: $handle) {
         id
         title
@@ -176,12 +200,12 @@ async function fetchCollectionProducts(handle: string): Promise<ShopifyCollectio
 
 // Get single product by handle
 export async function getProduct(handle: string): Promise<ShopifyProduct> {
-  return withCache(`product:${handle}`, () => fetchProduct(handle))
+  return withCache(`product:${handle}:${contextCacheKey()}`, () => fetchProduct(handle))
 }
 
 async function fetchProduct(handle: string): Promise<ShopifyProduct> {
   const query = `
-    query getProduct($handle: String!) {
+    query getProduct($handle: String!)${inContextDirective()} {
       productByHandle(handle: $handle) {
         id
         title
@@ -280,7 +304,7 @@ export async function createCheckout(
   }
 ) {
   const query = `
-    mutation cartCreate($input: CartInput!) {
+    mutation cartCreate($input: CartInput!)${inContextDirective()} {
       cartCreate(input: $input) {
         cart {
           id
@@ -336,9 +360,14 @@ export async function createCheckout(
     })),
   }
 
+  // Buyer country → localized checkout currency (Shopify Markets)
+  if (buyerContext.country) {
+    input.buyerIdentity = { countryCode: buyerContext.country }
+  }
+
   // Add optional parameters if provided
   if (options?.email) {
-    input.buyerIdentity = { email: options.email }
+    input.buyerIdentity = { ...input.buyerIdentity, email: options.email }
   }
   if (options?.note) {
     input.note = options.note
@@ -479,12 +508,12 @@ export function generateCustomerAccountLogoutUrl(postLogoutRedirectUri?: string)
 
 // Fetch all products in the store
 export async function getAllProducts(): Promise<ShopifyProduct[]> {
-  return withCache('all-products', () => fetchAllProducts())
+  return withCache(`all-products:${contextCacheKey()}`, () => fetchAllProducts())
 }
 
 async function fetchAllProducts(): Promise<ShopifyProduct[]> {
   const query = `
-    query getAllProducts {
+    query getAllProducts${inContextDirective()} {
       products(first: 100) {
         edges {
           node {

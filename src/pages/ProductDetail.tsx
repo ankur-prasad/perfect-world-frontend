@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
@@ -119,6 +120,7 @@ export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>()
   const navigate = useNavigate()
   const { addToCart } = useCart()
+  const { t, i18n } = useTranslation()
 
   const [product, setProduct] = useState<ShopifyProduct | null>(null)
   const [siblings, setSiblings] = useState<ShopifyProduct[]>([])
@@ -256,7 +258,7 @@ export default function ProductDetail() {
 
   const selectedVariant = product.variants[selectedVariantIndex]
   const price = parseFloat(selectedVariant.price.amount)
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat(i18n.language, {
     style: 'currency',
     currency: selectedVariant.price.currencyCode,
   }).format(price)
@@ -381,7 +383,7 @@ export default function ProductDetail() {
                   {!isAvailable && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
                       <span className="px-8 py-4 bg-red-500 text-white text-2xl font-bold rounded-full">
-                        Sold Out
+                        {t('product.soldOut')}
                       </span>
                     </div>
                   )}
@@ -627,12 +629,12 @@ export default function ProductDetail() {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           />
                         </svg>
-                        Adding to Cart...
+                        {t('product.addingToCart')}
                       </span>
                     ) : !isAvailable ? (
-                      'Sold Out'
+                      t('product.soldOut')
                     ) : (
-                      'Add to Cart'
+                      t('product.addToCart')
                     )}
                   </button>
 
@@ -849,7 +851,7 @@ export default function ProductDetail() {
               : 'bg-gray-700 text-gray-500'
               }`}
           >
-            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : 'Add to Cart'}
+            {isAdding ? t('product.addingEllipsis') : !isAvailable ? t('product.soldOut') : t('product.addToCart')}
           </button>
         </div>
       </div>

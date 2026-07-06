@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { extractBaseName, extractColorFromTitle, extractProductType } from '../../utils/productGrouping'
@@ -63,6 +64,7 @@ export default function ProductCardWithColors({
 }: ProductCardWithColorsProps) {
   const { addToCart } = useCart()
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
   const [hoveredProduct, setHoveredProduct] = useState<ShopifyProduct | null>(null)
   const [isHoveringCard, setIsHoveringCard] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
@@ -79,7 +81,7 @@ export default function ProductCardWithColors({
   }
 
   const price = parseFloat(product.priceRange.minVariantPrice.amount)
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat(i18n.language, {
     style: 'currency',
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price)
@@ -180,7 +182,7 @@ export default function ProductCardWithColors({
           {/* Availability Badge */}
           {!isAvailable && (
             <div className="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded-full">
-              Sold Out
+              {t('product.soldOut')}
             </div>
           )}
 
@@ -329,12 +331,12 @@ export default function ProductCardWithColors({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Adding...
+                {t('product.adding')}
               </span>
             ) : !isAvailable ? (
-              'Sold Out'
+              t('product.soldOut')
             ) : (
-              'Add to Cart'
+              t('product.addToCart')
             )}
           </GlassyButton>
         </div>
