@@ -1,23 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import LegalPageLayout from '../components/Layout/LegalPageLayout'
+import LegalContent, { type LegalBlock } from '../components/Layout/LegalContent'
 
 export default function LegalNotice() {
+  const { t } = useTranslation('legal')
   return (
-    <LegalPageLayout title="Legal Notice">
-      <h2>According to § 5 TMG</h2>
-      <p>
-        Perfect World<br />
-        Nicholas Freitag<br />
-        Am Hochwald 5, 82319 Starnberg, Germany
-      </p>
-
-      <h2>Represented by</h2>
-      <p>Nicholas Freitag</p>
-
-      <h2>Contact</h2>
-      <p>
-        Telephone: +49 15129109696<br />
-        Email: <a href="mailto:info@perfectworld.global">info@perfectworld.global</a>
-      </p>
+    <LegalPageLayout title={t('legalNotice.title')}>
+      <LegalContent blocks={t('legalNotice.blocks', { returnObjects: true }) as LegalBlock[]} />
     </LegalPageLayout>
   )
 }

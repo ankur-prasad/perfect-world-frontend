@@ -3,6 +3,9 @@ import { initReactI18next } from 'react-i18next'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import de from './locales/de.json'
+import legalEn from './locales/legal.en.json'
+import legalEs from './locales/legal.es.json'
+import legalDe from './locales/legal.de.json'
 
 export const SUPPORTED_LANGUAGES: Record<string, string> = {
   en: 'English',
@@ -22,10 +25,12 @@ export const COUNTRY_LANGUAGE: Record<string, string> = {
 
 i18n.use(initReactI18next).init({
   resources: {
-    en: { translation: en },
-    es: { translation: es },
-    de: { translation: de },
+    en: { translation: en, legal: legalEn },
+    es: { translation: es, legal: legalEs },
+    de: { translation: de, legal: legalDe },
   },
+  ns: ['translation', 'legal'],
+  defaultNS: 'translation',
   lng: 'en',
   fallbackLng: 'en',
   interpolation: {
