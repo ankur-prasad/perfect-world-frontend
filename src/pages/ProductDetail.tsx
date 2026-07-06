@@ -300,10 +300,6 @@ export default function ProductDetail() {
   )
 
   const currentImage = galleryImages[selectedImageIndex] || galleryImages[0]
-  
-  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || 
-                            product.title.toLowerCase().includes('rich in life') ||
-                            product.collections?.some((c: any) => c.handle === 'rich-in-life')
 
   const handleAddToCart = async () => {
     if (!isAvailable) return
@@ -636,7 +632,7 @@ export default function ProductDetail() {
                     ) : !isAvailable ? (
                       'Sold Out'
                     ) : (
-                      isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
+                      'Add to Cart'
                     )}
                   </button>
 
@@ -853,7 +849,7 @@ export default function ProductDetail() {
               : 'bg-gray-700 text-gray-500'
               }`}
           >
-            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : (isPreOrderProduct ? 'Pre-order' : 'Add to Cart')}
+            {isAdding ? 'Adding…' : !isAvailable ? 'Sold Out' : 'Add to Cart'}
           </button>
         </div>
       </div>

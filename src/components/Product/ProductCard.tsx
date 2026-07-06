@@ -23,7 +23,6 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
   const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
   const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
-  const isPreOrderProduct = product.collectionHandle === 'rich-in-life' || product.title.toLowerCase().includes('rich in life')
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -127,27 +126,21 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
 
           <GlassyButton
             onClick={handleAddToCart}
-            variant={isPreOrderProduct && isAvailable && !isAdding ? 'primary' : (isLightMode ? 'dark' : 'light')}
+            variant={isLightMode ? 'dark' : 'light'}
             background={
               !isAvailable || isAdding
                 ? 'rgba(107, 114, 128, 0.3)'
-                : isPreOrderProduct
-                  ? 'rgba(192, 148, 103, 0.9)'
-                  : undefined
+                : undefined
             }
             hoverBackground={
               !isAvailable || isAdding
                 ? 'rgba(107, 114, 128, 0.3)'
-                : isPreOrderProduct
-                  ? 'rgba(170, 128, 85, 1)'
-                  : undefined
+                : undefined
             }
             textColor={
               !isAvailable || isAdding
                 ? 'rgb(156, 163, 175)'
-                : isPreOrderProduct
-                  ? '#ffffff'
-                  : undefined
+                : undefined
             }
           >
             {isAdding ? (
@@ -173,7 +166,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
             ) : !isAvailable ? (
               'Sold Out'
             ) : (
-              isPreOrderProduct ? 'Pre-order' : 'Add to Cart'
+              'Add to Cart'
             )}
           </GlassyButton>
         </div>

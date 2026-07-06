@@ -37,16 +37,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       const checkout = await createCheckout(lineItems)
 
       if (checkout && checkout.webUrl) {
-        const hasRichInLifeProduct = cart.some((item) =>
-          item.title.toLowerCase().includes('rich in life')
-        )
-        let redirectUrl = checkout.webUrl
-        if (hasRichInLifeProduct) {
-          const separator = redirectUrl.includes('?') ? '&' : '?'
-          redirectUrl = `${redirectUrl}${separator}discount=RICH10`
-        }
         // Redirect to Shopify checkout
-        window.location.href = redirectUrl
+        window.location.href = checkout.webUrl
       } else {
         throw new Error('Checkout created but no webUrl returned')
       }
