@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../../contexts/CartContext'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createCheckout } from '../../utils/shopify'
 import GlassyButton from '../ui/GlassyButton'
 
@@ -9,17 +10,18 @@ interface CartDrawerProps {
   onClose: () => void
 }
 
-const formatPrice = (amount: number) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(amount)
-
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cart, cartCount, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart()
+  const { t, i18n } = useTranslation()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
+  const formatPrice = (amount: number) =>
+    new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'EUR' }).format(amount)
+
   const handleCheckout = async () => {
     if (cart.length === 0) {
-      setCheckoutError('Your cart is empty')
+      setCheckoutError(t('cart.empty'))
       return
     }
 
@@ -83,9 +85,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {/* Header */}
             <div className="p-6 mx-5 border-b border-white/10 flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-white font-primary">Your Cart</h2>
+                <h2 className="text-2xl font-bold text-white font-primary">{t('cart.title')}</h2>
                 <p className="text-sm text-gray-400">
-                  {cartCount} {cartCount === 1 ? 'item' : 'items'}
+                  {t('cart.itemCount', { count: cartCount })}
                 </p>
               </div>
             </div>
@@ -109,11 +111,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2 font-primary">Your cart is empty</h3>
-                  <p className="text-gray-400 my-2.5">Add some products to get started</p>
+                  <h3 className="text-xl font-bold text-white mb-2 font-primary">{t('cart.empty')}</h3>
+                  <p className="text-gray-400 my-2.5">{t('cart.emptyHint')}</p>
                   <div className="flex justify-center w-full">
                     <GlassyButton
-                      label="Continue Shopping"
+                      label={t('cart.continueShopping')}
                       onClick={onClose}
                       variant="light"
                     />
@@ -204,13 +206,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
                 {/* Subtotal */}
                 <div className="flex items-center justify-between text-lg">
-                  <span className="text-gray-300">Subtotal</span>
+                  <span className="text-gray-300">{t('cart.subtotal')}</span>
                   <span className="text-2xl font-bold text-white">{formatPrice(cartTotal)}</span>
                 </div>
 
                 {/* Charitable Impact Note */}
                 <p className="text-sm text-gray-400 text-center">
-                  100% of profits support charitable causes
+                  {t('cart.profitsNote')}
                 </p>
 
                 {/* Trust signals */}
@@ -223,7 +225,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
-                  <span>Secure checkout powered by Shopify · All major payment methods</span>
+                  <span>{t('cart.secureCheckout')}</span>
                 </div>
 
                 {/* Checkout Button */}
@@ -253,17 +255,17 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         />
                       </svg>
-                      Processing...
+                      {t('cart.processing')}
                     </span>
                   ) : (
-                    'Checkout'
+                    t('cart.checkout')
                   )}
                 </button>
 
                 {/* Continue Shopping */}
                 <div className="flex justify-center w-full">
                   <GlassyButton
-                    label="Continue Shopping"
+                    label={t('cart.continueShopping')}
                     onClick={onClose}
                     variant="primary"
                     className="w-auto min-w-[200px]"

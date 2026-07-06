@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { CartProvider } from './contexts/CartContext'
 import { NavigationProvider } from './contexts/NavigationContext'
+import { LocaleProvider } from './contexts/LocaleContext'
 
 import CookieConsent from './components/Layout/CookieConsent'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
@@ -49,6 +50,7 @@ function PageFallback() {
 function App() {
   return (
     <Router>
+      <LocaleProvider>
       <CartProvider>
         <NavigationProvider>
           <ScrollToTop />
@@ -90,6 +92,7 @@ function App() {
           <SpeedInsights />
         </NavigationProvider>
       </CartProvider>
+      </LocaleProvider>
     </Router>
   )
 }

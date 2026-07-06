@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
@@ -18,6 +19,7 @@ import CollectionRow from '../components/Shop/CollectionRow'
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [view, setView] = useState<'mission' | 'shop'>('mission')
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [loading, setLoading] = useState(false)
@@ -279,7 +281,7 @@ export default function ProjectPage() {
           bgImageSrc="" // Overridden by global background
           renderHeader={renderHeader}
           title={project.name}
-          scrollToExpand="Scroll to explore"
+          scrollToExpand={t('project.scrollToExplore')}
           textBlend={false}
         >
           {/* Project Controls & Navigation */}
@@ -288,7 +290,7 @@ export default function ProjectPage() {
               {/* View Toggle */}
               <div className="flex items-center bg-white/10 backdrop-blur-md rounded-full p-1 gap-1">
                 <GlassyButton
-                  label="Mission"
+                  label={t('project.mission')}
                   onClick={() => setView('mission')}
                   variant={view === 'mission' ? 'light' : 'dark'}
                   background={view === 'mission' ? undefined : 'rgba(255, 255, 255, 0.05)'}
@@ -297,7 +299,7 @@ export default function ProjectPage() {
                   blur={view === 'mission' ? 18 : 8}
                 />
                 <GlassyButton
-                  label="Shop"
+                  label={t('project.shop')}
                   onClick={() => setView('shop')}
                   variant={view === 'shop' ? 'light' : 'dark'}
                   background={view === 'shop' ? undefined : 'rgba(255, 255, 255, 0.05)'}
@@ -320,7 +322,7 @@ export default function ProjectPage() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="hidden md:inline">Prev Project</span>
+                    <span className="hidden md:inline">{t('project.prevProject')}</span>
                   </div>
                 </GlassyButton>
 
@@ -334,7 +336,7 @@ export default function ProjectPage() {
                   borderRadius={24}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="hidden md:inline">Next Project</span>
+                    <span className="hidden md:inline">{t('project.nextProject')}</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -377,20 +379,20 @@ export default function ProjectPage() {
               {/* Problem */}
               <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
                 <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1 text-center w-full">
-                  {project.slug === 'rich-in-life' ? 'The Challenge' : 'The Problem'}
+                  {project.slug === 'rich-in-life' ? t('project.theChallenge') : t('project.theProblem')}
                 </h3>
                 <p className="text-black text-base md:text-xl leading-relaxed py-1 max-w-3xl mx-auto">{project.mission.problem}</p>
               </div>
 
               {/* Solution */}
               <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
-                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1 text-center w-full">Our Solution</h3>
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-4 md:mb-8 py-1 text-center w-full">{t('project.ourSolution')}</h3>
                 <p className="text-black text-base md:text-xl leading-relaxed py-1 max-w-3xl mx-auto">{project.mission.solution}</p>
               </div>
 
               {/* Partner Charity */}
               <div className="bg-white/5 rounded-2xl p-6 md:p-16 border border-white/10 md:min-h-[40vh] flex flex-col justify-center items-center text-center">
-                <h3 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12 py-1 text-center w-full">Our Partner</h3>
+                <h3 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12 py-1 text-center w-full">{t('project.ourPartner')}</h3>
                 <div className="flex flex-col items-center gap-6 md:gap-12 w-full">
                   <img
                     src={project.mission.partnerCharity.logo}
@@ -411,7 +413,7 @@ export default function ProjectPage() {
                       className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-500 transition-colors font-semibold text-lg"
                       style={{ marginTop: '10px', marginBottom: '10px', paddingTop: '5px', paddingBottom: '5px' }}
                     >
-                      Visit Website
+                      {t('project.visitWebsite')}
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
@@ -423,9 +425,9 @@ export default function ProjectPage() {
               {/* Collection Preview */}
               <div className="py-16">
                 <div className="text-center mb-12">
-                  <h3 className="text-3xl font-bold text-white mb-4" style={{ paddingTop: '5px', paddingBottom: '5px', marginTop: '10px', marginBottom: '10px' }}>Support This Cause</h3>
+                  <h3 className="text-3xl font-bold text-white mb-4" style={{ paddingTop: '5px', paddingBottom: '5px', marginTop: '10px', marginBottom: '10px' }}>{t('project.supportThisCause')}</h3>
                   <p className="text-xl text-gray-300" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
-                    100% of profits from the {project.name} collection go directly to {project.mission.partnerCharity.name}
+                    {t('project.profitsLine', { name: project.name, charity: project.mission.partnerCharity.name })}
                   </p>
                 </div>
 
@@ -440,10 +442,10 @@ export default function ProjectPage() {
                 ) : (
                   <div className="flex justify-center">
                     {loading ? (
-                      <div className="text-white">Loading products...</div>
+                      <div className="text-white">{t('project.loadingProducts')}</div>
                     ) : (
                       <GlassyButton
-                        label="Shop Collection"
+                        label={t('project.shopCollection')}
                         onClick={() => setView('shop')}
                         variant="light"
                       />
@@ -455,10 +457,10 @@ export default function ProjectPage() {
           ) : (
             <div>
               <h2 className="text-4xl font-bold text-white mb-6 text-center">
-                Shop {project.name} Collection
+                {t('project.shopCollectionTitle', { name: project.name })}
               </h2>
               <p className="text-xl text-gray-300 mb-12 text-center">
-                100% of profits support {project.mission.partnerCharity.name}
+                {t('project.profitsSupport', { charity: project.mission.partnerCharity.name })}
               </p>
 
               <ProductGrid

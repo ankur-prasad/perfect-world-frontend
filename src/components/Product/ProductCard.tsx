@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { useState } from 'react'
@@ -13,10 +14,11 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onQuickView, themeColor = '#3498DB', isLightMode = false }: ProductCardProps) {
   const { addToCart } = useCart()
+  const { t, i18n } = useTranslation()
   const [isAdding, setIsAdding] = useState(false)
 
   const price = parseFloat(product.priceRange.minVariantPrice.amount)
-  const formattedPrice = new Intl.NumberFormat('en-US', {
+  const formattedPrice = new Intl.NumberFormat(i18n.language, {
     style: 'currency',
     currency: product.priceRange.minVariantPrice.currencyCode,
   }).format(price)
@@ -82,7 +84,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
           {onQuickView && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-90 transition-all duration-300">
               <GlassyButton
-                label="Quick View"
+                label={t('product.quickView')}
                 onClick={handleQuickView}
                 variant="light"
               />
@@ -93,7 +95,7 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
         {/* Availability Badge */}
         {!isAvailable && (
           <div className="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded-full">
-            Sold Out
+            {t('product.soldOut')}
           </div>
         )}
 
@@ -161,12 +163,12 @@ export default function ProductCard({ product, onQuickView, themeColor = '#3498D
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Adding...
+                {t('product.adding')}
               </span>
             ) : !isAvailable ? (
-              'Sold Out'
+              t('product.soldOut')
             ) : (
-              'Add to Cart'
+              t('product.addToCart')
             )}
           </GlassyButton>
         </div>
