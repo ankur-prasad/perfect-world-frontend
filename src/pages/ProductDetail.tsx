@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import Footer from '../components/Layout/Footer'
 import Navigation from '../components/Layout/Navigation'
@@ -62,57 +63,40 @@ interface ProductSpec {
   care: string
 }
 
-function getProductSpecs(title: string): ProductSpec {
+// Preferred default size when a product has a size option. We land on M (a
+// mid-range fit most people start from) instead of whatever Shopify returns
+// first — which for oversized styles is often XXS.
+const PREFERRED_DEFAULT_SIZES = ['M', 'L', 'S', 'XL', 'XS', 'XXL', 'XXS']
+
+function pickDefaultVariantIndex(product: ShopifyProduct): number {
+  const variants = product.variants || []
+  if (variants.length <= 1) return 0
+
+  const sizeOf = (v: ShopifyProduct['variants'][number]) =>
+    v.selectedOptions?.find((o) => o.name.toLowerCase() === 'size')?.value?.trim().toUpperCase()
+
+  const hasSizes = variants.some((v) => sizeOf(v))
+  if (!hasSizes) return 0
+
+  // Prefer an available M, then the next-best size that is in stock.
+  for (const size of PREFERRED_DEFAULT_SIZES) {
+    const available = variants.findIndex((v) => sizeOf(v) === size && v.availableForSale)
+    if (available !== -1) return available
+  }
+  // Nothing in stock at a preferred size — fall back to any M, then first variant.
+  const anyM = variants.findIndex((v) => sizeOf(v) === 'M')
+  return anyM !== -1 ? anyM : 0
+}
+
+// Garment spec copy lives in the i18n bundles (product.specs.*) so it localizes
+// alongside the rest of the page. Keys map 1:1 to the product types we detect.
+function getProductSpecs(title: string, t: TFunction): ProductSpec {
   const type = extractProductType(title)
-  if (type === 'hoodie') {
-    return {
-      features: [
-        'Double-layered hood in self-fabric',
-        'Round drawcords in matching body colour with metal tipping',
-        'Metal eyelets',
-        'Inside single jersey back neck tape',
-        'Self-fabric half moon at back neck',
-        '1x1 rib at sleeve hem and bottom hem',
-        'Flatlock topstitching on all seams',
-        'Kangaroo pocket at front'
-      ],
-      composition: 'Shell: Brushed, 85% Cotton - Organic Ring Spun Combed, 15% Polyester - Recycled, Fabric washed, Light sueded, 350 G/M²',
-      care: 'Wash similar colours together, no ironing on print, wash and iron inside out.'
-    }
-  } else if (type === 'oversized') {
-    return {
-      features: [
-        'Set-in sleeves',
-        'Dropped shoulders',
-        '1x1 rib at collar',
-        'Inside back neck tape in self-fabric',
-        'Sleeve hem and bottom hem with wide double needle topstitch'
-      ],
-      composition: 'Shell: Single Jersey, 100% Cotton - Organic Combed Ring Spun / Heather Haze: 70% Organic Cotton - 30% Recycled Cotton, Combed Ring Spun, Fabric washed, 200 G/M²',
-      care: 'Wash similar colours together, no ironing on print, wash and iron inside out.'
-    }
-  } else if (type === 'tote') {
-    return {
-      features: [
-        'Top edge double folded for strength and clean finish',
-        'Long handles with reinforced cross stitch',
-        'Shaping seam at bottom to create volume'
-      ],
-      composition: 'Shell: Canvas, 80% Cotton - Recycled, 20% Polyester - Recycled, Fabric washed, 300 G/M²',
-      care: 'Wash similar colours together, do not iron on print, wash and iron inside out.'
-    }
-  } else {
-    // Default: T-Shirt
-    return {
-      features: [
-        '1x1 rib at neckline',
-        'Self-fabric back neck tape',
-        'Set-in sleeves',
-        'Twin-needle topstitching at sleeve cuffs and hem'
-      ],
-      composition: 'Shell: Single Jersey, 100% Cotton - Organic Combed Ring Spun / Heather Haze: 70% Organic Cotton - 30% Recycled Cotton, Combed Ring Spun, Fabric washed, 180 G/M²',
-      care: 'Wash similar colours together, no ironing on print, wash and iron inside out.'
-    }
+  const key = type === 'hoodie' ? 'hoodie' : type === 'oversized' ? 'oversized' : type === 'tote' ? 'tote' : 'tshirt'
+  return {
+    features: t(`product.specs.${key}.features`, { returnObjects: true }) as string[],
+    composition: t(`product.specs.${key}.composition`),
+    care: t(`product.specs.${key}.care`),
   }
 }
 
@@ -153,6 +137,7 @@ export default function ProductDetail() {
         const fetchedProduct = await getProduct(handle)
         if (fetchedProduct) {
           setProduct(fetchedProduct)
+          setSelectedVariantIndex(pickDefaultVariantIndex(fetchedProduct))
 
 
 
@@ -215,11 +200,11 @@ export default function ProductDetail() {
             }
           }
         } else {
-          setError('Product not found')
+          setError(t('product.notFound'))
         }
       } catch (err) {
         console.error('Failed to fetch product:', err)
-        setError('Failed to load product. Please try again later.')
+        setError(t('product.loadError'))
       } finally {
         setLoading(false)
       }
@@ -232,7 +217,7 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-white text-2xl">Loading...</div>
+          <div className="text-white text-2xl">{t('product.loading')}</div>
         </div>
       </div>
     )
@@ -243,12 +228,12 @@ export default function ProductDetail() {
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-white mb-4">{error || 'Product Not Found'}</h1>
+            <h1 className="text-4xl font-bold text-white mb-4">{error || t('product.notFound')}</h1>
             <button
               onClick={() => navigate('/shop')}
               className="px-16 py-5 bg-white text-black rounded-full hover:bg-gray-200 transition-colors font-semibold"
             >
-              Back to Shop
+              {t('product.backToShop')}
             </button>
           </div>
         </div>
@@ -345,11 +330,11 @@ export default function ProductDetail() {
             {/* Breadcrumb */}
             <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm text-gray-400 py-4 pl-2 pr-24 md:px-8">
               <Link to="/" className="hover:text-white transition-colors">
-                Home
+                {t('product.breadcrumbHome')}
               </Link>
               <span>/</span>
               <Link to="/shop" className="hover:text-white transition-colors">
-                Shop
+                {t('product.breadcrumbShop')}
               </Link>
               {product.collectionName && (
                 <>
@@ -366,9 +351,10 @@ export default function ProductDetail() {
               <span className="text-white">{product.title}</span>
             </nav>
 
-            <div className="grid lg:grid-cols-2 gap-12 mb-24">
+            <div className="grid lg:grid-cols-2 gap-12 mb-24 px-2 sm:px-4">
               {/* Images */}
               <motion.div
+                className="min-w-0"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
@@ -417,9 +403,9 @@ export default function ProductDetail() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
-                className="flex flex-col"
+                className="flex flex-col min-w-0"
               >
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{product.title}</h1>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 break-words hyphens-auto">{product.title}</h1>
 
                 <div className="flex flex-wrap items-center gap-4 mb-8 py-5">
                   <span className="text-4xl font-bold text-white">{formattedPrice}</span>
@@ -427,7 +413,7 @@ export default function ProductDetail() {
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                     </svg>
-                    100% of profits donated
+                    {t('product.profitsDonated')}
                   </span>
                 </div>
 
@@ -435,7 +421,7 @@ export default function ProductDetail() {
                 {siblings.length > 1 && (
                   <div className="mb-8">
                     <label className="block text-2xl font-bold text-white py-2.5">
-                      Color
+                      {t('product.color')}
                       {extractColorFromTitle(product.title) && (
                         <span className="ml-3 text-base font-normal text-gray-300 capitalize">
                           {extractColorFromTitle(product.title).toLowerCase()}
@@ -513,7 +499,7 @@ export default function ProductDetail() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
                             </svg>
-                            Size Guide
+                            {t('product.sizeGuide')}
                           </button>
                         )}
                       </div>
@@ -572,7 +558,7 @@ export default function ProductDetail() {
                       </div>
                       {option.name.toLowerCase() === 'size' && product.title.toLowerCase().includes('oversized') && (
                         <p className="mt-3 text-sm text-gray-400 leading-relaxed font-medium">
-                          Note: This style is designed to be oversized (loose and roomy). If you prefer a closer fit, consider sizing down.
+                          {t('product.oversizedNote')}
                         </p>
                       )}
                     </div>
@@ -581,7 +567,7 @@ export default function ProductDetail() {
 
                 {/* Quantity Selector - Glassy Style */}
                 <div className="mb-8">
-                  <label className="block text-2xl font-bold text-white py-2.5">Quantity</label>
+                  <label className="block text-2xl font-bold text-white py-2.5">{t('product.quantity')}</label>
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -647,7 +633,7 @@ export default function ProductDetail() {
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        Link Copied!
+                        {t('product.linkCopied')}
                       </>
                     ) : (
                       <>
@@ -659,7 +645,7 @@ export default function ProductDetail() {
                             d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                           />
                         </svg>
-                        Share Product
+                        {t('product.shareProduct')}
                       </>
                     )}
                   </button>
@@ -670,18 +656,18 @@ export default function ProductDetail() {
                   <div className="space-y-8 py-5 px-1.5 border-t border-white/10 mt-8 animate-fade-in">
                     {/* The original description text */}
                     <div
-                      className="text-gray-300 text-lg leading-relaxed font-medium"
+                      className="text-gray-300 text-lg leading-relaxed font-medium break-words"
                       dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
                     />
                     
                     {/* SPECIFICATIONS GRID */}
                     {(() => {
-                      const specs = getProductSpecs(product.title)
+                      const specs = getProductSpecs(product.title, t)
                       return (
                         <div className="grid md:grid-cols-2 gap-8 pt-6 border-t border-white/5">
                           {/* Left side: Feature Checklist */}
                           <div>
-                            <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-4">Description</h4>
+                            <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-4">{t('product.specsDescription')}</h4>
                             <ul className="space-y-3">
                               {specs.features.map((feature, i) => (
                                 <li key={i} className="flex items-start gap-2.5 text-gray-300 text-base">
@@ -697,11 +683,11 @@ export default function ProductDetail() {
                           {/* Right side: Composition & Care */}
                           <div className="space-y-6">
                             <div>
-                              <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-3">Composition</h4>
+                              <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-3">{t('product.composition')}</h4>
                               <p className="text-gray-300 text-base leading-relaxed">{specs.composition}</p>
                             </div>
                             <div>
-                              <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-3">Care Instructions</h4>
+                              <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-3">{t('product.careInstructions')}</h4>
                               <p className="text-gray-300 text-base leading-relaxed mb-4">{specs.care}</p>
                               {/* Care icons */}
                               <div className="flex items-center gap-4 text-white/70">
@@ -759,7 +745,7 @@ export default function ProductDetail() {
                           </svg>
                         </div>
                         <span className="text-white font-bold text-sm">GOTS Certified</span>
-                        <span className="text-xs text-gray-400 mt-1">100% Organic Cotton</span>
+                        <span className="text-xs text-gray-400 mt-1">{t('product.cert.gotsSub')}</span>
                       </div>
 
                       <div className="flex flex-col items-center p-4 rounded-2xl bg-white/5 border border-white/10 text-center backdrop-blur-md">
@@ -779,7 +765,7 @@ export default function ProductDetail() {
                           </svg>
                         </div>
                         <span className="text-white font-bold text-sm">PETA Approved</span>
-                        <span className="text-xs text-gray-400 mt-1">100% Vegan</span>
+                        <span className="text-xs text-gray-400 mt-1">{t('product.cert.petaSub')}</span>
                       </div>
 
                       <div className="flex flex-col items-center p-4 rounded-2xl bg-white/5 border border-white/10 text-center backdrop-blur-md">
@@ -789,7 +775,7 @@ export default function ProductDetail() {
                           </svg>
                         </div>
                         <span className="text-white font-bold text-sm">Fair Wear</span>
-                        <span className="text-xs text-gray-400 mt-1">Ethical Labor</span>
+                        <span className="text-xs text-gray-400 mt-1">{t('product.cert.fairwearSub')}</span>
                       </div>
                     </div>
                   </div>
@@ -798,10 +784,9 @@ export default function ProductDetail() {
                 {/* Charitable Impact */}
                 {product.collectionName && (
                   <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <h3 className="text-lg font-bold text-white mb-2">Your Impact</h3>
+                    <h3 className="text-lg font-bold text-white mb-2">{t('product.yourImpact')}</h3>
                     <p className="text-gray-300">
-                      100% of profits from this product support {product.collectionName}. Every
-                      purchase makes a real difference.
+                      {t('product.yourImpactBody', { collection: product.collectionName })}
                     </p>
                   </div>
                 )}
@@ -815,7 +800,7 @@ export default function ProductDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h2 className="text-3xl font-bold text-white mb-8">You May Also Like</h2>
+                <h2 className="text-3xl font-bold text-white mb-8">{t('product.youMayAlsoLike')}</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                   {relatedProducts.map((relatedProduct) => (
                     <ProductCard
@@ -880,7 +865,7 @@ export default function ProductDetail() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <h3 className="text-xl font-bold text-white mb-6 pr-8 text-center font-primary">Size Chart - {product.title}</h3>
+              <h3 className="text-xl font-bold text-white mb-6 pr-8 text-center font-primary">{t('product.sizeChartTitle', { title: product.title })}</h3>
               <div className="w-full max-h-[70vh] overflow-auto flex justify-center bg-white p-4 rounded-2xl">
                 <img
                   src={sizeChartImage}

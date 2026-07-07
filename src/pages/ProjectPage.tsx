@@ -8,6 +8,7 @@ import ProductGrid from '../components/Product/ProductGrid'
 import QuickViewModal from '../components/Product/QuickViewModal'
 import ScrollExpandMedia from '../components/ScrollExpandMedia'
 import { getProjectBySlug, projects } from '../data/projects'
+import { useLocalizedProject } from '../data/useLocalizedProject'
 import { getCollectionProducts } from '../utils/shopify'
 import type { ShopifyProduct } from '../types/shopify.types'
 import { MeshGradient } from '@paper-design/shaders-react'
@@ -27,7 +28,7 @@ export default function ProjectPage() {
   const [isScrolling, setIsScrolling] = useState(false)
   const { isTransitioning, endTransition, data, direction } = useTransitionStore()
 
-  const project = slug ? getProjectBySlug(slug) : null
+  const project = useLocalizedProject(slug ? getProjectBySlug(slug) : null)
 
   // End transition after animation completes
   useEffect(() => {
@@ -175,7 +176,7 @@ export default function ProjectPage() {
             className="mt-8 flex items-center justify-center gap-4 transition-opacity duration-100"
             style={{ opacity: Math.max(0, 1 - progress * 3) }}
           >
-            <span className="text-white/80 text-sm uppercase tracking-widest">In partnership with</span>
+            <span className="text-white/80 text-sm uppercase tracking-widest">{t('project.inPartnershipWith')}</span>
             <img
               src={perfectWorldLogo}
               alt="Perfect World"

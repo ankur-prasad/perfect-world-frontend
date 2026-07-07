@@ -457,7 +457,6 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
           { to: "/projects", label: t('nav.menu.projects') },
           { to: "/about", label: t('nav.menu.about') },
           { to: "/shop", label: t('nav.menu.shop') },
-          { to: "/podcasts", label: t('nav.menu.podcasts') },
           { to: "/contact", label: t('nav.menu.contact') },
         ].map((item, index) => (
           <motion.div

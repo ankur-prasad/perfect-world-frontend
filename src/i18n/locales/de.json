@@ -11,7 +11,6 @@
       "projects": "Projekte",
       "about": "Über uns & Transparenz",
       "shop": "Shop",
-      "podcasts": "Podcasts",
       "contact": "Kontakt"
     }
   },
@@ -96,7 +95,78 @@
     "addingToCart": "Wird in den Warenkorb gelegt...",
     "soldOut": "Ausverkauft",
     "quickView": "Schnellansicht",
-    "viewFullDetails": "Details Ansehen"
+    "viewFullDetails": "Details Ansehen",
+    "loading": "Wird geladen...",
+    "notFound": "Produkt nicht gefunden",
+    "loadError": "Produkt konnte nicht geladen werden. Bitte versuche es später erneut.",
+    "backToShop": "Zurück zum Shop",
+    "breadcrumbHome": "Start",
+    "breadcrumbShop": "Shop",
+    "color": "Farbe",
+    "quantity": "Menge",
+    "sizeGuide": "Größentabelle",
+    "sizeChartTitle": "Größentabelle – {{title}}",
+    "shareProduct": "Produkt teilen",
+    "linkCopied": "Link kopiert!",
+    "profitsDonated": "100% der Gewinne gespendet",
+    "oversizedNote": "Hinweis: Dieser Schnitt ist bewusst oversized (locker und weit). Wenn du es lieber körpernäher magst, wähle eine Größe kleiner.",
+    "specsDescription": "Beschreibung",
+    "composition": "Zusammensetzung",
+    "careInstructions": "Pflegehinweise",
+    "yourImpact": "Deine Wirkung",
+    "yourImpactBody": "100% der Gewinne dieses Produkts unterstützen {{collection}}. Jeder Kauf macht einen echten Unterschied.",
+    "youMayAlsoLike": "Das könnte dir auch gefallen",
+    "cert": {
+      "gotsSub": "100% Bio-Baumwolle",
+      "petaSub": "100% vegan",
+      "fairwearSub": "Faire Arbeitsbedingungen"
+    },
+    "specs": {
+      "hoodie": {
+        "features": [
+          "Doppellagige Kapuze aus demselben Stoff",
+          "Runde Kordeln in passender Körperfarbe mit Metallenden",
+          "Metallösen",
+          "Innen liegendes Single-Jersey-Nackenband",
+          "Halbmond aus demselben Stoff am Nacken",
+          "1x1-Rippbund an Ärmel- und Saumabschluss",
+          "Flatlock-Absteppung an allen Nähten",
+          "Kängurutasche vorne"
+        ],
+        "composition": "Außen: Angeraut, 85% Baumwolle - Bio, ringgesponnen & gekämmt, 15% Polyester - recycelt, stückgewaschen, leicht angeraut, 350 G/M²",
+        "care": "Ähnliche Farben zusammen waschen, nicht auf den Druck bügeln, auf links waschen und bügeln."
+      },
+      "oversized": {
+        "features": [
+          "Eingesetzte Ärmel",
+          "Fallende Schultern",
+          "1x1-Rippbund am Kragen",
+          "Innen liegendes Nackenband aus demselben Stoff",
+          "Ärmel- und Saumabschluss mit breiter Doppelnaht"
+        ],
+        "composition": "Außen: Single Jersey, 100% Baumwolle - Bio, gekämmt & ringgesponnen / Heather Haze: 70% Bio-Baumwolle - 30% recycelte Baumwolle, gekämmt & ringgesponnen, stückgewaschen, 200 G/M²",
+        "care": "Ähnliche Farben zusammen waschen, nicht auf den Druck bügeln, auf links waschen und bügeln."
+      },
+      "tote": {
+        "features": [
+          "Oberkante doppelt umgeschlagen für Stabilität und sauberen Abschluss",
+          "Lange Henkel mit verstärkter Kreuznaht",
+          "Formnaht am Boden für mehr Volumen"
+        ],
+        "composition": "Außen: Canvas, 80% Baumwolle - recycelt, 20% Polyester - recycelt, stückgewaschen, 300 G/M²",
+        "care": "Ähnliche Farben zusammen waschen, nicht auf den Druck bügeln, auf links waschen und bügeln."
+      },
+      "tshirt": {
+        "features": [
+          "1x1-Rippbund am Halsausschnitt",
+          "Nackenband aus demselben Stoff",
+          "Eingesetzte Ärmel",
+          "Doppelnaht an Ärmelabschluss und Saum"
+        ],
+        "composition": "Außen: Single Jersey, 100% Baumwolle - Bio, gekämmt & ringgesponnen / Heather Haze: 70% Bio-Baumwolle - 30% recycelte Baumwolle, gekämmt & ringgesponnen, stückgewaschen, 180 G/M²",
+        "care": "Ähnliche Farben zusammen waschen, nicht auf den Druck bügeln, auf links waschen und bügeln."
+      }
+    }
   },
   "cart": {
     "title": "Dein Warenkorb",
@@ -152,6 +222,12 @@
     "shopCollection": "Kollektion Shoppen",
     "loadingProducts": "Produkte werden geladen...",
     "shopCollectionTitle": "{{name}} Kollektion",
-    "profitsSupport": "100% der Gewinne unterstützen {{charity}}"
+    "profitsSupport": "100% der Gewinne unterstützen {{charity}}",
+    "inPartnershipWith": "In Zusammenarbeit mit"
+  },
+  "projectsPage": {
+    "title": "Unsere Projekte",
+    "subtitle": "Organisationen und Anliegen, die wir unterstützen",
+    "intro": "Gemeinsam mit unseren Partnerorganisationen lädt dich Perfect World ein, Teil einer Bewegung zu werden, die Grenzen überwindet und jenen Freude und Unterstützung bringt, die sie am dringendsten brauchen. Entdecke unsere gemeinsamen Produkte – im Wissen, dass jeder Kauf zum Wohl und zur Zukunft unseres Planeten beiträgt. Erfahre unten mehr über unsere einzelnen Partnerorganisationen."
   }
 }

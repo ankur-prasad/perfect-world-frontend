@@ -2,8 +2,10 @@ import { useRef, useEffect, useState } from 'react'
 
 export default function MainVideo() {
     const videoRef = useRef<HTMLVideoElement>(null)
+    const sectionRef = useRef<HTMLElement>(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(true)
+    const [isFullscreen, setIsFullscreen] = useState(false)
     const [showControls, setShowControls] = useState(true)
 
     // Autoplay effect - runs only once on mount
@@ -64,12 +66,42 @@ export default function MainVideo() {
         setShowControls(true)
     }
 
+    // Track fullscreen state so the icon reflects reality even when the user
+    // exits via Esc or the browser's own chrome.
+    useEffect(() => {
+        const handleChange = () => setIsFullscreen(!!document.fullscreenElement)
+        document.addEventListener('fullscreenchange', handleChange)
+        return () => document.removeEventListener('fullscreenchange', handleChange)
+    }, [])
+
+    const toggleFullscreen = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        const container = sectionRef.current
+        const video = videoRef.current
+        setShowControls(true)
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen?.()
+            return
+        }
+
+        // Fullscreen the section so our custom controls stay overlaid; fall back
+        // to the video element (iOS Safari only supports fullscreen on <video>).
+        if (container?.requestFullscreen) {
+            container.requestFullscreen().catch(() => {})
+        } else {
+            const iosVideo = video as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null
+            iosVideo?.webkitEnterFullscreen?.()
+        }
+    }
+
     const handleMouseMove = () => {
         setShowControls(true)
     }
 
     return (
         <section
+            ref={sectionRef}
             className="w-full h-auto md:h-screen relative bg-black cursor-pointer group flex items-center justify-center"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => isPlaying && setShowControls(false)}
@@ -131,6 +163,25 @@ export default function MainVideo() {
                         // Unmuted Icon
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                    )}
+                </button>
+
+                {/* Fullscreen Button */}
+                <button
+                    onClick={toggleFullscreen}
+                    className="flex items-center justify-center w-14 h-14 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all duration-200 border border-white/30"
+                    aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                >
+                    {isFullscreen ? (
+                        // Exit Fullscreen Icon
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9L4 4m0 0v4m0-4h4m7 5l5-5m0 0v4m0-4h-4M9 15l-5 5m0 0v-4m0 4h4m7-5l5 5m0 0v-4m0 4h-4" />
+                        </svg>
+                    ) : (
+                        // Enter Fullscreen Icon
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2" />
                         </svg>
                     )}
                 </button>
