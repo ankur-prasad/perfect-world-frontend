@@ -8,15 +8,29 @@ import { isMobile } from '../../utils/animations'
 interface GlobeProps {
   onHoverChange?: (hover: boolean) => void
   onDragStart?: () => void
-  onDragEnd?: () => void
-  isDragging?: boolean
+  /** dx = horizontal screen delta (px) since last move; vel = px/ms */
+  onDragMove?: (dx: number, vel: number) => void
+  /** vel = px/ms at release, for momentum */
+  onDragEnd?: (vel: number) => void
 }
 
-export default function Globe({ onHoverChange, onDragStart, onDragEnd }: GlobeProps) {
+export default function Globe({ onHoverChange, onDragStart, onDragMove, onDragEnd }: GlobeProps) {
   const mobile = isMobile()
   const segments = mobile ? SCENE.GLOBE_MOBILE_SEGMENTS : SCENE.GLOBE_SEGMENTS
   const meshRef = useRef<THREE.Mesh>(null)
   const groupRef = useRef<THREE.Group>(null)
+
+  // Direct, event-driven drag so the globe tracks the finger 1:1 (the old
+  // per-frame normalized-pointer sampling felt laggy on touch). We only take
+  // over once the gesture is clearly horizontal, so vertical swipes still
+  // scroll the page (canvas uses touch-action: pan-y).
+  const pendingRef = useRef(false)
+  const activeRef = useRef(false)
+  const startXRef = useRef(0)
+  const startYRef = useRef(0)
+  const lastXRef = useRef(0)
+  const lastTRef = useRef(0)
+  const velRef = useRef(0)
   
   const { camera, raycaster, pointer } = useThree()
   const prevHoverRef = useRef(false)
@@ -125,11 +139,55 @@ export default function Globe({ onHoverChange, onDragStart, onDragEnd }: GlobePr
         ref={meshRef}
         onPointerDown={(e) => {
           e.stopPropagation()
-          if (onDragStart) onDragStart()
+          pendingRef.current = true
+          activeRef.current = false
+          startXRef.current = e.clientX
+          startYRef.current = e.clientY
+          lastXRef.current = e.clientX
+          lastTRef.current = performance.now()
+          velRef.current = 0
+        }}
+        onPointerMove={(e) => {
+          // Decide direction on the first meaningful movement.
+          if (pendingRef.current && !activeRef.current) {
+            const dxTotal = e.clientX - startXRef.current
+            const dyTotal = e.clientY - startYRef.current
+            if (Math.abs(dxTotal) < 6 && Math.abs(dyTotal) < 6) return
+            if (Math.abs(dyTotal) > Math.abs(dxTotal)) {
+              // Vertical intent — let the page scroll.
+              pendingRef.current = false
+              return
+            }
+            pendingRef.current = false
+            activeRef.current = true
+            lastXRef.current = e.clientX
+            lastTRef.current = performance.now()
+            try { (e.target as Element).setPointerCapture(e.pointerId) } catch { /* older browsers */ }
+            onDragStart?.()
+          }
+          if (!activeRef.current) return
+
+          const now = performance.now()
+          const dx = e.clientX - lastXRef.current
+          const dt = now - lastTRef.current
+          velRef.current = dt > 0 ? dx / dt : 0
+          lastXRef.current = e.clientX
+          lastTRef.current = now
+          onDragMove?.(dx, velRef.current)
         }}
         onPointerUp={(e) => {
+          pendingRef.current = false
+          if (!activeRef.current) return
           e.stopPropagation()
-          if (onDragEnd) onDragEnd()
+          activeRef.current = false
+          try { (e.target as Element).releasePointerCapture(e.pointerId) } catch { /* older browsers */ }
+          onDragEnd?.(velRef.current)
+        }}
+        onPointerCancel={() => {
+          pendingRef.current = false
+          if (!activeRef.current) return
+          activeRef.current = false
+          onDragEnd?.(0)
         }}
       >
         <sphereGeometry args={[1, segments, segments]} />
