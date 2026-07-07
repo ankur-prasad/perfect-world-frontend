@@ -371,15 +371,17 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
             ref={logoRef}
             src={isDarkContent ? logoBlack : logoWhite}
             alt="Perfect World"
-            className="h-14 md:h-20 w-auto transition-all duration-300"
+            className={`h-14 md:h-20 w-auto transition-all duration-300 ${
+              isDarkContent ? '' : 'drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]'
+            }`}
           />
         </Link>
       </motion.div>
 
-      {/* Menu - Top Left */}
+      {/* Menu - Top Left (aligned to the impact-card edge) */}
       <motion.div
         ref={menuRef}
-        className="fixed top-[60px] left-6 z-[60]"
+        className="fixed top-[60px] left-4 sm:left-6 md:left-[max(2rem,calc(50vw_-_800px))] z-[60]"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -390,7 +392,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
       {/* Cart and Shop - Top Right (Stack vertically on mobile with smaller buttons) */}
       <motion.div
         ref={shopRef}
-        className="fixed top-[60px] right-3 md:right-6 z-40 flex flex-col md:flex-row items-end md:items-center gap-1.5 md:gap-3"
+        className="fixed top-[60px] right-4 sm:right-6 md:right-[max(2rem,calc(50vw_-_800px))] z-40 flex flex-col md:flex-row items-end md:items-center gap-1.5 md:gap-3"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}

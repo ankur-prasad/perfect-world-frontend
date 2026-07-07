@@ -194,6 +194,8 @@ export default function GlassyButton({
     minWidth: 'max-content',
     width: 'max-content',
     pointerEvents: 'none' as const,
+    // Keep white labels legible when the button floats over imagery.
+    textShadow: style.text.toLowerCase() === '#ffffff' ? '0 1px 6px rgba(0,0,0,0.45)' : 'none',
     transition: 'color 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
     position: 'relative' as const
   }), [style.text, fontSize, fontWeight])

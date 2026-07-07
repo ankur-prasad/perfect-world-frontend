@@ -74,6 +74,9 @@ export default function Home() {
   const [globeHover, setGlobeHover] = useState(false)
   const [richInLifeImage, setRichInLifeImage] = useState<string>('')
   const [isMobile, setIsMobile] = useState(false)
+  // True when the fixed header is currently overlapping a full-bleed image
+  // section (e.g. the impact slides), so it should switch to a light treatment.
+  const [headerOverImage, setHeaderOverImage] = useState(false)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768)
@@ -142,6 +145,18 @@ export default function Home() {
             setCollectionsScrollProgress(0)
           }
 
+          // Detect whether a full-bleed image section sits behind the header.
+          // Sample a horizontal line through the header's logo/button band; if any
+          // element flagged data-nav-theme="light" crosses it, use a light header.
+          const headerLine = 96
+          const overImage = Array.from(
+            document.querySelectorAll<HTMLElement>('[data-nav-theme="light"]')
+          ).some((el) => {
+            const r = el.getBoundingClientRect()
+            return r.top <= headerLine && r.bottom >= headerLine
+          })
+          setHeaderOverImage((prev) => (prev === overImage ? prev : overImage))
+
           ticking = false
         })
         ticking = true
@@ -199,7 +214,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen transition-colors duration-100 ease-out" style={{ backgroundColor }}>
-      <Navigation isDarkContent={bgLightness > 50} enableScrollAnimations={true} />
+      <Navigation isDarkContent={bgLightness > 50 && !headerOverImage} enableScrollAnimations={true} />
 
       {/* Fixed 3D Scene - spans both hero and collections */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
