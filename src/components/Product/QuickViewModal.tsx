@@ -4,6 +4,7 @@ import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { useState, useEffect } from 'react'
 import GlassyButton from '../ui/GlassyButton'
+import { isVariantAvailable } from '../../utils/availability'
 
 interface QuickViewModalProps {
   product: ShopifyProduct | null
@@ -34,7 +35,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
   }).format(price)
 
   const mainImage = product.images[0]?.url || '/placeholder-product.jpg'
-  const isAvailable = selectedVariant.availableForSale
+  const isAvailable = isVariantAvailable(selectedVariant)
 
   const handleAddToCart = async () => {
     if (!isAvailable) return
@@ -131,11 +132,11 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
                         <button
                           key={variant.id}
                           onClick={() => setSelectedVariantIndex(index)}
-                          disabled={!variant.availableForSale}
+                          disabled={!isVariantAvailable(variant)}
                           className={`px-4 py-2 rounded-lg font-medium transition-all ${
                             selectedVariantIndex === index
                               ? 'bg-white text-black'
-                              : variant.availableForSale
+                              : isVariantAvailable(variant)
                               ? 'bg-white/10 text-white hover:bg-white/20'
                               : 'bg-gray-800 text-gray-600 cursor-not-allowed line-through'
                           }`}

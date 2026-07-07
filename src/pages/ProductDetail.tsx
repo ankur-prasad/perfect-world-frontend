@@ -11,6 +11,7 @@ import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { sanitizeHtml } from '../utils/sanitize'
+import { isVariantAvailable } from '../utils/availability'
 import { extractColorFromTitle, extractProductType } from '../utils/productGrouping'
 import { projects } from '../data/projects'
 
@@ -80,7 +81,7 @@ function pickDefaultVariantIndex(product: ShopifyProduct): number {
 
   // Prefer an available M, then the next-best size that is in stock.
   for (const size of PREFERRED_DEFAULT_SIZES) {
-    const available = variants.findIndex((v) => sizeOf(v) === size && v.availableForSale)
+    const available = variants.findIndex((v) => sizeOf(v) === size && isVariantAvailable(v))
     if (available !== -1) return available
   }
   // Nothing in stock at a preferred size — fall back to any M, then first variant.
@@ -248,7 +249,7 @@ export default function ProductDetail() {
     currency: selectedVariant.price.currencyCode,
   }).format(price)
 
-  const isAvailable = selectedVariant.availableForSale
+  const isAvailable = isVariantAvailable(selectedVariant)
   
   let sizeChartImage = product.images.find(img => 
     img.url.toLowerCase().includes('chart') || 
