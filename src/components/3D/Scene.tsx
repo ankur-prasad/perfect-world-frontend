@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect, useRef } from 'react'
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, useProgress } from '@react-three/drei'
 import { Group } from 'three'
@@ -38,12 +38,13 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   return null
 }
 
-function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange, scrollProgress }: {
+function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress, onGlobeHoverChange, scrollProgress, onReady }: {
   mousePosition: { x: number; y: number }
   onSatelliteClick: (slug: string, clickPosition: { x: number; y: number }) => void
   collectionsScrollProgress: number
   onGlobeHoverChange?: (hover: boolean) => void
   scrollProgress: number
+  onReady?: () => void
 }) {
   const groupRef = useRef<Group>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -145,6 +146,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
         onDragStart={handleDragStart}
         onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
+        onReady={onReady}
       />
 
       {/* Satellites rotate with the globe */}
@@ -167,14 +169,23 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
 
   // Fade the whole scene in once the Earth model (and its textures) finish
   // loading, so the hero appears as a smooth reveal instead of popping in.
+  //
+  // The globe must ALWAYS become visible, so we reveal on the first of:
+  //  1. Globe's onReady (fires when the GLB has actually loaded — most reliable),
+  //  2. the loading manager reporting 100% (smooth path), or
+  //  3. a failsafe timer (covers cached loads where the loader never reports).
   const { active, progress } = useProgress()
   const [revealed, setRevealed] = useState(false)
+  const reveal = useCallback(() => setRevealed(true), [])
+
   useEffect(() => {
-    if (!active && progress >= 100) {
-      const t = setTimeout(() => setRevealed(true), 60)
-      return () => clearTimeout(t)
-    }
-  }, [active, progress])
+    if (!active && progress >= 100) reveal()
+  }, [active, progress, reveal])
+
+  useEffect(() => {
+    const t = setTimeout(reveal, 4000)
+    return () => clearTimeout(t)
+  }, [reveal])
 
   // Attach mouse move listener
   useEffect(() => {
@@ -250,6 +261,7 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
             collectionsScrollProgress={collectionsScrollProgress}
             onGlobeHoverChange={onGlobeHoverChange}
             scrollProgress={scrollProgress}
+            onReady={reveal}
           />
         </Suspense>
 

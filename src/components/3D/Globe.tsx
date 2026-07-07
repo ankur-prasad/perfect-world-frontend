@@ -12,9 +12,11 @@ interface GlobeProps {
   onDragMove?: (dx: number, vel: number) => void
   /** vel = px/ms at release, for momentum */
   onDragEnd?: (vel: number) => void
+  /** Fires once the model + textures are loaded (this component only mounts after Suspense resolves) */
+  onReady?: () => void
 }
 
-export default function Globe({ onHoverChange, onDragStart, onDragMove, onDragEnd }: GlobeProps) {
+export default function Globe({ onHoverChange, onDragStart, onDragMove, onDragEnd, onReady }: GlobeProps) {
   const mobile = isMobile()
   const segments = mobile ? SCENE.GLOBE_MOBILE_SEGMENTS : SCENE.GLOBE_SEGMENTS
   const meshRef = useRef<THREE.Mesh>(null)
@@ -96,16 +98,18 @@ export default function Globe({ onHoverChange, onDragStart, onDragMove, onDragEn
     })
   }, [scene, mobile])
 
-  // Play the default animation (rotating clouds) slowly
+  // Signal readiness on mount — Suspense guarantees the GLB is fully loaded by now.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { onReady?.() }, [])
+
+  // Play the built-in cloud/water drift animation(s), sped up for a livelier globe.
   useEffect(() => {
-    if (actions && Object.keys(actions).length > 0) {
-      const firstActionName = Object.keys(actions)[0]
-      const action = actions[firstActionName]
-      if (action) {
-        action.timeScale = 0.033 // Made 10% faster (from 0.03)
-        action.play()
-      }
-    }
+    if (!actions) return
+    Object.values(actions).forEach((action) => {
+      if (!action) return
+      action.timeScale = 0.1 // was 0.033 — clouds & water drift noticeably quicker
+      action.play()
+    })
   }, [actions])
 
   // Hover state detection using the invisible helper sphere
