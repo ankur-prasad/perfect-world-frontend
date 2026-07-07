@@ -5,6 +5,7 @@ import { useCart } from '../../contexts/CartContext'
 import { useState, useEffect } from 'react'
 import GlassyButton from '../ui/GlassyButton'
 import { isVariantAvailable } from '../../utils/availability'
+import { formatDisplayTitle } from '../../utils/productGrouping'
 
 interface QuickViewModalProps {
   product: ShopifyProduct | null
@@ -111,7 +112,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
 
               {/* Product Details */}
               <div className="flex flex-col">
-                <h2 className="text-3xl font-bold text-white mb-4">{product.title}</h2>
+                <h2 className="text-3xl font-bold text-white mb-4">{formatDisplayTitle(product.title)}</h2>
 
                 <div className="text-3xl font-bold text-white mb-6">{formattedPrice}</div>
 

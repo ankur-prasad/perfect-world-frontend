@@ -77,6 +77,14 @@ export function extractColorFromTitle(title: string): string {
 }
 
 /**
+ * Clean a raw Shopify title for display by dropping trailing " | ..." tags
+ * (manufacturer / market suffixes like "| Stanley&Stella" or "| EU").
+ */
+export function formatDisplayTitle(title: string): string {
+  return title.split('|')[0].trim()
+}
+
+/**
  * Extract base product name without color
  */
 export function extractBaseName(title: string): string {

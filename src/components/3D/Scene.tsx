@@ -1,6 +1,22 @@
-import { Suspense, useState, useEffect, useRef, useCallback } from 'react'
+import { Suspense, useState, useEffect, useRef, useCallback, Component, type ReactNode } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, useProgress } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, useProgress, useGLTF } from '@react-three/drei'
+
+const EARTH_MODEL_URL = '/assets/models/earth.glb'
+
+// If the Earth model errors while loading (transient network / decode failure
+// on mobile), clear the cached failure and remount to retry — otherwise the
+// hero would stay permanently black. Capped so a hard failure can't loop.
+class GlobeErrorBoundary extends Component<{ onRetry: () => void; children: ReactNode }, { failed: boolean; attempts: number }> {
+  state = { failed: false, attempts: 0 }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch() {
+    if (this.state.attempts >= 3) return
+    try { useGLTF.clear(EARTH_MODEL_URL) } catch { /* noop */ }
+    setTimeout(() => this.setState((s) => ({ failed: false, attempts: s.attempts + 1 })), 1000)
+  }
+  render() { return this.state.failed ? null : this.props.children }
+}
 import { Group } from 'three'
 import Globe from './Globe'
 import Satellite from './Satellite'
@@ -166,6 +182,7 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
 export default function Scene({ onSatelliteClick, enableControls = false, scrollProgress = 0, collectionsScrollProgress = 0, onGlobeHoverChange }: SceneProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const throttledUpdateRef = useRef<((event: MouseEvent) => void) | null>(null)
+  const mobile = isMobile()
 
   // Fade the whole scene in once the Earth model (and its textures) finish
   // loading, so the hero appears as a smooth reveal instead of popping in.
@@ -183,7 +200,7 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
   }, [active, progress, reveal])
 
   useEffect(() => {
-    const t = setTimeout(reveal, 4000)
+    const t = setTimeout(reveal, 8000)
     return () => clearTimeout(t)
   }, [reveal])
 
@@ -211,13 +228,20 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
   }, [])
 
   return (
-    <div
-      className="w-full h-full bg-transparent transition-opacity ease-out"
-      style={{ opacity: revealed ? 1 : 0, transitionDuration: '1200ms' }}
-    >
+    <div className="w-full h-full bg-transparent relative">
+      {/* Loading hint while the model streams in — avoids a confusing black hero */}
+      {!revealed && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white/70 animate-spin" />
+        </div>
+      )}
+      <div
+        className="w-full h-full transition-opacity ease-out"
+        style={{ opacity: revealed ? 1 : 0, transitionDuration: '1200ms' }}
+      >
       <Canvas
-        shadows
-        dpr={[1, 2]}
+        shadows={!mobile}
+        dpr={mobile ? [1, 1.5] : [1, 2]}
         // pan-y lets a vertical swipe scroll the page; horizontal drags still
         // rotate the globe (handled via pointer capture on the helper sphere).
         style={{ touchAction: 'pan-y' }}
@@ -247,22 +271,24 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
         <directionalLight
           position={[5, 5, 5]}
           intensity={2}
-          castShadow
+          castShadow={!mobile}
         />
         <pointLight position={[-5, -5, -5]} intensity={1} />
 
         {/* Scene Content */}
         <Suspense fallback={null}>
-
-          {/* Globe, stars, and satellites rotate together, with parallax tilt */}
-          <GlobeGroup
-            mousePosition={mousePosition}
-            onSatelliteClick={onSatelliteClick}
-            collectionsScrollProgress={collectionsScrollProgress}
-            onGlobeHoverChange={onGlobeHoverChange}
-            scrollProgress={scrollProgress}
-            onReady={reveal}
-          />
+          {/* Retry the model load on transient failure so the hero can't stay black */}
+          <GlobeErrorBoundary onRetry={reveal}>
+            {/* Globe, stars, and satellites rotate together, with parallax tilt */}
+            <GlobeGroup
+              mousePosition={mousePosition}
+              onSatelliteClick={onSatelliteClick}
+              collectionsScrollProgress={collectionsScrollProgress}
+              onGlobeHoverChange={onGlobeHoverChange}
+              scrollProgress={scrollProgress}
+              onReady={reveal}
+            />
+          </GlobeErrorBoundary>
         </Suspense>
 
         {/* Optional Orbit Controls for debugging */}
@@ -276,6 +302,7 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
           />
         )}
       </Canvas>
+      </div>
     </div>
   )
 }
