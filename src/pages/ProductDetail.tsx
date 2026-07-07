@@ -11,7 +11,8 @@ import type { ShopifyProduct } from '../types/shopify.types'
 import { useCart } from '../contexts/CartContext'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { sanitizeHtml } from '../utils/sanitize'
-import { extractColorFromTitle, extractProductType } from '../utils/productGrouping'
+import { isVariantAvailable } from '../utils/availability'
+import { extractColorFromTitle, extractProductType, formatDisplayTitle } from '../utils/productGrouping'
 import { projects } from '../data/projects'
 
 // Color name to hex code mapping (same as ProductCardWithColors)
@@ -80,7 +81,7 @@ function pickDefaultVariantIndex(product: ShopifyProduct): number {
 
   // Prefer an available M, then the next-best size that is in stock.
   for (const size of PREFERRED_DEFAULT_SIZES) {
-    const available = variants.findIndex((v) => sizeOf(v) === size && v.availableForSale)
+    const available = variants.findIndex((v) => sizeOf(v) === size && isVariantAvailable(v))
     if (available !== -1) return available
   }
   // Nothing in stock at a preferred size — fall back to any M, then first variant.
@@ -248,7 +249,7 @@ export default function ProductDetail() {
     currency: selectedVariant.price.currencyCode,
   }).format(price)
 
-  const isAvailable = selectedVariant.availableForSale
+  const isAvailable = isVariantAvailable(selectedVariant)
   
   let sizeChartImage = product.images.find(img => 
     img.url.toLowerCase().includes('chart') || 
@@ -348,7 +349,7 @@ export default function ProductDetail() {
                 </>
               )}
               <span>/</span>
-              <span className="text-white">{product.title}</span>
+              <span className="text-white">{formatDisplayTitle(product.title)}</span>
             </nav>
 
             <div className="grid lg:grid-cols-2 gap-12 mb-24 px-2 sm:px-4">
@@ -405,7 +406,7 @@ export default function ProductDetail() {
                 transition={{ duration: 0.6 }}
                 className="flex flex-col min-w-0"
               >
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 break-words hyphens-auto">{product.title}</h1>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 break-words hyphens-auto">{formatDisplayTitle(product.title)}</h1>
 
                 <div className="flex flex-wrap items-center gap-4 mb-8 py-5">
                   <span className="text-4xl font-bold text-white">{formattedPrice}</span>
@@ -865,7 +866,7 @@ export default function ProductDetail() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <h3 className="text-xl font-bold text-white mb-6 pr-8 text-center font-primary">{t('product.sizeChartTitle', { title: product.title })}</h3>
+              <h3 className="text-xl font-bold text-white mb-6 pr-8 text-center font-primary">{t('product.sizeChartTitle', { title: formatDisplayTitle(product.title) })}</h3>
               <div className="w-full max-h-[70vh] overflow-auto flex justify-center bg-white p-4 rounded-2xl">
                 <img
                   src={sizeChartImage}

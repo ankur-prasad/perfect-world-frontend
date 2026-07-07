@@ -6,6 +6,7 @@ import type { ShopifyProduct } from '../../types/shopify.types'
 import { useCart } from '../../contexts/CartContext'
 import { extractBaseName, extractColorFromTitle, extractProductType } from '../../utils/productGrouping'
 import GlassyButton from '../ui/GlassyButton'
+import { isProductAvailable, isVariantAvailable } from '../../utils/availability'
 
 // Color name to hex code mapping
 const COLOR_MAP: Record<string, string> = {
@@ -91,7 +92,7 @@ export default function ProductCardWithColors({
   const productType = extractProductType(product.title)
 
   const displayImage = displayProduct?.images[0]?.url || product.images[0]?.url || '/placeholder-product.jpg'
-  const isAvailable = product.availableForSale && product.variants.some((v) => v.availableForSale)
+  const isAvailable = isProductAvailable(product)
 
   // Product type badge
   const typeBadge = productType === 'tshirt' ? 'T-SHIRT' :
@@ -107,8 +108,8 @@ export default function ProductCardWithColors({
 
     setIsAdding(true)
 
-    // Find first available variant
-    const availableVariant = product.variants.find((v) => v.availableForSale)
+    // Find first available variant (falls back to the first variant for POD)
+    const availableVariant = product.variants.find((v) => isVariantAvailable(v)) ?? product.variants[0]
 
     if (availableVariant) {
       addToCart({
