@@ -102,7 +102,7 @@ async function fetchCollectionProducts(handle: string): Promise<ShopifyCollectio
         id
         title
         description
-        products(first: 20) {
+        products(first: 50) {
           edges {
             node {
               id

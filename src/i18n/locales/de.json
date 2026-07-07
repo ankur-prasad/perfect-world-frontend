@@ -225,6 +225,10 @@
     "profitsSupport": "100% der Gewinne unterstützen {{charity}}",
     "inPartnershipWith": "In Zusammenarbeit mit"
   },
+  "region": {
+    "comingSoonTitle": "Bald in deiner Region 🌎",
+    "comingSoonBody": "Wir arbeiten an einem lokalen Hersteller für Amerika. Bis dahin kannst du trotzdem bestellen – alles wird aus Europa versendet."
+  },
   "projectsPage": {
     "title": "Unsere Projekte",
     "subtitle": "Organisationen und Anliegen, die wir unterstützen",

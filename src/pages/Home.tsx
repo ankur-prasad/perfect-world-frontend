@@ -361,7 +361,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <div className="w-full max-w-5xl h-[460px] md:h-[600px]">
+          <div className="w-full max-w-5xl h-[540px] md:h-[600px]">
             <Carousel3D
               rotateSpeed={25}
               pauseOnHover={true}

@@ -6,6 +6,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigation } from '../../contexts/NavigationContext'
 import { useCart } from '../../contexts/CartContext'
+import { useLocale } from '../../contexts/LocaleContext'
+import { SUPPORTED_LANGUAGES } from '../../i18n'
 import CartDrawer from '../Cart/CartDrawer'
 import LanguageSwitcher from './LanguageSwitcher'
 import GlassyButton from '../ui/GlassyButton'
@@ -276,7 +278,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
         }`}>
           {/* Announcement Bar */}
           <div className="relative h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center border-b border-white/5">
-            <span>{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</span>
+            <Link to="/rich-in-life" className="hover:opacity-80 transition-opacity">{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</Link>
             <span className="opacity-50 hidden sm:inline">·</span>
             <span>{t('nav.announcementProfits')}</span>
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -351,7 +353,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
     <>
       {/* Announcement Bar */}
       <div className="fixed top-0 left-0 right-0 h-9 bg-[#A98467] text-white text-[11px] md:text-xs font-semibold tracking-wider flex items-center justify-center gap-1.5 px-4 text-center z-50 border-b border-white/5">
-        <span>{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</span>
+        <Link to="/rich-in-life" className="hover:opacity-80 transition-opacity">{t('nav.announcementNew')} <strong className="font-bold">Rich in Life</strong>{t('nav.announcementSuffix')}</Link>
         <span className="opacity-50 hidden sm:inline">·</span>
         <span>{t('nav.announcementProfits')}</span>
         <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -441,6 +443,7 @@ export default function Navigation({ isDarkContent = false, enableScrollAnimatio
 // Helper component for Menu Overlay to reduce duplication
 function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMenu: () => void }) {
   const { t } = useTranslation()
+  const { language, availableLanguages, setLanguage } = useLocale()
   return (
     <motion.div
       className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex flex-col overflow-y-auto"
@@ -474,6 +477,32 @@ function MenuOverlay({ isMenuOpen, toggleMenu }: { isMenuOpen: boolean, toggleMe
             </Link>
           </motion.div>
         ))}
+
+        {/* Language switcher — kept in the menu so it's easy to find on mobile */}
+        {availableLanguages.length > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : 20 }}
+            transition={{ delay: 0.1 + 5 * 0.05 }}
+            className="mt-6 flex items-center gap-3"
+          >
+            {availableLanguages.map((lang) => (
+              <button
+                key={lang}
+                onClick={() => {
+                  if (lang !== language) setLanguage(lang)
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                  lang === language
+                    ? 'bg-white text-black border-white'
+                    : 'text-white/80 border-white/25 hover:border-white/60'
+                }`}
+              >
+                {SUPPORTED_LANGUAGES[lang]}
+              </button>
+            ))}
+          </motion.div>
+        )}
       </nav>
     </motion.div>
   )

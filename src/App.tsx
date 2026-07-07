@@ -7,6 +7,7 @@ import { NavigationProvider } from './contexts/NavigationContext'
 import { LocaleProvider } from './contexts/LocaleContext'
 
 import CookieConsent from './components/Layout/CookieConsent'
+import RegionNotice from './components/Layout/RegionNotice'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
 import ScrollToTop from './components/Layout/ScrollToTop'
 import DiscountPopup from './components/ui/DiscountPopup'
@@ -85,6 +86,7 @@ function App() {
             </Routes>
           </Suspense>
           <CookieConsent />
+          <RegionNotice />
           <DiscountPopup />
           <Analytics />
           <SpeedInsights />
