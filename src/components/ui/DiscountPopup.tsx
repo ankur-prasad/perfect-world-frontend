@@ -11,14 +11,29 @@ export default function DiscountPopup() {
     // Check local storage to see if user has already dismissed or subscribed
     const isDismissed = localStorage.getItem('perfectworld-discount-dismissed')
     const hasSubscribed = localStorage.getItem('perfectworld-discount-subscribed')
+    if (isDismissed || hasSubscribed) return
 
-    if (!isDismissed && !hasSubscribed) {
-      const timer = setTimeout(() => {
-        setIsVisible(true)
-      }, 3000) // 3-second delay
-
-      return () => clearTimeout(timer)
+    let timer: ReturnType<typeof setTimeout>
+    const show = () => {
+      timer = setTimeout(() => setIsVisible(true), 1200)
     }
+
+    // Don't stack on top of the cookie banner — wait until consent is decided.
+    if (localStorage.getItem('cookie-consent')) {
+      show()
+    } else {
+      const onConsent = () => {
+        window.removeEventListener('pw-cookie-consent', onConsent)
+        show()
+      }
+      window.addEventListener('pw-cookie-consent', onConsent)
+      return () => {
+        window.removeEventListener('pw-cookie-consent', onConsent)
+        clearTimeout(timer)
+      }
+    }
+
+    return () => clearTimeout(timer)
   }, [])
 
   const handleClose = () => {
@@ -49,7 +64,7 @@ export default function DiscountPopup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.95 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="fixed bottom-6 right-6 z-50 w-full max-w-[400px] p-6 rounded-3xl bg-black/85 backdrop-blur-xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] mx-4 sm:mx-0"
+          className="fixed bottom-4 sm:bottom-6 inset-x-4 sm:inset-x-auto sm:right-6 z-50 sm:w-full max-w-[400px] mx-auto sm:mx-0 p-6 rounded-3xl bg-black/85 backdrop-blur-xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         >
           {/* Close Button */}
           <button

@@ -11,7 +11,6 @@
       "projects": "Projects",
       "about": "About & Transparency",
       "shop": "Shop",
-      "podcasts": "Podcasts",
       "contact": "Contact"
     }
   },
@@ -96,7 +95,78 @@
     "addingToCart": "Adding to Cart...",
     "soldOut": "Sold Out",
     "quickView": "Quick View",
-    "viewFullDetails": "View Full Details"
+    "viewFullDetails": "View Full Details",
+    "loading": "Loading...",
+    "notFound": "Product Not Found",
+    "loadError": "Failed to load product. Please try again later.",
+    "backToShop": "Back to Shop",
+    "breadcrumbHome": "Home",
+    "breadcrumbShop": "Shop",
+    "color": "Color",
+    "quantity": "Quantity",
+    "sizeGuide": "Size Guide",
+    "sizeChartTitle": "Size Chart - {{title}}",
+    "shareProduct": "Share Product",
+    "linkCopied": "Link Copied!",
+    "profitsDonated": "100% of profits donated",
+    "oversizedNote": "Note: This style is designed to be oversized (loose and roomy). If you prefer a closer fit, consider sizing down.",
+    "specsDescription": "Description",
+    "composition": "Composition",
+    "careInstructions": "Care Instructions",
+    "yourImpact": "Your Impact",
+    "yourImpactBody": "100% of profits from this product support {{collection}}. Every purchase makes a real difference.",
+    "youMayAlsoLike": "You May Also Like",
+    "cert": {
+      "gotsSub": "100% Organic Cotton",
+      "petaSub": "100% Vegan",
+      "fairwearSub": "Ethical Labor"
+    },
+    "specs": {
+      "hoodie": {
+        "features": [
+          "Double-layered hood in self-fabric",
+          "Round drawcords in matching body colour with metal tipping",
+          "Metal eyelets",
+          "Inside single jersey back neck tape",
+          "Self-fabric half moon at back neck",
+          "1x1 rib at sleeve hem and bottom hem",
+          "Flatlock topstitching on all seams",
+          "Kangaroo pocket at front"
+        ],
+        "composition": "Shell: Brushed, 85% Cotton - Organic Ring Spun Combed, 15% Polyester - Recycled, Fabric washed, Light sueded, 350 G/M²",
+        "care": "Wash similar colours together, no ironing on print, wash and iron inside out."
+      },
+      "oversized": {
+        "features": [
+          "Set-in sleeves",
+          "Dropped shoulders",
+          "1x1 rib at collar",
+          "Inside back neck tape in self-fabric",
+          "Sleeve hem and bottom hem with wide double needle topstitch"
+        ],
+        "composition": "Shell: Single Jersey, 100% Cotton - Organic Combed Ring Spun / Heather Haze: 70% Organic Cotton - 30% Recycled Cotton, Combed Ring Spun, Fabric washed, 200 G/M²",
+        "care": "Wash similar colours together, no ironing on print, wash and iron inside out."
+      },
+      "tote": {
+        "features": [
+          "Top edge double folded for strength and clean finish",
+          "Long handles with reinforced cross stitch",
+          "Shaping seam at bottom to create volume"
+        ],
+        "composition": "Shell: Canvas, 80% Cotton - Recycled, 20% Polyester - Recycled, Fabric washed, 300 G/M²",
+        "care": "Wash similar colours together, do not iron on print, wash and iron inside out."
+      },
+      "tshirt": {
+        "features": [
+          "1x1 rib at neckline",
+          "Self-fabric back neck tape",
+          "Set-in sleeves",
+          "Twin-needle topstitching at sleeve cuffs and hem"
+        ],
+        "composition": "Shell: Single Jersey, 100% Cotton - Organic Combed Ring Spun / Heather Haze: 70% Organic Cotton - 30% Recycled Cotton, Combed Ring Spun, Fabric washed, 180 G/M²",
+        "care": "Wash similar colours together, no ironing on print, wash and iron inside out."
+      }
+    }
   },
   "cart": {
     "title": "Your Cart",
@@ -152,6 +222,16 @@
     "shopCollection": "Shop Collection",
     "loadingProducts": "Loading products...",
     "shopCollectionTitle": "Shop {{name}} Collection",
-    "profitsSupport": "100% of profits support {{charity}}"
+    "profitsSupport": "100% of profits support {{charity}}",
+    "inPartnershipWith": "In partnership with"
+  },
+  "region": {
+    "comingSoonTitle": "Coming soon to your region 🌎",
+    "comingSoonBody": "We're lining up a local maker for the Americas. For now you can still order — everything ships from Europe."
+  },
+  "projectsPage": {
+    "title": "Our Projects",
+    "subtitle": "Charities and Causes we support",
+    "intro": "Together with our partner charities, Perfect World invites you to be a part of a movement that transcends borders, bringing joy and support to those who need it the most. Explore our collaborative products, knowing that each purchase contributes to the well-being and future of the planet. Learn more about our individual charities below."
   }
 }

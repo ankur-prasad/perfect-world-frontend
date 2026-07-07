@@ -102,8 +102,10 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     window.location.reload()
   }
 
-  const localLang = country ? COUNTRY_LANGUAGE[country] : undefined
-  const availableLanguages = [...new Set(['en', ...(localLang ? [localLang] : []), language])]
+  // Always offer every supported language in the switcher. Limiting it to
+  // "English + your local language" meant visitors in unmapped countries (e.g.
+  // the Netherlands) saw no switcher at all and couldn't reach German/Spanish.
+  const availableLanguages = Object.keys(SUPPORTED_LANGUAGES)
 
   return (
     <LocaleContext.Provider value={{ country, language, availableLanguages, setLanguage }}>

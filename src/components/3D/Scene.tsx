@@ -1,6 +1,6 @@
 import { Suspense, useState, useEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, useProgress } from '@react-three/drei'
 import { Group } from 'three'
 import Globe from './Globe'
 import Satellite from './Satellite'
@@ -47,14 +47,14 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
 }) {
   const groupRef = useRef<Group>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const { pointer } = useThree()
-  
+
   const ambientSpeed = 0.05 // constant slow rotation speed (rad/sec)
-  const dragVelocity = useRef(0)
-  const prevPointerX = useRef(0)
-  
+  const dragVelocity = useRef(0) // momentum after release (rad/sec)
+
   const mobile = isMobile()
   const globeScale = mobile ? 0.83125 : 1.1875
+  // How far the globe turns per pixel of horizontal drag (screen-space, 1:1 feel)
+  const ROT_PER_PX = mobile ? 0.006 : 0.005
 
   // Global event listener to release drag anywhere on the page/window
   useEffect(() => {
@@ -76,35 +76,17 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
   useFrame((_, delta) => {
     if (!groupRef.current) return
 
-    const currentPointerX = pointer.x
-
-    if (isDragging) {
-      // Direct drag rotation based on frame-by-frame delta
-      const pointerDeltaX = currentPointerX - prevPointerX.current
-      
-      // Cap pointer delta to prevent massive jumps on quick swipes
-      const cappedDelta = Math.max(-0.1, Math.min(0.1, pointerDeltaX))
-      
-      const sensitivity = mobile ? 4.5 : 3.0
-      const rotationDelta = cappedDelta * sensitivity
-      
-      groupRef.current.rotation.y += rotationDelta
-      dragVelocity.current = rotationDelta / delta // update momentum velocity
-    } else {
-      // Momentum decay (inertia after spinning)
-      dragVelocity.current *= 0.95
-      
-      if (Math.abs(dragVelocity.current) > 0.01) {
+    // Manual drag rotation is applied directly in handleDragMove for a 1:1
+    // feel; here we only run momentum + ambient spin when not actively dragging.
+    if (!isDragging) {
+      dragVelocity.current *= mobile ? 0.88 : 0.94
+      if (Math.abs(dragVelocity.current) > 0.02) {
         groupRef.current.rotation.y += dragVelocity.current * delta
       } else {
-        // Slow ambient rotation when idle
         dragVelocity.current = 0
         groupRef.current.rotation.y -= ambientSpeed * delta
       }
     }
-
-    // Update previous pointer coordinate
-    prevPointerX.current = currentPointerX
 
     // Parallax tilt - completely disable on mobile, disable during dragging on desktop
     const parallaxMultiplier = (isDragging || mobile) ? 0 : 1.0
@@ -137,11 +119,18 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
 
   const handleDragStart = () => {
     setIsDragging(true)
-    prevPointerX.current = pointer.x
+    dragVelocity.current = 0
   }
 
-  const handleDragEnd = () => {
+  const handleDragMove = (dx: number) => {
+    if (groupRef.current) groupRef.current.rotation.y += dx * ROT_PER_PX
+  }
+
+  const handleDragEnd = (velPxPerMs: number) => {
     setIsDragging(false)
+    // px/ms → rad/s, capped so a hard flick doesn't spin forever
+    const v = velPxPerMs * 1000 * ROT_PER_PX
+    dragVelocity.current = Math.max(-2.5, Math.min(2.5, v))
   }
 
   return (
@@ -154,8 +143,8 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
       <Globe
         onHoverChange={handleGlobeHover}
         onDragStart={handleDragStart}
+        onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
-        isDragging={isDragging}
       />
 
       {/* Satellites rotate with the globe */}
@@ -175,6 +164,17 @@ function GlobeGroup({ mousePosition, onSatelliteClick, collectionsScrollProgress
 export default function Scene({ onSatelliteClick, enableControls = false, scrollProgress = 0, collectionsScrollProgress = 0, onGlobeHoverChange }: SceneProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const throttledUpdateRef = useRef<((event: MouseEvent) => void) | null>(null)
+
+  // Fade the whole scene in once the Earth model (and its textures) finish
+  // loading, so the hero appears as a smooth reveal instead of popping in.
+  const { active, progress } = useProgress()
+  const [revealed, setRevealed] = useState(false)
+  useEffect(() => {
+    if (!active && progress >= 100) {
+      const t = setTimeout(() => setRevealed(true), 60)
+      return () => clearTimeout(t)
+    }
+  }, [active, progress])
 
   // Attach mouse move listener
   useEffect(() => {
@@ -200,10 +200,16 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
   }, [])
 
   return (
-    <div className="w-full h-full bg-transparent">
+    <div
+      className="w-full h-full bg-transparent transition-opacity ease-out"
+      style={{ opacity: revealed ? 1 : 0, transitionDuration: '1200ms' }}
+    >
       <Canvas
         shadows
         dpr={[1, 2]}
+        // pan-y lets a vertical swipe scroll the page; horizontal drags still
+        // rotate the globe (handled via pointer capture on the helper sphere).
+        style={{ touchAction: 'pan-y' }}
         gl={{
           antialias: true,
           alpha: true,
@@ -211,6 +217,8 @@ export default function Scene({ onSatelliteClick, enableControls = false, scroll
         }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0) // Transparent background
+          // Vertical swipes scroll the page; horizontal drags rotate the globe.
+          gl.domElement.style.touchAction = 'pan-y'
         }}
       >
         {/* Camera */}

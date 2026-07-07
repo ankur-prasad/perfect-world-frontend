@@ -1,11 +1,13 @@
 import { useRef, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { MeshGradient } from '@paper-design/shaders-react'
 import type { Project } from '../../types/project.types'
 import perfectWorldLogo from '../../assets/logos/perfect-world-logo-black.png'
 import { useTransitionStore } from '../../stores/transitionStore'
+import { useLocalizedProject } from '../../data/useLocalizedProject'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,7 +16,9 @@ interface ProjectTileProps {
     index: number
 }
 
-export default function ProjectTile({ project, index }: ProjectTileProps) {
+export default function ProjectTile({ project: rawProject, index }: ProjectTileProps) {
+    const project = useLocalizedProject(rawProject)
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const containerRef = useRef<HTMLDivElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
@@ -170,7 +174,7 @@ export default function ProjectTile({ project, index }: ProjectTileProps) {
                         </p>
 
                         <div className="mt-12 flex items-center justify-center gap-4">
-                            <span className="text-black/80 text-sm uppercase tracking-widest">In partnership with</span>
+                            <span className="text-black/80 text-sm uppercase tracking-widest">{t('project.inPartnershipWith')}</span>
                             <img
                                 src={perfectWorldLogo}
                                 alt="Perfect World"

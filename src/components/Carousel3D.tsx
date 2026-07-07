@@ -40,8 +40,10 @@ export default function Carousel3D({
 
     // Drag tracking refs
     const isDraggingRef = useRef(false)
+    const pendingRef = useRef(false) // pointer down, direction not yet decided
     const hasDraggedRef = useRef(false)
     const startXRef = useRef(0)
+    const startYRef = useRef(0)
     const startRotationRef = useRef(0)
     const dragVelocityRef = useRef(0)
     const lastXRef = useRef(0)
@@ -54,10 +56,11 @@ export default function Carousel3D({
             const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024
 
             if (isMobile) {
+                // Larger, slightly portrait tiles so the shirt designs read well on phones.
                 setResponsiveSizes({
-                    width: itemWidth * 0.6,
-                    height: itemHeight * 0.6,
-                    translateZ: translateZ * 0.45
+                    width: itemWidth * 0.78,
+                    height: itemHeight * 0.95,
+                    translateZ: translateZ * 0.52
                 })
             } else if (isTablet) {
                 setResponsiveSizes({
@@ -134,24 +137,42 @@ export default function Carousel3D({
         if ((e.target as HTMLElement).closest('button')) return
 
         if (e.button !== 0 && e.pointerType === 'mouse') return
-        
-        isDraggingRef.current = true
-        setIsTouching(true)
+
+        // Don't capture or start dragging yet — wait until we know the gesture is
+        // horizontal, so a vertical swipe still scrolls the page (touch-action: pan-y).
+        pendingRef.current = true
+        isDraggingRef.current = false
         hasDraggedRef.current = false
         startXRef.current = e.clientX
+        startYRef.current = e.clientY
         startRotationRef.current = rotation
         lastXRef.current = e.clientX
         lastTimeDragRef.current = performance.now()
         dragVelocityRef.current = 0
-        
-        e.currentTarget.setPointerCapture(e.pointerId)
     }
 
     const handlePointerMove = (e: React.PointerEvent) => {
+        // Decide gesture direction on the first meaningful movement.
+        if (pendingRef.current && !isDraggingRef.current) {
+            const dx = e.clientX - startXRef.current
+            const dy = e.clientY - startYRef.current
+            if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return
+            if (Math.abs(dy) > Math.abs(dx)) {
+                // Vertical intent — let the browser scroll the page.
+                pendingRef.current = false
+                return
+            }
+            // Horizontal intent — take over the gesture.
+            pendingRef.current = false
+            isDraggingRef.current = true
+            setIsTouching(true)
+            e.currentTarget.setPointerCapture(e.pointerId)
+        }
+
         if (!isDraggingRef.current) return
-        
+
         const deltaX = e.clientX - startXRef.current
-        
+
         if (Math.abs(deltaX) > 5) {
             hasDraggedRef.current = true
         }
@@ -175,6 +196,7 @@ export default function Carousel3D({
     }
 
     const handlePointerUp = (e: React.PointerEvent) => {
+        pendingRef.current = false
         if (!isDraggingRef.current) return
         isDraggingRef.current = false
         setIsTouching(false)
@@ -210,7 +232,7 @@ export default function Carousel3D({
     return (
         <div
             ref={containerRef}
-            className="w-full h-full relative overflow-visible select-none cursor-grab active:cursor-grabbing touch-none"
+            className="w-full h-full relative overflow-visible select-none cursor-grab active:cursor-grabbing touch-pan-y"
             style={{
                 perspective: '1200px',
                 zIndex: 0,

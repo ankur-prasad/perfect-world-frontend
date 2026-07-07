@@ -11,7 +11,6 @@
       "projects": "Proyectos",
       "about": "Nosotros y Transparencia",
       "shop": "Tienda",
-      "podcasts": "Pódcasts",
       "contact": "Contacto"
     }
   },
@@ -96,7 +95,78 @@
     "addingToCart": "Agregando al carrito...",
     "soldOut": "Agotado",
     "quickView": "Vista Rápida",
-    "viewFullDetails": "Ver Detalles"
+    "viewFullDetails": "Ver Detalles",
+    "loading": "Cargando...",
+    "notFound": "Producto no encontrado",
+    "loadError": "No se pudo cargar el producto. Inténtalo de nuevo más tarde.",
+    "backToShop": "Volver a la tienda",
+    "breadcrumbHome": "Inicio",
+    "breadcrumbShop": "Tienda",
+    "color": "Color",
+    "quantity": "Cantidad",
+    "sizeGuide": "Guía de tallas",
+    "sizeChartTitle": "Guía de tallas - {{title}}",
+    "shareProduct": "Compartir producto",
+    "linkCopied": "¡Enlace copiado!",
+    "profitsDonated": "100% de las ganancias donadas",
+    "oversizedNote": "Nota: Este modelo está diseñado para quedar oversized (holgado y amplio). Si prefieres un ajuste más ceñido, considera elegir una talla menos.",
+    "specsDescription": "Descripción",
+    "composition": "Composición",
+    "careInstructions": "Instrucciones de cuidado",
+    "yourImpact": "Tu impacto",
+    "yourImpactBody": "El 100% de las ganancias de este producto apoya a {{collection}}. Cada compra marca una verdadera diferencia.",
+    "youMayAlsoLike": "También te puede gustar",
+    "cert": {
+      "gotsSub": "100% algodón orgánico",
+      "petaSub": "100% vegano",
+      "fairwearSub": "Trabajo ético"
+    },
+    "specs": {
+      "hoodie": {
+        "features": [
+          "Capucha de doble capa en el mismo tejido",
+          "Cordones redondos a juego con el cuerpo, con terminaciones metálicas",
+          "Ojales metálicos",
+          "Cinta de cuello interior en punto sencillo",
+          "Media luna en el mismo tejido en la nuca",
+          "Puño canalé 1x1 en mangas y bajo",
+          "Pespunte flatlock en todas las costuras",
+          "Bolsillo canguro delantero"
+        ],
+        "composition": "Exterior: cepillado, 85% algodón - orgánico peinado e hilado en anillo, 15% poliéster - reciclado, lavado en prenda, ligeramente afelpado, 350 G/M²",
+        "care": "Lavar juntos los colores similares, no planchar sobre el estampado, lavar y planchar del revés."
+      },
+      "oversized": {
+        "features": [
+          "Mangas montadas",
+          "Hombros caídos",
+          "Cuello canalé 1x1",
+          "Cinta de cuello interior en el mismo tejido",
+          "Bajo y puños con pespunte doble ancho"
+        ],
+        "composition": "Exterior: punto sencillo, 100% algodón - orgánico peinado e hilado en anillo / Heather Haze: 70% algodón orgánico - 30% algodón reciclado, peinado e hilado en anillo, lavado en prenda, 200 G/M²",
+        "care": "Lavar juntos los colores similares, no planchar sobre el estampado, lavar y planchar del revés."
+      },
+      "tote": {
+        "features": [
+          "Borde superior doblado dos veces para mayor resistencia y acabado limpio",
+          "Asas largas con costura cruzada reforzada",
+          "Costura de forma en la base para crear volumen"
+        ],
+        "composition": "Exterior: lona, 80% algodón - reciclado, 20% poliéster - reciclado, lavado en prenda, 300 G/M²",
+        "care": "Lavar juntos los colores similares, no planchar sobre el estampado, lavar y planchar del revés."
+      },
+      "tshirt": {
+        "features": [
+          "Cuello canalé 1x1",
+          "Cinta de cuello en el mismo tejido",
+          "Mangas montadas",
+          "Pespunte de doble aguja en puños y bajo"
+        ],
+        "composition": "Exterior: punto sencillo, 100% algodón - orgánico peinado e hilado en anillo / Heather Haze: 70% algodón orgánico - 30% algodón reciclado, peinado e hilado en anillo, lavado en prenda, 180 G/M²",
+        "care": "Lavar juntos los colores similares, no planchar sobre el estampado, lavar y planchar del revés."
+      }
+    }
   },
   "cart": {
     "title": "Tu Carrito",
@@ -152,6 +222,16 @@
     "shopCollection": "Comprar Colección",
     "loadingProducts": "Cargando productos...",
     "shopCollectionTitle": "Colección {{name}}",
-    "profitsSupport": "El 100% de las ganancias apoya a {{charity}}"
+    "profitsSupport": "El 100% de las ganancias apoya a {{charity}}",
+    "inPartnershipWith": "En colaboración con"
+  },
+  "region": {
+    "comingSoonTitle": "Pronto en tu región 🌎",
+    "comingSoonBody": "Estamos preparando un fabricante local para América. Por ahora puedes comprar igual: todo se envía desde Europa."
+  },
+  "projectsPage": {
+    "title": "Nuestros Proyectos",
+    "subtitle": "Organizaciones y causas que apoyamos",
+    "intro": "Junto a nuestras organizaciones asociadas, Perfect World te invita a formar parte de un movimiento que trasciende fronteras, llevando alegría y apoyo a quienes más lo necesitan. Explora nuestros productos colaborativos, sabiendo que cada compra contribuye al bienestar y al futuro del planeta. Conoce más sobre cada una de nuestras organizaciones a continuación."
   }
 }

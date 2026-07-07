@@ -7,6 +7,7 @@ import { NavigationProvider } from './contexts/NavigationContext'
 import { LocaleProvider } from './contexts/LocaleContext'
 
 import CookieConsent from './components/Layout/CookieConsent'
+import RegionNotice from './components/Layout/RegionNotice'
 import ColorExpansionOverlay from './components/transitions/ColorExpansionOverlay'
 import ScrollToTop from './components/Layout/ScrollToTop'
 import DiscountPopup from './components/ui/DiscountPopup'
@@ -35,7 +36,6 @@ const LegalNotice = lazy(() => import('./pages/LegalNotice'))
 const ShippingPolicy = lazy(() => import('./pages/ShippingPolicy'))
 const CookiePolicy = lazy(() => import('./pages/CookiePolicy'))
 const Contact = lazy(() => import('./pages/Contact'))
-const Podcasts = lazy(() => import('./pages/Podcasts'))
 const ComponentDemo = lazy(() => import('./pages/ComponentDemo'))
 const VisualEditor = lazy(() => import('./pages/VisualEditor'))
 
@@ -79,7 +79,6 @@ function App() {
               <Route path="/shipping-policy" element={<ShippingPolicy />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/podcasts" element={<Podcasts />} />
               {/* Dev-only tooling pages, excluded from production */}
               {import.meta.env.DEV && <Route path="/demo" element={<ComponentDemo />} />}
               {import.meta.env.DEV && <Route path="/editor" element={<VisualEditor />} />}
@@ -87,6 +86,7 @@ function App() {
             </Routes>
           </Suspense>
           <CookieConsent />
+          <RegionNotice />
           <DiscountPopup />
           <Analytics />
           <SpeedInsights />
